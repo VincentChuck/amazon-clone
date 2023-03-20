@@ -9,7 +9,7 @@ const config = {
   reactStrictMode: true,
   images: {
     domains: [''],
-  }
+  },
 
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
