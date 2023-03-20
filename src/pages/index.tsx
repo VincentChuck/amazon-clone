@@ -7,6 +7,35 @@ import { api } from '~/utils/api';
 import Image from 'next/image';
 import navLogo from 'public/amazon-logo.png';
 
+import localFont from 'next/font/local';
+
+const emberFont = localFont({
+  variable: '--font-ember',
+  src: [
+    {
+      path: '../../public/font/AmazonEmber_W_Rg.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/font/AmazonEmber_W_RgIt.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../../public/font/AmazonEmber_W_Bd.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/font/AmazonEmber_W_BdIt.woff2',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+  fallback: ['arial', 'sans-serif'],
+});
+
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: 'from tRPC' });
 
@@ -24,7 +53,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
+      <main className={`${emberFont.variable} font-ember`}>
         <div className="flex h-12 w-full flex-row flex-nowrap items-center justify-between bg-[#232f3e]">
           <div className="flex w-auto items-center">
             <svg
@@ -51,13 +80,14 @@ const Home: NextPage = () => {
 
           <div className="flex w-auto items-center">
             <div className="text-white">Sign in ›</div>
+            {/*user icon*/}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
-              className="block h-5 w-5 text-white"
+              className="block h-6 w-6 text-white"
             >
               <path
                 strokeLinecap="round"
@@ -66,20 +96,24 @@ const Home: NextPage = () => {
               />
             </svg>
 
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="m-2 block h-8 w-8 text-white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-              />
-            </svg>
+            <div className="grid place-items-center">
+              {/*shopping cart icon*/}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className=" m-2 block h-8 w-8 text-white"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                />
+              </svg>
+              <span className=" top-0 left-0 text-white">0</span>
+            </div>
           </div>
         </div>
       </main>
