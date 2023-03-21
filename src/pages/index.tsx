@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 import Icon from '~/components/Icon';
 import navLogo from 'public/amazon-logo.png';
+import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
 
 const emberFont = localFont({
@@ -54,36 +55,50 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${emberFont.variable} font-ember`}>
-        <div className="flex h-12 w-full flex-row flex-nowrap items-center justify-between bg-[#232f3e]">
-          <div className="flex w-auto items-center">
-            <Icon
-              name="hamburger"
-              strokeWidth={1.5}
-              className="m-2 h-8 w-8 text-white"
-            />
-
-            <Image
-              alt="amazon-logo"
-              className="float-left mt-1.5 w-20"
-              src={navLogo}
-            />
-          </div>
-
-          <div className="flex w-auto items-center">
-            <div className="text-white">Sign in ›</div>
-            <Icon
-              name="user"
-              strokeWidth={2.5}
-              className="block h-6 w-6 text-white"
-            />
-
-            <div className="grid place-items-center">
+        <div className=" bg-[#232f3e]">
+          <div className="flex h-12 w-full flex-row flex-nowrap items-center justify-between">
+            <div className="flex w-auto items-center">
               <Icon
-                name="cart"
+                name="hamburger"
                 strokeWidth={1.5}
-                className="m-2 block h-8 w-8 text-white"
+                className="m-2 h-8 w-8 text-white"
               />
-              <span className=" top-0 left-0 text-white">0</span>
+
+              <Image
+                alt="amazon-logo"
+                className="float-left mt-1.5 w-20"
+                src={navLogo}
+              />
+            </div>
+
+            <div className="flex w-auto items-center">
+              <div className="text-white">Sign in ›</div>
+              <Icon
+                name="user"
+                strokeWidth={2.5}
+                className="h-6 w-6 text-white"
+              />
+
+              <div className="flex w-auto items-center justify-center px-2">
+                <Image alt="amazon-cart" className="w-10" src={cartIcon} />
+                <span className="text-md absolute -top-0 font-bold text-orange-300">
+                  99
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="h-12 px-2.5 pt-[2px] pb-[5px]">
+            <div className="flex h-full w-full items-center justify-between rounded-l-lg rounded-r-xl bg-white pl-2">
+              <div className="flex h-full flex-grow items-center">
+                Search Amazon
+              </div>
+              <div className="flex h-full w-12 items-center justify-center rounded-lg bg-orange-300">
+                <Icon
+                  name="search"
+                  strokeWidth={2.5}
+                  className="h-6 w-6 text-black"
+                />
+              </div>
             </div>
           </div>
         </div>
