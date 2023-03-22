@@ -55,22 +55,26 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${emberFont.variable} font-ember`}>
-        <div className=" bg-[#232f3e]">
-          <div className="flex h-12 w-full flex-row flex-nowrap items-center justify-between">
+        {/* navbar container */}
+        <nav className=" bg-[#232f3e]">
+          {/* logo bar */}
+          <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between">
+            {/* logo bar left */}
             <div className="flex w-auto items-center">
               <Icon
                 name="hamburger"
                 strokeWidth={1.5}
                 className="m-2 h-8 w-8 text-white"
               />
-
               <Image
                 alt="amazon-logo"
+                priority
                 className="float-left mt-1.5 w-20"
                 src={navLogo}
               />
             </div>
 
+            {/* logo bar right */}
             <div className="flex w-auto items-center">
               <div className="text-white">Sign in ›</div>
               <Icon
@@ -78,7 +82,6 @@ const Home: NextPage = () => {
                 strokeWidth={2.5}
                 className="h-6 w-6 text-white"
               />
-
               <div className="flex w-auto items-center justify-center px-2">
                 <Image alt="amazon-cart" className="w-10" src={cartIcon} />
                 <span className="text-md absolute -top-0 font-bold text-orange-300">
@@ -86,8 +89,10 @@ const Home: NextPage = () => {
                 </span>
               </div>
             </div>
-          </div>
-          <div className="h-12 px-2.5 pt-[2px] pb-[5px]">
+          </section>
+
+          {/* search bar */}
+          <section className="h-12 px-2.5 pt-[2px] pb-[5px]">
             <div className="flex h-full w-full items-center justify-between rounded-l-lg rounded-r-xl bg-white pl-2">
               <div className="flex h-full flex-grow items-center">
                 Search Amazon
@@ -100,8 +105,17 @@ const Home: NextPage = () => {
                 />
               </div>
             </div>
-          </div>
-        </div>
+          </section>
+
+          {/* nav links bar */}
+          <section className="no-scrollbar flex h-11  items-center overflow-x-auto whitespace-nowrap pr-5">
+            <a className="ml-5 text-white">Best Sellers</a>
+            <a className="ml-5 text-white">Deals</a>
+            <a className="ml-5 text-white">Amazon Basics</a>
+            <a className="ml-5 text-white">Books</a>
+            <a className="ml-5 text-white">Computers & Accessories</a>
+          </section>
+        </nav>
       </main>
     </>
   );
