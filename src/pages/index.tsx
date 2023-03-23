@@ -116,6 +116,20 @@ const Home: NextPage = () => {
             <a className="ml-5 text-white">Computers & Accessories</a>
           </section>
         </nav>
+
+        {/* nav location bar */}
+        <section className="flex h-10 items-center bg-[#37475A] pl-5">
+          {
+            <Icon
+              name="location"
+              strokeWidth={1.5}
+              className="h-5 w-5 text-white"
+            />
+          }
+          <span className="ml-1 text-sm text-white">
+            Deliver to Seattle 98121
+          </span>
+        </section>
       </main>
     </>
   );
