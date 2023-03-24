@@ -9,6 +9,7 @@ import Icon from '~/components/Icon';
 import navLogo from 'public/amazon-logo.png';
 import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
+import { SyntheticEvent } from 'react';
 
 const emberFont = localFont({
   variable: '--font-ember',
@@ -39,6 +40,11 @@ const emberFont = localFont({
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: 'from tRPC' });
+  function goTop(event: SyntheticEvent) {
+    event.preventDefault();
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 
   return (
     <>
@@ -69,7 +75,7 @@ const Home: NextPage = () => {
               <Image
                 alt="amazon-logo"
                 priority
-                className="float-left mt-1.5 w-20"
+                className="mt-1.5 w-20"
                 src={navLogo}
               />
             </div>
@@ -129,6 +135,45 @@ const Home: NextPage = () => {
           <span className="ml-1 text-sm text-white">
             Deliver to Seattle 98121
           </span>
+        </section>
+
+        {/* dummy section to test scrollTop */}
+        <section>
+          <Image
+            alt="amazon-logo"
+            className="mt-1.5 h-screen border border-black"
+            src={navLogo}
+          />
+          <Image
+            alt="amazon-logo"
+            className="mt-1.5 h-screen border border-black"
+            src={navLogo}
+          />
+          <Image
+            alt="amazon-logo"
+            className="mt-1.5 h-screen border border-black"
+            src={navLogo}
+          />
+          <Image
+            alt="amazon-logo"
+            className="mt-1.5 h-screen border border-black"
+            src={navLogo}
+          />
+        </section>
+
+        {/* bottom nav */}
+        <section className="flex flex-col">
+          <a
+            className="flex h-12 flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
+            onClick={goTop}
+          >
+            <Icon
+              name="chevron_up"
+              strokeWidth={2.5}
+              className="h-4 w-4 text-white"
+            />
+            <span className="text-xs text-white">TOP OF PAGE</span>
+          </a>
         </section>
       </main>
     </>
