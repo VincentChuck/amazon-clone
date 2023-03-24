@@ -82,7 +82,7 @@ const Home: NextPage = () => {
       </Head>
       <main className={`${emberFont.variable} font-ember`}>
         {/* navbar container */}
-        <nav className="bg-[#232f3e]">
+        <nav className="bg-[#232f3e] text-white">
           {/* logo bar */}
           <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between">
             {/* logo bar left */}
@@ -90,7 +90,7 @@ const Home: NextPage = () => {
               <Icon
                 name="hamburger"
                 strokeWidth={1.5}
-                className="m-2 h-8 w-8 text-white"
+                className="m-2 h-8 w-8"
               />
               <Image
                 alt="amazon-logo"
@@ -102,12 +102,8 @@ const Home: NextPage = () => {
 
             {/* logo bar right */}
             <div className="flex w-auto items-center">
-              <div className="text-white">Sign in ›</div>
-              <Icon
-                name="user"
-                strokeWidth={2.5}
-                className="h-6 w-6 text-white"
-              />
+              <div>Sign in ›</div>
+              <Icon name="user" strokeWidth={2.5} className="h-6 w-6" />
               <div className="flex w-auto items-center justify-center px-2">
                 <Image alt="amazon-cart" className="w-10" src={cartIcon} />
                 <span className="text-md absolute -top-0 font-bold text-orange-300">
@@ -120,7 +116,7 @@ const Home: NextPage = () => {
           {/* search bar */}
           <section className="h-12 px-2.5 pt-[2px] pb-[5px]">
             <div className="flex h-full w-full items-center justify-between rounded-l-lg rounded-r-xl bg-white pl-2">
-              <div className="flex h-full flex-grow items-center">
+              <div className="flex h-full flex-grow items-center text-gray-900">
                 Search Amazon
               </div>
               <div className="flex h-full w-12 items-center justify-center rounded-lg bg-orange-300">
@@ -135,27 +131,19 @@ const Home: NextPage = () => {
 
           {/* nav links bar */}
           <section className="no-scrollbar flex h-11  items-center overflow-x-auto whitespace-nowrap pr-5">
-            <a className="ml-5 text-white">Best Sellers</a>
-            <a className="ml-5 text-white">Deals</a>
-            <a className="ml-5 text-white">Amazon Basics</a>
-            <a className="ml-5 text-white">Books</a>
-            <a className="ml-5 text-white">Computers & Accessories</a>
+            <a className="ml-5">Best Sellers</a>
+            <a className="ml-5">Deals</a>
+            <a className="ml-5">Amazon Basics</a>
+            <a className="ml-5">Books</a>
+            <a className="ml-5">Computers & Accessories</a>
+          </section>
+
+          {/* nav location bar */}
+          <section className="flex h-10 items-center bg-[#37475A] pl-5">
+            {<Icon name="location" strokeWidth={1.5} className="h-5 w-5" />}
+            <span className="ml-1 text-sm">Deliver to Seattle 98121</span>
           </section>
         </nav>
-
-        {/* nav location bar */}
-        <section className="flex h-10 items-center bg-[#37475A] pl-5">
-          {
-            <Icon
-              name="location"
-              strokeWidth={1.5}
-              className="h-5 w-5 text-white"
-            />
-          }
-          <span className="ml-1 text-sm text-white">
-            Deliver to Seattle 98121
-          </span>
-        </section>
 
         {/* dummy section to test scrollTop */}
         <section>
@@ -172,7 +160,7 @@ const Home: NextPage = () => {
         </section>
 
         {/* bottom nav */}
-        <section className="flex flex-col">
+        <section className=" flex flex-col text-white">
           <a
             className="flex h-12 flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
             onClick={goTop}
@@ -180,18 +168,49 @@ const Home: NextPage = () => {
             <Icon
               name="chevron_up"
               strokeWidth={2.5}
-              className="h-4 w-4 text-white"
+              className="h-4 w-4 sm:hidden"
             />
-            <span className="text-xs text-white">TOP OF PAGE</span>
+            <span className="text-xs sm:hidden">TOP OF PAGE</span>
+            <span className="hidden text-sm sm:flex">Back to top</span>
           </a>
 
-          <div className="flex items-center justify-center bg-[#232f3e] p-4">
-            <nav className="grid grid-flow-col grid-rows-2 gap-x-24 text-white sm:flex sm:items-center">
+          <div className="flex items-center justify-center bg-[#232f3e] p-4 sm:border-b sm:border-gray-600">
+            <nav className="grid grid-flow-col grid-rows-2 gap-x-24 sm:flex sm:items-center sm:justify-center sm:gap-12">
               <a className="my-1">Your orders</a>
               <a className="my-1">Your account</a>
               <a className="my-1">Browsing History</a>
               <a className="my-1">Your Cart</a>
             </nav>
+          </div>
+
+          <div className="flex h-44 flex-col items-center justify-around bg-[#0F1111] p-6 text-gray-300 sm:h-20 sm:flex-row sm:justify-center sm:gap-20 sm:bg-[#232f3e]">
+            <Image
+              alt="amazon-logo"
+              priority
+              className="mt-1.5 hidden w-20 sm:flex"
+              src={navLogo}
+            />
+            <div className="flex gap-8">
+              <div>
+                <Icon
+                  name="globe"
+                  strokeWidth={1.5}
+                  className="mr-1 inline h-5 w-5"
+                />
+                <span>English</span>
+              </div>
+              <span>🇺🇸 United States</span>
+            </div>
+            <div className="font-bold text-white sm:hidden">
+              <span>Already a customer? </span>
+              <a>Sign in</a>
+            </div>
+            <div className="text-xs sm:hidden">
+              © 1996-2023, Amazon.com, Inc. or its affiliates
+            </div>
+          </div>
+          <div className="hidden h-12 items-center justify-center bg-gray-900 text-xs sm:flex">
+            © 1996-2023, Amazon.com, Inc. or its affiliates
           </div>
         </section>
       </main>
