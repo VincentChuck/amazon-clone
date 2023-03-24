@@ -40,10 +40,30 @@ const emberFont = localFont({
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: 'from tRPC' });
+
   function goTop(event: SyntheticEvent) {
     event.preventDefault();
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    const duration = 300; // arbitrary number for smooth and noticeable animation
+    const initY = window.scrollY;
+
+    //ease in and ease out function
+    function timingFunc(t: number) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    let startTime: number;
+
+    const step = (timeStamp: number) => {
+      startTime = startTime || timeStamp;
+      const progress = Math.min(1, (timeStamp - startTime) / duration); // in percentage
+
+      window.scrollTo(0, initY - timingFunc(progress) * initY);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
   }
 
   return (
@@ -62,7 +82,7 @@ const Home: NextPage = () => {
       </Head>
       <main className={`${emberFont.variable} font-ember`}>
         {/* navbar container */}
-        <nav className=" bg-[#232f3e]">
+        <nav className="bg-[#232f3e]">
           {/* logo bar */}
           <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between">
             {/* logo bar left */}
@@ -149,16 +169,6 @@ const Home: NextPage = () => {
             className="mt-1.5 h-screen border border-black"
             src={navLogo}
           />
-          <Image
-            alt="amazon-logo"
-            className="mt-1.5 h-screen border border-black"
-            src={navLogo}
-          />
-          <Image
-            alt="amazon-logo"
-            className="mt-1.5 h-screen border border-black"
-            src={navLogo}
-          />
         </section>
 
         {/* bottom nav */}
@@ -174,6 +184,15 @@ const Home: NextPage = () => {
             />
             <span className="text-xs text-white">TOP OF PAGE</span>
           </a>
+
+          <div className="flex items-center justify-center bg-[#232f3e] p-4">
+            <nav className="grid grid-flow-col grid-rows-2 gap-x-24 text-white sm:flex sm:items-center">
+              <a className="my-1">Your orders</a>
+              <a className="my-1">Your account</a>
+              <a className="my-1">Browsing History</a>
+              <a className="my-1">Your Cart</a>
+            </nav>
+          </div>
         </section>
       </main>
     </>
