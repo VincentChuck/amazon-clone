@@ -97,13 +97,13 @@ function Layout({ children }: Props) {
               <Image
                 alt="amazon-logo"
                 priority
-                className="mt-1.5 w-20 sm:w-24"
+                className="mt-1.5 ml-2 w-20 sm:w-24"
                 src={navLogo}
               />
             </div>
 
-            {/* logo bar centre */}
-            <div className="mx-2 hidden h-full w-full items-center gap-2 py-3 sm:flex">
+            {/* logo bar centre for larger screen */}
+            <div className="mx-4 hidden h-full w-full items-center gap-4 py-3 sm:flex">
               {/* deliver to */}
               <div className="flex items-end">
                 <Icon name="location" strokeWidth={1.5} className="h-6 w-6" />
@@ -126,16 +126,39 @@ function Layout({ children }: Props) {
                   />
                 </div>
               </div>
-              <span className="ml-2 whitespace-nowrap font-bold">🇺🇸 EN</span>
+              <div className="ml-2 flex items-center whitespace-nowrap font-bold">
+                <span>🇺🇸 EN</span>
+                <Icon
+                  name="chevron_down"
+                  strokeWidth={2.5}
+                  className="ml-1 h-3 w-3 text-gray-300"
+                />
+              </div>
             </div>
 
             {/* logo bar right */}
             <div className="ml-2 flex w-auto flex-shrink-0 items-center whitespace-nowrap">
-              <div>Sign in ›</div>
-              <Icon name="user" strokeWidth={2.5} className="h-6 w-6" />
-              <div className="ml-2 flex w-auto items-center justify-center">
+              {/* mobile login button */}
+              <div className="flex items-center sm:hidden">
+                <div>Sign in ›</div>
+                <Icon name="user" strokeWidth={2.5} className="h-6 w-6" />
+              </div>
+
+              {/* larger screen login button */}
+              <div className="hidden flex-col items-start sm:flex ">
+                <span className="text-xs">Hello, sign in</span>
+                <div className="flex items-center">
+                  <span className="text-sm font-bold">Account & Orders</span>
+                  <Icon
+                    name="chevron_down"
+                    strokeWidth={2.5}
+                    className="ml-1 h-3 w-3 text-gray-300"
+                  />
+                </div>
+              </div>
+              <div className="ml-4 flex w-auto items-center justify-center">
                 <Image alt="amazon-cart" className="w-10" src={cartIcon} />
-                <span className="text-md absolute -top-0 font-bold text-orange-300">
+                <span className="text-md absolute -top-0 font-bold text-orange-300 sm:top-2">
                   99
                 </span>
               </div>
@@ -202,6 +225,7 @@ function Layout({ children }: Props) {
             <span className="hidden text-sm sm:flex">Back to top</span>
           </a>
 
+          {/* bottom links */}
           <div className="flex items-center justify-center bg-slate-800 p-4 sm:border-b sm:border-gray-600">
             <nav className="grid grid-flow-col grid-rows-2 gap-x-24 sm:flex sm:items-center sm:justify-center sm:gap-12">
               <a className="my-1">Your orders</a>
@@ -211,6 +235,7 @@ function Layout({ children }: Props) {
             </nav>
           </div>
 
+          {/* bottom region and language selection */}
           <div className="flex h-44 flex-col items-center justify-around bg-[#0F1111] p-6 text-gray-300 sm:h-20 sm:flex-row sm:justify-center sm:gap-20 sm:bg-slate-800">
             <Image
               alt="amazon-logo"
@@ -237,6 +262,8 @@ function Layout({ children }: Props) {
               © 1996-2023, Amazon.com, Inc. or its affiliates
             </div>
           </div>
+
+          {/* bottom copyright notice */}
           <div className="hidden h-12 items-center justify-center bg-gray-900 text-xs sm:flex">
             © 1996-2023, Amazon.com, Inc. or its affiliates
           </div>
