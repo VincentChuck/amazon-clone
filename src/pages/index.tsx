@@ -2,7 +2,6 @@ import { type NextPage } from 'next';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
 import Image from 'next/image';
-import Layout from '~/components/Layout';
 
 import navLogo from 'public/amazon-logo.png';
 
@@ -10,21 +9,19 @@ const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: 'from tRPC' });
 
   return (
-    <Layout>
+    <div>
       {/* dummy section to test scrollTop */}
-      <section>
-        <Image
-          alt="amazon-logo"
-          className="mt-1.5 h-screen border border-black"
-          src={navLogo}
-        />
-        <Image
-          alt="amazon-logo"
-          className="mt-1.5 h-screen border border-black"
-          src={navLogo}
-        />
-      </section>
-    </Layout>
+      <Image
+        alt="amazon-logo"
+        className="mt-1.5 h-screen border border-black"
+        src={navLogo}
+      />
+      <Image
+        alt="amazon-logo"
+        className="mt-1.5 h-screen border border-black"
+        src={navLogo}
+      />
+    </div>
   );
 };
 
