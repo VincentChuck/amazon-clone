@@ -27,7 +27,7 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? 
+    refresh_token     String?
     access_token      String?
     expires_at        Int?
     token_type        String?
@@ -65,9 +65,37 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model ProductCategory {
+    id              String           @id @default(cuid())
+    parentCategory  ProductCategory? @relation("SubCategory")
+    childCategory   ProductCategory? @relation("SubCategory", fields: [childCategoryId], references: [id])
+    childCategoryId String           @unique
+    categoryName    String
+    products        Product[]
+}
+
 model Product {
-    id String @id @default(cuid())
-    name String
-    description String
-    price  Decimal @db.Money
+    id           String          @id @default(cuid())
+    name         String
+    description  String
+    category     ProductCategory @relation(fields: [categoryId], references: [id])
+    categoryId   String
+    productItems ProductItem[]
+}
+
+model ProductItem {
+    id              String           @id @default(cuid())
+    product         Product          @relation(fields: [productId], references: [id])
+    productId       String
+    SKU             String           @unique
+    quantityInStock Int
+    price           Decimal          @db.Money
+    variation       ProductVariation @relation(fields: [variationId], references: [id])
+    variationId     String           @unique
+}
+
+model ProductVariation {
+    id              String       @id @default(cuid())
+    variationOption String
+    ProductItem     ProductItem?
 }
