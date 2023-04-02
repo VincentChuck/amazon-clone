@@ -22,6 +22,7 @@ specifiers:
   next-auth: ^4.20.1
   postcss: ^8.4.21
   prettier: ^2.8.7
+  prettier-plugin-prisma: ^4.12.0
   prettier-plugin-tailwindcss: ^0.2.6
   prisma: ^4.12.0
   react: 18.2.0
@@ -59,6 +60,7 @@ devDependencies:
   eslint-config-next: 13.2.4_bcnce6t2n5ss3lv2getliffzhq
   postcss: 8.4.21
   prettier: 2.8.7
+  prettier-plugin-prisma: 4.12.0_prettier@2.8.7
   prettier-plugin-tailwindcss: 0.2.6_prettier@2.8.7
   prisma: 4.12.0
   tailwindcss: 3.3.0
@@ -324,6 +326,10 @@ packages:
   /@prisma/engines/4.12.0:
     resolution: {integrity: sha512-0alKtnxhNB5hYU+ymESBlGI4b9XrGGSdv7Ud+8TE/fBNOEhIud0XQsAR+TrvUZgS4na5czubiMsODw0TUrgkIA==}
     requiresBuild: true
+
+  /@prisma/prisma-fmt-wasm/4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7:
+    resolution: {integrity: sha512-jh9ajkGl3Lw9uTKEwlNBSh79a1v6C1JducqxakgkQyLev6kG1xxkuc2rDGrIDxUdpCOuuPRjuSCHhjnv7qLLgQ==}
+    dev: true
 
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
@@ -2352,6 +2358,16 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier-plugin-prisma/4.12.0_prettier@2.8.7:
+    resolution: {integrity: sha512-5wb4B+9UfJEwp+e5amuOINh23yCjjaEUXDrIzbvFWFHUx2SmbVHdyd9VsRo9VNP34gqVdLBaltyTXV5NCAaAUA==}
+    engines: {node: '>=14', npm: '>=8'}
+    peerDependencies:
+      prettier: '>=2'
+    dependencies:
+      '@prisma/prisma-fmt-wasm': 4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7
+      prettier: 2.8.7
     dev: true
 
   /prettier-plugin-tailwindcss/0.2.6_prettier@2.8.7:
