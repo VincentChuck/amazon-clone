@@ -69,9 +69,10 @@ model ProductCategory {
   id              String           @id @default(cuid())
   parentCategory  ProductCategory? @relation("SubCategory")
   childCategory   ProductCategory? @relation("SubCategory", fields: [childCategoryId], references: [id])
-  childCategoryId String           @unique
+  childCategoryId String?          @unique
   categoryName    String
   products        Product[]
+  Variation       Variation[]
 }
 
 model Product {
@@ -84,18 +85,36 @@ model Product {
 }
 
 model ProductItem {
-  id              String           @id @default(cuid())
-  product         Product          @relation(fields: [productId], references: [id])
+  id              String                 @id @default(cuid())
+  product         Product                @relation(fields: [productId], references: [id])
   productId       String
-  SKU             String           @unique
+  SKU             String                 @unique
   quantityInStock Int
-  price           Decimal          @db.Money
-  variation       ProductVariation @relation(fields: [variationId], references: [id])
-  variationId     String           @unique
+  price           Decimal                @db.Money
+  configuration   ProductConfiguration[]
 }
 
-model ProductVariation {
-  id              String       @id @default(cuid())
-  variationOption String
-  ProductItem     ProductItem?
+model ProductConfiguration {
+  productItem       ProductItem     @relation(fields: [productItemId], references: [id])
+  productItemId     String
+  variationOption   VariationOption @relation(fields: [variationOptionId], references: [id])
+  variationOptionId String
+
+  @@id([productItemId, variationOptionId])
+}
+
+model VariationOption {
+  id                   String                 @id @default(cuid())
+  productConfiguration ProductConfiguration[]
+  value                String                 @unique
+  variation            Variation              @relation(fields: [variationId], references: [id])
+  variationId          String
+}
+
+model Variation {
+  id                String            @id @default(cuid())
+  variationName     String            @unique
+  variationOptions  VariationOption[]
+  ProductCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String
 }
