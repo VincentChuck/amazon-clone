@@ -66,13 +66,13 @@ model VerificationToken {
 }
 
 model ProductCategory {
-  id              String           @id @default(cuid())
-  parentCategory  ProductCategory? @relation("SubCategory")
-  childCategory   ProductCategory? @relation("SubCategory", fields: [childCategoryId], references: [id])
-  childCategoryId String?          @unique
-  categoryName    String
-  products        Product[]
-  Variation       Variation[]
+  id               Int               @id @default(autoincrement())
+  parentCategory   ProductCategory?  @relation("SubCategory", fields: [parentCategoryId], references: [id])
+  parentCategoryId Int?
+  childCategory    ProductCategory[] @relation("SubCategory")
+  categoryName     String            @unique
+  products         Product[]
+  Variation        Variation[]
 }
 
 model Product {
@@ -80,7 +80,7 @@ model Product {
   name         String
   description  String
   category     ProductCategory @relation(fields: [categoryId], references: [id])
-  categoryId   String
+  categoryId   Int
   productItems ProductItem[]
 }
 
@@ -116,5 +116,5 @@ model Variation {
   variationName     String            @unique
   variationOptions  VariationOption[]
   ProductCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
-  productCategoryId String
+  productCategoryId Int
 }
