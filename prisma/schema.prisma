@@ -72,7 +72,7 @@ model ProductCategory {
   childCategory    ProductCategory[] @relation("SubCategory")
   categoryName     String            @unique
   products         Product[]
-  Variation        Variation[]
+  variations       Variation[]
 }
 
 model Product {
@@ -85,36 +85,25 @@ model Product {
 }
 
 model ProductItem {
-  id              String                 @id @default(cuid())
-  product         Product                @relation(fields: [productId], references: [id])
-  productId       String
-  SKU             String                 @unique
-  quantityInStock Int
-  price           Decimal                @db.Money
-  configuration   ProductConfiguration[]
-}
-
-model ProductConfiguration {
-  productItem       ProductItem     @relation(fields: [productItemId], references: [id])
-  productItemId     String
-  variationOption   VariationOption @relation(fields: [variationOptionId], references: [id])
-  variationOptionId String
-
-  @@id([productItemId, variationOptionId])
+  id               String            @id @default(cuid())
+  product          Product           @relation(fields: [productId], references: [id])
+  productId        String
+  SKU              String            @unique
+  quantityInStock  Int
+  price            Decimal           @db.Money
+  variationOptions VariationOption[]
 }
 
 model VariationOption {
-  id                   String                 @id @default(cuid())
-  productConfiguration ProductConfiguration[]
-  value                String                 @unique
-  variation            Variation              @relation(fields: [variationId], references: [id])
-  variationId          String
+  id           String        @id @default(cuid())
+  productItems ProductItem[]
+  value        String
+  variations   Variation[]
 }
 
 model Variation {
   id                String            @id @default(cuid())
-  variationName     String            @unique
+  variationName     String
   variationOptions  VariationOption[]
-  ProductCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
-  productCategoryId Int
+  ProductCategories ProductCategory[]
 }
