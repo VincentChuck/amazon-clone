@@ -1,59 +1,89 @@
-import { PrismaClient, type ProductItem } from '@prisma/client';
-import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-async function main() {
-  const booksCatName = ['Self-Help', 'History'];
-  const booksCategory = {
-    categoryName: 'Books',
-    childCategory: {
-      create: [
-        ...[...booksCatName].map((name) => {
-          return {
-            categoryName: name,
-            variations: {
-              create: {
-                variationName: 'Formats',
-                variationOptions: {
-                  create: [
-                    { value: 'Kindle' },
-                    { value: 'Audiobook' },
-                    { value: 'Hardcover' },
-                    { value: 'Paperback' },
-                  ],
-                },
-              },
-            },
-          };
-        }),
-      ],
-    },
-  };
 
-  const books = await prisma.productCategory.upsert({
-    where: { categoryName: 'Books' },
-    update: {},
-    create: booksCategory,
+async function seed() {
+  await prisma.productItem.deleteMany();
+  await prisma.variation.deleteMany();
+  await prisma.variationOption.deleteMany();
+  await prisma.productCategory.deleteMany();
+  await prisma.product.deleteMany();
+
+  // Create the root category
+  const booksCategory = await prisma.productCategory.create({
+    data: {
+      categoryName: 'Books',
+    },
   });
 
-  // function randomBook(): ProductItem {
-  //   const name = `The ${faker.word.noun()} of ${faker.word.noun()}`;
-  //   const description = faker.lorem.paragraphs(2);
-  //   const category = Math.floor(Math.random() * booksCatName.length);
-  //   return {
-  //     name,
-  //     description,
-  //     category,
-  //     productItems: {
-  //       create: {},
-  //     },
-  //   };
-  // }
+  // Create the child categories
+  const selfHelpCategory = await prisma.productCategory.create({
+    data: {
+      categoryName: 'Self-help',
+      parentCategoryId: booksCategory.id,
+    },
+  });
 
-  console.log({ books });
+  const historyCategory = await prisma.productCategory.create({
+    data: {
+      categoryName: 'History',
+      parentCategoryId: booksCategory.id,
+    },
+  });
+
+  // Create the product
+  const subtleArtProduct = await prisma.product.create({
+    data: {
+      name: 'The Subtle Art of Not Giving a F*ck',
+      description: 'A counterintuitive approach to living a good life',
+      category: { connect: { id: selfHelpCategory.id } },
+    },
+  });
+
+  // Create the variation
+  const formatVariation = await prisma.variation.create({
+    data: {
+      variationName: 'Format',
+      ProductCategories: {
+        connect: [{ id: selfHelpCategory.id }, { id: historyCategory.id }],
+      },
+      variationOptions: {
+        create: [
+          { value: 'Kindle' },
+          { value: 'Audiobook' },
+          { value: 'Hardcover' },
+          { value: 'Paperback' },
+        ],
+      },
+    },
+    include: {
+      variationOptions: true,
+    },
+  });
+
+  // Create the product items with the variation options
+  const productItems = await Promise.all(
+    formatVariation.variationOptions.map(async (option) => {
+      const productItem = await prisma.productItem.create({
+        data: {
+          product: { connect: { id: subtleArtProduct.id } },
+          SKU: `SUBTLE-${option.value}`,
+          quantityInStock: 100,
+          price: 19.99,
+          variationOptions: {
+            connect: { id: option.id },
+          },
+        },
+      });
+      return productItem;
+    })
+  );
+
+  console.log(productItems);
+  console.log('Seed complete!');
 }
 
-main()
+seed()
   .then(async () => {
     await prisma.$disconnect();
   })

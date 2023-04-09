@@ -88,7 +88,7 @@ model ProductItem {
   id               String            @id @default(cuid())
   product          Product           @relation(fields: [productId], references: [id])
   productId        String
-  SKU              String            @unique
+  SKU              String            @unique @default(cuid())
   quantityInStock  Int
   price            Decimal           @db.Money
   variationOptions VariationOption[]
@@ -97,13 +97,13 @@ model ProductItem {
 model VariationOption {
   id           String        @id @default(cuid())
   productItems ProductItem[]
-  value        String
+  value        String        @unique
   variations   Variation[]
 }
 
 model Variation {
   id                String            @id @default(cuid())
-  variationName     String
+  variationName     String            @unique
   variationOptions  VariationOption[]
   ProductCategories ProductCategory[]
 }
