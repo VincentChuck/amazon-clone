@@ -1,13 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type Product } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  await prisma.productItem.deleteMany();
-  await prisma.variation.deleteMany();
-  await prisma.variationOption.deleteMany();
-  await prisma.productCategory.deleteMany();
-  await prisma.product.deleteMany();
+  const deleteProductItem = prisma.productItem.deleteMany();
+  const deleteVariation = prisma.variation.deleteMany();
+  const deleteVariationOption = prisma.variationOption.deleteMany();
+  const deleteProduct = prisma.product.deleteMany();
+  const deleteProductCategory = prisma.productCategory.deleteMany();
+
+  await prisma.$transaction([
+    deleteProductItem,
+    deleteVariation,
+    deleteVariationOption,
+    deleteProduct,
+    deleteProductCategory,
+  ]);
 
   // Create the root category
   const booksCategory = await prisma.productCategory.create({
@@ -31,6 +39,44 @@ async function seed() {
     },
   });
 
+  function formatPrice(format: string): number {
+    switch (format) {
+      case 'Kindle':
+        return 0;
+      case 'Paperback':
+        return 10;
+      case 'Hardcover':
+        return 25;
+      default:
+        return 0;
+    }
+  }
+
+  // Create the variation
+  const formatVariation = await prisma.variation.create({
+    data: {
+      variationName: 'Format',
+      ProductCategories: {
+        connect: [{ id: selfHelpCategory.id }, { id: historyCategory.id }],
+      },
+    },
+  });
+
+  // Create the variation options
+  const formatOptions = await Promise.all(
+    ['Kindle', 'Hardcover', 'Paperback'].map(async (option) => {
+      const formatOption = await prisma.variationOption.create({
+        data: {
+          value: option,
+          variations: {
+            connect: { id: formatVariation.id },
+          },
+        },
+      });
+      return formatOption;
+    })
+  );
+
   // Create the product
   const subtleArtProduct = await prisma.product.create({
     data: {
@@ -40,46 +86,40 @@ async function seed() {
     },
   });
 
-  // Create the variation
-  const formatVariation = await prisma.variation.create({
+  const sapiensProduct = await prisma.product.create({
     data: {
-      variationName: 'Format',
-      ProductCategories: {
-        connect: [{ id: selfHelpCategory.id }, { id: historyCategory.id }],
-      },
-      variationOptions: {
-        create: [
-          { value: 'Kindle' },
-          { value: 'Audiobook' },
-          { value: 'Hardcover' },
-          { value: 'Paperback' },
-        ],
-      },
-    },
-    include: {
-      variationOptions: true,
+      name: 'Sapiens',
+      description: 'A Brief History of Humankind',
+      category: { connect: { id: historyCategory.id } },
     },
   });
 
   // Create the product items with the variation options
-  const productItems = await Promise.all(
-    formatVariation.variationOptions.map(async (option) => {
-      const productItem = await prisma.productItem.create({
-        data: {
-          product: { connect: { id: subtleArtProduct.id } },
-          SKU: `SUBTLE-${option.value}`,
-          quantityInStock: 100,
-          price: 19.99,
-          variationOptions: {
-            connect: { id: option.id },
+  function createProductItem(name: string, product: Product) {
+    return Promise.all(
+      formatOptions.map(async (option) => {
+        const productItem = await prisma.productItem.create({
+          data: {
+            product: { connect: { id: product.id } },
+            SKU: `${name.toUpperCase()}-${option.value}`,
+            quantityInStock: Math.floor(Math.random() * 1000),
+            price:
+              Math.floor(Math.random() * 3) + 4.99 + formatPrice(option.value),
+            variationOptions: {
+              connect: { id: option.id },
+            },
           },
-        },
-      });
-      return productItem;
-    })
-  );
+        });
+        return productItem;
+      })
+    );
+  }
 
-  console.log(productItems);
+  const subtleArtItems = await createProductItem('Subtle', subtleArtProduct);
+  const sapiensItems = await createProductItem('Sapiens', sapiensProduct);
+
+  console.log(subtleArtItems);
+  console.log(sapiensItems);
   console.log('Seed complete!');
 }
 
