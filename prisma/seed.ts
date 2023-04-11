@@ -39,16 +39,16 @@ async function seed() {
     },
   });
 
-  function formatPrice(format: string): number {
+  function formatPrice(basePrice: number, format: string): number {
     switch (format) {
       case 'Kindle':
-        return 0;
+        return basePrice + 0;
       case 'Paperback':
-        return 10;
+        return basePrice + 10;
       case 'Hardcover':
-        return 25;
+        return basePrice + 25;
       default:
-        return 0;
+        return basePrice;
     }
   }
 
@@ -96,6 +96,7 @@ async function seed() {
 
   // Create the product items with the variation options
   function createProductItem(name: string, product: Product) {
+    const basePrice = Math.floor(Math.random() * 5) + 1.99;
     return Promise.all(
       formatOptions.map(async (option) => {
         const productItem = await prisma.productItem.create({
@@ -103,8 +104,7 @@ async function seed() {
             product: { connect: { id: product.id } },
             SKU: `${name.toUpperCase()}-${option.value}`,
             quantityInStock: Math.floor(Math.random() * 1000),
-            price:
-              Math.floor(Math.random() * 3) + 4.99 + formatPrice(option.value),
+            price: formatPrice(basePrice, option.value),
             variationOptions: {
               connect: { id: option.id },
             },
