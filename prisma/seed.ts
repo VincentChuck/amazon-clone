@@ -39,19 +39,6 @@ async function seed() {
     },
   });
 
-  function formatPrice(basePrice: number, format: string): number {
-    switch (format) {
-      case 'Kindle':
-        return basePrice + 0;
-      case 'Paperback':
-        return basePrice + 10;
-      case 'Hardcover':
-        return basePrice + 25;
-      default:
-        return basePrice;
-    }
-  }
-
   // Create the variation
   const formatVariation = await prisma.variation.create({
     data: {
@@ -83,6 +70,7 @@ async function seed() {
       name: 'The Subtle Art of Not Giving a F*ck',
       description: 'A counterintuitive approach to living a good life',
       category: { connect: { id: selfHelpCategory.id } },
+      productImage: '/product_images/subtle-art.jpg',
     },
   });
 
@@ -91,8 +79,22 @@ async function seed() {
       name: 'Sapiens',
       description: 'A Brief History of Humankind',
       category: { connect: { id: historyCategory.id } },
+      productImage: '/product_images/sapiens.jpg',
     },
   });
+
+  function formatPrice(basePrice: number, format: string): number {
+    switch (format) {
+      case 'Kindle':
+        return basePrice + 0;
+      case 'Paperback':
+        return basePrice + 10;
+      case 'Hardcover':
+        return basePrice + 25;
+      default:
+        return basePrice;
+    }
+  }
 
   // Create the product items with the variation options
   function createProductItem(name: string, product: Product) {
@@ -118,8 +120,8 @@ async function seed() {
   const subtleArtItems = await createProductItem('Subtle', subtleArtProduct);
   const sapiensItems = await createProductItem('Sapiens', sapiensProduct);
 
-  console.log(subtleArtItems);
-  console.log(sapiensItems);
+  console.log('subtle', subtleArtProduct, subtleArtItems);
+  console.log('sapiens', sapiensProduct, sapiensItems);
   console.log('Seed complete!');
 }
 

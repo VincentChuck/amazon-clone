@@ -15,13 +15,21 @@ export const productRouter = createTRPCRouter({
         },
       },
     });
-    return products.map(({ id, name, productItems }) => {
-      // get the cheapest product item
-      const { price, variationOptions } = productItems.reduce((prev, curr) => {
+
+    return products.map(({ id, name, productImage, productItems }) => {
+      const cheapestItem = productItems.reduce((prev, curr) => {
         return prev.price.gt(curr.price) ? curr : prev;
       });
+      const { price, variationOptions } = cheapestItem;
       const option = variationOptions[0]?.value || '';
-      return { id, name, price: price.toNumber(), option };
+      const product = {
+        id,
+        name,
+        productImage,
+        price: price.toNumber(),
+        option,
+      };
+      return product;
     });
   }),
 });
