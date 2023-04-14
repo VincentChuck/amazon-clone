@@ -1,21 +1,12 @@
 import { type NextPage } from 'next';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { api } from '~/utils/api';
-import Image from 'next/image';
-
-import navLogo from 'public/amazon-logo.png';
 import ProductList from '~/components/ProductList';
+// import { signIn, signOut, useSession } from 'next-auth/react';
+// import { api } from '~/utils/api';
 
 const Home: NextPage = () => {
   return (
     <div>
       <ProductList />
-      {/* dummy section to test scrollTop */}
-      <Image
-        alt="amazon-logo"
-        className="mt-1.5 h-screen border border-black"
-        src={navLogo}
-      />
     </div>
   );
 };

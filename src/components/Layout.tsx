@@ -82,7 +82,9 @@ function Layout({ children }: Props) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${emberFont.variable} font-ember`}>
+      <main
+        className={`${emberFont.variable} flex min-h-screen flex-col font-ember`}
+      >
         {/* navbar container */}
         <section className="bg-slate-800 text-white md:bg-slate-900">
           {/* logo bar */}
@@ -97,7 +99,7 @@ function Layout({ children }: Props) {
               <Image
                 alt="amazon-logo"
                 priority
-                className="mt-1.5 ml-2 w-20 md:w-24"
+                className="ml-2 mt-1.5 w-20 md:w-24"
                 src={navLogo}
               />
             </div>
@@ -169,7 +171,7 @@ function Layout({ children }: Props) {
           </section>
 
           {/* search bar */}
-          <section className="h-12 px-2.5 pt-[2px] pb-[5px] md:hidden">
+          <section className="h-12 px-2.5 pb-[5px] pt-[2px] md:hidden">
             <div className="flex h-full w-full items-center justify-between rounded-l-lg rounded-r-xl bg-white pl-2">
               <div className="flex h-full flex-grow items-center text-gray-900">
                 Search Amazon
@@ -208,10 +210,10 @@ function Layout({ children }: Props) {
           </section>
         </section>
 
-        {children}
+        <div className="flex-grow">{children}</div>
 
         {/* bottom nav */}
-        <section className=" flex flex-col text-white">
+        <section className="flex flex-col text-white">
           <a
             className="flex h-12 flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
             onClick={goTop}
