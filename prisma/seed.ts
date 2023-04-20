@@ -120,6 +120,7 @@ async function seed() {
   const subtleArtItems = await createProductItem('Subtle', subtleArtProduct);
   const sapiensItems = await createProductItem('Sapiens', sapiensProduct);
 
+  console.log(booksCategory);
   console.log('subtle', subtleArtProduct, subtleArtItems);
   console.log('sapiens', sapiensProduct, sapiensItems);
   console.log('Seed complete!');
