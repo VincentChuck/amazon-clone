@@ -1,4 +1,6 @@
-import { PrismaClient, type Product } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
+import type { Product } from '@prisma/client';
+import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 
@@ -25,63 +27,80 @@ async function seed() {
   });
 
   // Create the child categories
-  const selfHelpCategory = await prisma.productCategory.create({
-    data: {
-      categoryName: 'Self-help',
-      parentCategoryId: booksCategory.id,
-    },
-  });
+  const booksCatMap = new Map<string, number>();
+  for (const cat of bookSubCategories) {
+    const catObject = await prisma.productCategory.create({
+      data: {
+        categoryName: cat,
+        parentCategoryId: booksCategory.id,
+      },
+    });
+    booksCatMap.set(cat, catObject.id);
+  }
 
-  const historyCategory = await prisma.productCategory.create({
-    data: {
-      categoryName: 'History',
-      parentCategoryId: booksCategory.id,
-    },
-  });
+  const booksCatIdArr = Array.from(booksCatMap, ([_, value]) => value);
 
-  // Create the variation
-  const formatVariation = await prisma.variation.create({
+  // Create the variation and options
+  await prisma.variation.create({
     data: {
       variationName: 'Format',
+      variationOptions: {
+        create: [
+          { value: 'Kindle' },
+          { value: 'Hardcover' },
+          { value: 'Paperback' },
+        ],
+      },
       ProductCategories: {
-        connect: [{ id: selfHelpCategory.id }, { id: historyCategory.id }],
+        connect: booksCatIdArr.map((id) => {
+          return { id };
+        }),
       },
     },
   });
 
-  // Create the variation options
-  const formatOptions = await Promise.all(
-    ['Kindle', 'Hardcover', 'Paperback'].map(async (option) => {
-      const formatOption = await prisma.variationOption.create({
-        data: {
-          value: option,
-          variations: {
-            connect: { id: formatVariation.id },
-          },
+  // Create the products
+  for (let i = 0; i < 1000; i++) {
+    const randomBooksCat = faker.helpers.arrayElement(booksCatIdArr);
+    const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
+
+    const product: Omit<Product, 'id'> = {
+      name: randomBookName,
+      description: faker.commerce.productDescription(),
+      categoryId: randomBooksCat,
+      productImage: faker.helpers.arrayElement([
+        '/product_images/sapiens.jpg',
+        '/product_images/subtle-art.jpg',
+        '/product_images/atomic-habits.jpg',
+      ]),
+    };
+
+    const basePrice = Math.floor(Math.random() * 5) + 1.99;
+
+    class ProductItem {
+      SKU: string;
+      quantityInStock: number;
+      price: Prisma.Decimal;
+      constructor(option: string) {
+        this.SKU = `${randomBookName.toUpperCase()}-${option}`;
+        this.quantityInStock = Math.floor(Math.random() * 1000);
+        this.price = new Prisma.Decimal(formatPrice(basePrice, option));
+      }
+    }
+
+    await prisma.product.create({
+      data: {
+        ...product,
+        productItems: {
+          create: [
+            new ProductItem('Kindle'),
+            new ProductItem('Hardcover'),
+            new ProductItem('Paperback'),
+          ],
         },
-      });
-      return formatOption;
-    })
-  );
-
-  // Create the product
-  const subtleArtProduct = await prisma.product.create({
-    data: {
-      name: 'The Subtle Art of Not Giving a F*ck',
-      description: 'A counterintuitive approach to living a good life',
-      category: { connect: { id: selfHelpCategory.id } },
-      productImage: '/product_images/subtle-art.jpg',
-    },
-  });
-
-  const sapiensProduct = await prisma.product.create({
-    data: {
-      name: 'Sapiens',
-      description: 'A Brief History of Humankind',
-      category: { connect: { id: historyCategory.id } },
-      productImage: '/product_images/sapiens.jpg',
-    },
-  });
+      },
+    });
+  }
 
   function formatPrice(basePrice: number, format: string): number {
     switch (format) {
@@ -96,33 +115,7 @@ async function seed() {
     }
   }
 
-  // Create the product items with the variation options
-  function createProductItem(name: string, product: Product) {
-    const basePrice = Math.floor(Math.random() * 5) + 1.99;
-    return Promise.all(
-      formatOptions.map(async (option) => {
-        const productItem = await prisma.productItem.create({
-          data: {
-            product: { connect: { id: product.id } },
-            SKU: `${name.toUpperCase()}-${option.value}`,
-            quantityInStock: Math.floor(Math.random() * 1000),
-            price: formatPrice(basePrice, option.value),
-            variationOptions: {
-              connect: { id: option.id },
-            },
-          },
-        });
-        return productItem;
-      })
-    );
-  }
-
-  const subtleArtItems = await createProductItem('Subtle', subtleArtProduct);
-  const sapiensItems = await createProductItem('Sapiens', sapiensProduct);
-
   console.log(booksCategory);
-  console.log('subtle', subtleArtProduct, subtleArtItems);
-  console.log('sapiens', sapiensProduct, sapiensItems);
   console.log('Seed complete!');
 }
 
@@ -135,3 +128,38 @@ seed()
     await prisma.$disconnect();
     process.exit(1);
   });
+
+const bookSubCategories = [
+  'Arts & Photography',
+  'Biographies & Memoirs',
+  'Business & Money',
+  'Calendars',
+  "Children's Books",
+  'Christian Books & Bibles',
+  'Comics & Graphic Novels',
+  'Computers & Technology',
+  'Cookbooks, Food & Wine',
+  'Crafts, Hobbies & Home',
+  'Education & Teaching',
+  'Engineering & Transportation',
+  'Health, Fitness & Dieting',
+  'History',
+  'Humor & Entertainment',
+  'Law',
+  'LGBTQ+ Books',
+  'Literature & Fiction',
+  'Medical Books',
+  'Mystery, Thriller & Suspense',
+  'Parenting & Relationships',
+  'Politics & Social Sciences',
+  'Reference',
+  'Religion & Spirituality',
+  'Romance',
+  'Science & Math',
+  'Science Fiction & Fantasy',
+  'Self-Help',
+  'Sports & Outdoors',
+  'Teen & Young Adult',
+  'Test Preparation',
+  'Travel',
+];

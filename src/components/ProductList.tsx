@@ -16,7 +16,7 @@ export default function ProductList() {
           {mergedCategoryTrees?.map((categoryTree) => {
             return (
               <li key={categoryTree.id}>
-                <span>{categoryTree.name}</span>
+                <span className="font-bold">{categoryTree.name}</span>
                 <ul>
                   {categoryTree.children &&
                     categoryTree.children.map((category) => {
