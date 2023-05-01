@@ -1,27 +1,30 @@
+import type { listedProducts, listedCategories } from '~/types';
 import Image from 'next/image';
-import { api } from '~/utils/api';
 
-export default function ProductList() {
-  const { data, isLoading, isError } = api.product.all.useQuery();
-  if (isLoading) return <div>Loading products 🔄</div>;
-  if (isError) return <div>Error fetching products ❌</div>;
+type ProductsProps = {
+  products: listedProducts;
+  mergedCategoryTrees: listedCategories;
+};
 
-  const { products, mergedCategoryTrees } = data;
-
+export default function ProductList({
+  products,
+  mergedCategoryTrees,
+}: ProductsProps) {
   return (
     <div className="flex justify-center">
-      <div className="mr-20 flex w-1/12 flex-col outline">
-        <span className="font-bold">Department</span>
+      {/* results filter */}
+      <section className="mr-20 hidden w-auto flex-col outline md:flex">
+        <span className=" font-bold">Department</span>
         <ul>
           {mergedCategoryTrees?.map((categoryTree) => {
             return (
               <li key={categoryTree.id}>
-                <span className="font-bold">{categoryTree.name}</span>
+                <span className=" font-bold">{categoryTree.name}</span>
                 <ul>
                   {categoryTree.children &&
                     categoryTree.children.map((category) => {
                       return (
-                        <li key={category.id} className="pl-2">
+                        <li key={category.id} className=" pl-2">
                           {category.name}
                         </li>
                       );
@@ -31,8 +34,10 @@ export default function ProductList() {
             );
           })}
         </ul>
-      </div>
-      <div className="w-3/5">
+      </section>
+
+      {/* results */}
+      <section className="w-3/5">
         <h1 className="text-xl font-bold">Results</h1>
         <div>
           {products.length
@@ -48,6 +53,7 @@ export default function ProductList() {
                         alt={`${product.name} product image`}
                         src={product.productImage}
                         fill
+                        sizes="224px"
                         className="object-contain"
                       />
                     </div>
@@ -56,9 +62,9 @@ export default function ProductList() {
                   </div>
                 );
               })
-            : 'Something went wrong. Refresh the page to try again.'}
+            : 'No results'}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
