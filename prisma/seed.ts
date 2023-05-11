@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import { booksSubCategories } from '~/utils/data';
 
 const prisma = new PrismaClient();
 
@@ -28,7 +29,7 @@ async function seed() {
 
   // Create the child categories
   const booksCatMap = new Map<string, number>();
-  for (const cat of bookSubCategories) {
+  for (const cat of booksSubCategories) {
     const catObject = await prisma.productCategory.create({
       data: {
         categoryName: cat,
@@ -128,38 +129,3 @@ seed()
     await prisma.$disconnect();
     process.exit(1);
   });
-
-const bookSubCategories = [
-  'Arts & Photography',
-  'Biographies & Memoirs',
-  'Business & Money',
-  'Calendars',
-  "Children's Books",
-  'Christian Books & Bibles',
-  'Comics & Graphic Novels',
-  'Computers & Technology',
-  'Cookbooks, Food & Wine',
-  'Crafts, Hobbies & Home',
-  'Education & Teaching',
-  'Engineering & Transportation',
-  'Health, Fitness & Dieting',
-  'History',
-  'Humor & Entertainment',
-  'Law',
-  'LGBTQ+ Books',
-  'Literature & Fiction',
-  'Medical Books',
-  'Mystery, Thriller & Suspense',
-  'Parenting & Relationships',
-  'Politics & Social Sciences',
-  'Reference',
-  'Religion & Spirituality',
-  'Romance',
-  'Science & Math',
-  'Science Fiction & Fantasy',
-  'Self-Help',
-  'Sports & Outdoors',
-  'Teen & Young Adult',
-  'Test Preparation',
-  'Travel',
-];

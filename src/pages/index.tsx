@@ -1,14 +1,9 @@
 import { type NextPage } from 'next';
-import ProductList from '~/components/ProductList';
 // import { signIn, signOut, useSession } from 'next-auth/react';
 // import { api } from '~/utils/api';
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <ProductList />
-    </div>
-  );
+  return <div>Nothing to see here yet...</div>;
 };
 
 export default Home;

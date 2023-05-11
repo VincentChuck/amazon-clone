@@ -5,17 +5,25 @@ export const productRouter = createTRPCRouter({
   products: publicProcedure
     .input(
       z.object({
-        keyword: z.string(),
+        keyword: z.string().optional(),
+        categoryId: z.number().optional(),
       })
     )
 
-    .query(async ({ ctx, input: { keyword } }) => {
+    .query(async ({ ctx, input: { keyword, categoryId } }) => {
       const productsRaw = await ctx.prisma.product.findMany({
         where: {
-          name: {
-            contains: keyword,
-            mode: 'insensitive',
-          },
+          AND: [
+            keyword
+              ? {
+                  name: {
+                    contains: keyword,
+                    mode: 'insensitive',
+                  },
+                }
+              : {},
+            categoryId ? { categoryId: { equals: categoryId } } : {},
+          ],
         },
         include: {
           productItems: {
