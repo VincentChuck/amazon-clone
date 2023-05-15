@@ -11,6 +11,16 @@ export const productRouter = createTRPCRouter({
     )
 
     .query(async ({ ctx, input: { keyword, categoryId } }) => {
+      const childCategories = await ctx.prisma.productCategory.findMany({
+        where: {
+          parentCategoryId: categoryId,
+        },
+        select: {
+          id: true,
+        },
+      });
+      const childCategoriesId = childCategories.map((category) => category.id);
+
       const productsRaw = await ctx.prisma.product.findMany({
         where: {
           AND: [
@@ -22,7 +32,9 @@ export const productRouter = createTRPCRouter({
                   },
                 }
               : {},
-            categoryId ? { categoryId: { equals: categoryId } } : {},
+            categoryId
+              ? { categoryId: { in: [categoryId, ...childCategoriesId] } }
+              : {},
           ],
         },
         include: {

@@ -32,8 +32,9 @@ export default function Products() {
     { enabled: pageLoaded, refetchOnWindowFocus: false }
   );
 
-  if (isLoading) return <div>Loading products 🔄</div>;
-  if (isError) return <div>Error fetching products ❌</div>;
+  if (isLoading) return <div className="text-center">Loading products 🔄</div>;
+  if (isError)
+    return <div className="text-center">Error fetching products ❌</div>;
 
   const { products, mergedCategoryTrees } = data;
 
