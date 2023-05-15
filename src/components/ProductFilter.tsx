@@ -5,6 +5,7 @@ import Icon from '~/components/Icon';
 type ProductsProps = {
   mergedCategoryTrees: listedCategories;
   keyword: string;
+  categoryId: number;
 };
 
 export default function ProductFilter({
@@ -15,8 +16,8 @@ export default function ProductFilter({
 
   return (
     <div>
-      <div className="ml-4 hidden w-auto flex-col px-2 pr-20 outline md:flex">
-        <span className=" font-bold">Department</span>
+      <div className="hidden w-auto flex-col px-1 pr-20 outline md:flex">
+        <span className="text-sm font-bold">Department</span>
         <ul>
           {mergedCategoryTrees?.map((categoryTree) => {
             return (

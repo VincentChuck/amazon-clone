@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import { booksSubCategories } from '~/utils/data';
+import { booksSubCategories } from '../src/utils/data';
 
 const prisma = new PrismaClient();
 

@@ -39,6 +39,22 @@ export const productRouter = createTRPCRouter({
         },
       });
 
+      // if search filtered by category has no result
+      // console.log(productsRaw);
+      if (categoryId && keyword && !productsRaw.length) {
+        const mergedCategoryTrees = [];
+        const ancestorTree = await findAncestor(categoryId);
+        if (ancestorTree) {
+          mergedCategoryTrees.push(ancestorTree);
+        }
+        const output = {
+          products: [],
+          mergedCategoryTrees,
+        };
+        // console.log('early return');
+        return output;
+      }
+
       const categories = productsRaw.map((product) => product.category);
 
       // remove duplicate from categories
@@ -141,6 +157,7 @@ export const productRouter = createTRPCRouter({
             price: price.toNumber(),
             option,
           };
+          // console.log('went thru the whole thing');
           return product;
         }
       );
