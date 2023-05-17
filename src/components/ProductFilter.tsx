@@ -18,7 +18,7 @@ export default function ProductFilter({
 
   return (
     <div>
-      <div className="hidden w-auto flex-col px-1 pr-20 text-sm outline md:flex">
+      <div className="hidden w-auto flex-shrink-0 flex-col whitespace-nowrap px-1 pr-20 text-sm outline md:flex">
         <span className="mb-2 font-bold">Department</span>
         {!!selectedCategoryId && (
           <CategoryItem
@@ -116,8 +116,9 @@ type CategoryItemProps = {
 };
 
 function CategoryItem({ name, url, bold, goUp }: CategoryItemProps) {
+  if (bold) return <span className="font-bold">{name}</span>;
   return (
-    <Link href={url} className={bold ? 'font-bold' : ''}>
+    <Link href={url}>
       {goUp && (
         <Icon
           name="chevron_left"

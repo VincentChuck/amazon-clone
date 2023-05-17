@@ -7,7 +7,7 @@ type ProductsProps = {
 
 export default function ProductList({ products }: ProductsProps) {
   return (
-    <section className="mx-4 w-screen max-w-screen-xl outline">
+    <section className="mx-4 w-full flex-grow outline">
       <h1 className="text-xl font-bold">Results</h1>
       <div>
         {products && products.length

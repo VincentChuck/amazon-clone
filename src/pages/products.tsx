@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import ProductFilter from '~/components/ProductFilter';
 import ProductList from '~/components/ProductList';
+import SortBar from '~/components/SortBar';
 import { api } from '~/utils/api';
 
 export default function Products() {
@@ -39,21 +40,15 @@ export default function Products() {
   const { products, mergedCategoryTrees } = data;
 
   return (
-    <div>
-      <div className="mb-2 hidden h-9 w-screen flex-row items-center justify-center text-sm shadow-sm shadow-black md:flex">
-        <div className="flex flex-grow lg:max-w-[1800px]">
-          <div className="mx-4 flex-grow">
-            {products.length} results for
-            <span className="font-bold text-amber-700">{` "${keyword}"`}</span>
-          </div>
-          <div className="mx-4">some box</div>
+    <main>
+      <SortBar numberOfProducts={products.length} keyword={keyword} />
+
+      <div className="mx-3 flex justify-center py-4">
+        <div className="flex flex-grow justify-center lg:max-w-[1800px]">
+          <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
+          <ProductList products={products} />
         </div>
       </div>
-
-      <div className="mx-3 flex justify-center pt-4">
-        <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
-        <ProductList products={products} />
-      </div>
-    </div>
+    </main>
   );
 }
