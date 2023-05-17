@@ -14,18 +14,20 @@ export default function ProductFilter({
   categoryId: selectedCategoryId,
 }: ProductsProps) {
   const keywordParam = keyword ? `k=${keyword}&` : '';
-  const baseUrl = `/products?${keywordParam}cid=`;
+  const baseUrl = `/products?${keywordParam}`;
 
   return (
     <div>
       <div className="hidden w-auto flex-col px-1 pr-20 text-sm outline md:flex">
         <span className="mb-2 font-bold">Department</span>
-        <CategoryItem
-          name="Any Department"
-          url={baseUrl}
-          bold={false}
-          goUp={true}
-        />
+        {!!selectedCategoryId && (
+          <CategoryItem
+            name="Any Department"
+            url={baseUrl}
+            bold={false}
+            goUp={true}
+          />
+        )}
         <CategoryTree
           {...{ mergedCategoryTrees, baseUrl, selectedCategoryId }}
         />
@@ -77,13 +79,14 @@ function Category({
     !!selectedCategoryId &&
     categoryTree &&
     !!categoryTree.children &&
-    categoryTree.children.length > 0;
+    categoryTree.children.length > 0 &&
+    selectedCategoryId !== categoryTree.id;
   return (
     <li key={categoryTree.id}>
       <CategoryItem
         {...{
           name: categoryTree.name,
-          url: `${baseUrl}${categoryTree.id}`,
+          url: `${baseUrl}cid=${categoryTree.id}`,
           bold,
           goUp,
         }}
