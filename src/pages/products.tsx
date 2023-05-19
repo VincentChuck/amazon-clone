@@ -5,6 +5,8 @@ import ProductList from '~/components/ProductList';
 import SortBar from '~/components/SortBar';
 import { api } from '~/utils/api';
 
+const RESULTPERPAGE = 16;
+
 export default function Products() {
   const router = useRouter();
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -25,10 +27,11 @@ export default function Products() {
   const keyword = parseParam(k);
   const categoryId = Number(parseParam(cid));
 
-  const { data, isLoading, isError } = api.product.products.useQuery(
+  const { data, isLoading, isError } = api.product.getBatch.useQuery(
     {
       ...(keyword && { keyword }),
       ...(categoryId && { categoryId }),
+      resultPerPage: RESULTPERPAGE,
     },
     { enabled: pageLoaded, refetchOnWindowFocus: false }
   );
