@@ -8,17 +8,13 @@ export const productRouter = createTRPCRouter({
         keyword: z.string().optional(),
         categoryId: z.number().optional(),
         resultPerPage: z.number(),
-        cursor: z.string().nullish(),
         skip: z.number().optional(),
         // sortBy: z.string().optional(),
       })
     )
 
     .query(
-      async ({
-        ctx,
-        input: { keyword, categoryId, resultPerPage, cursor, skip },
-      }) => {
+      async ({ ctx, input: { keyword, categoryId, resultPerPage, skip } }) => {
         const childCategories = await ctx.prisma.productCategory.findMany({
           where: {
             parentCategoryId: categoryId,
@@ -33,8 +29,10 @@ export const productRouter = createTRPCRouter({
 
         const productsRaw = await ctx.prisma.product.findMany({
           take: resultPerPage + 1,
-          cursor: cursor ? { id: cursor } : undefined,
           skip: skip,
+          orderBy: {
+            name: 'asc',
+          },
           where: {
             AND: [
               keyword
@@ -64,6 +62,12 @@ export const productRouter = createTRPCRouter({
           },
         });
 
+        let hasMore: boolean = false;
+        if (productsRaw.length > resultPerPage) {
+          productsRaw.pop();
+          hasMore = true;
+        }
+
         // if search filtered by category has no result
         if (categoryId && keyword && !productsRaw.length) {
           const mergedCategoryTrees = [];
@@ -71,11 +75,11 @@ export const productRouter = createTRPCRouter({
           if (ancestorTree) {
             mergedCategoryTrees.push(ancestorTree);
           }
-          const output = {
+          return {
             products: [],
             mergedCategoryTrees,
+            hasMore,
           };
-          return output;
         }
 
         const categories = productsRaw.map((product) => product.category);
@@ -190,13 +194,7 @@ export const productRouter = createTRPCRouter({
           }
         );
 
-        let nextCursor: typeof cursor | undefined;
-        if (products.length > resultPerPage) {
-          const nextItem = products.pop();
-          nextCursor = nextItem?.id;
-        }
-
-        return { products, mergedCategoryTrees, nextCursor };
+        return { products, mergedCategoryTrees, hasMore };
       }
     ),
 });

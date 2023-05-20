@@ -17,34 +17,69 @@ export default function Products() {
     return '';
   }
 
+  const { k, cid, page } = router.query;
+  const keyword = parseParam(k);
+  const categoryId = Number(parseParam(cid));
+  const pageParam = Number(parseParam(page)) || 1;
+  const pageIndex = pageParam - 1;
+
   useEffect(() => {
     if (!router.isReady) return;
     setPageLoaded(true);
   }, [router.isReady]);
 
-  const { k, cid } = router.query;
-
-  const keyword = parseParam(k);
-  const categoryId = Number(parseParam(cid));
-
-  const { data, isLoading, isError } = api.product.getBatch.useQuery(
-    {
-      ...(keyword && { keyword }),
-      ...(categoryId && { categoryId }),
-      resultPerPage: RESULTPERPAGE,
-    },
-    { enabled: pageLoaded, refetchOnWindowFocus: false }
-  );
+  const { data, isLoading, isError, isFetching, isPreviousData } =
+    api.product.getBatch.useQuery(
+      {
+        ...(keyword && { keyword }),
+        ...(categoryId && { categoryId }),
+        resultPerPage: RESULTPERPAGE,
+        skip: pageIndex * RESULTPERPAGE,
+      },
+      {
+        enabled: pageLoaded,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+      }
+    );
 
   if (isLoading) return <div className="text-center">Loading products 🔄</div>;
   if (isError)
     return <div className="text-center">Error fetching products ❌</div>;
 
-  const { products, mergedCategoryTrees } = data;
+  const { products, mergedCategoryTrees, hasMore } = data;
 
-  return (
-    <main>
+  async function handleNextPage() {
+    if (!isPreviousData && hasMore) {
+      router.push(
+        { query: { ...router.query, page: pageParam + 1 } },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }
+
+  async function handlePreviousPage() {
+    router.push(
+      { query: { ...router.query, page: pageParam - 1 } },
+      undefined,
+      { shallow: true }
+    );
+  }
+
+  return !pageLoaded ? null : (
+    <main className="items-center">
       <SortBar numberOfProducts={products.length} keyword={keyword} />
+      <button
+        onClick={handlePreviousPage}
+        disabled={pageParam === 1 || isFetching}
+      >
+        Prev page
+      </button>
+      <span>Page {pageParam}</span>
+      <button onClick={handleNextPage} disabled={isPreviousData || !hasMore}>
+        Next page
+      </button>
 
       <div className="mx-3 flex justify-center py-4">
         <div className="flex flex-grow justify-center lg:max-w-[1800px]">
