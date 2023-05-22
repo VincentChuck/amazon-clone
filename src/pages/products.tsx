@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ProductFilter from '~/components/ProductFilter';
 import ProductList from '~/components/ProductList';
 import SortBar from '~/components/SortBar';
+import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
 
 const RESULTPERPAGE = 16;
@@ -28,7 +29,7 @@ export default function Products() {
     setPageLoaded(true);
   }, [router.isReady]);
 
-  const categories = api.product.getCategories.useQuery(
+  const details = api.product.getBatchDetails.useQuery(
     {
       ...(keyword && { keyword }),
       ...(categoryId && { categoryId }),
@@ -39,7 +40,17 @@ export default function Products() {
       keepPreviousData: true,
     }
   );
-  const mergedCategoryTrees = categories.data;
+
+  let mergedCategoryTrees: CategoryTree[] = [];
+  let numberOfResults = 0;
+
+  if (details.data) {
+    mergedCategoryTrees = details.data.mergedCategoryTrees;
+    numberOfResults = details.data.numberOfResults;
+  }
+
+  const skip = pageIndex * RESULTPERPAGE;
+  const productsOnPageIndex = `${skip + 1}-${skip + RESULTPERPAGE}`;
 
   const { data, isLoading, isError, isFetching, isPreviousData } =
     api.product.getBatch.useQuery(
@@ -47,7 +58,7 @@ export default function Products() {
         ...(keyword && { keyword }),
         ...(categoryId && { categoryId }),
         resultPerPage: RESULTPERPAGE,
-        skip: pageIndex * RESULTPERPAGE,
+        skip,
       },
       {
         enabled: pageLoaded,
@@ -82,7 +93,11 @@ export default function Products() {
 
   return !pageLoaded ? null : (
     <main className="items-center">
-      <SortBar numberOfProducts={products.length} keyword={keyword} />
+      <SortBar
+        productsOnPageIndex={productsOnPageIndex}
+        numberOfResults={numberOfResults}
+        keyword={keyword}
+      />
       <button
         onClick={handlePreviousPage}
         disabled={pageParam === 1 || isFetching}

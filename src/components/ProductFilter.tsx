@@ -1,9 +1,9 @@
-import type { listedCategories } from '~/types';
 import Link from 'next/link';
 import Icon from '~/components/Icon';
+import { CategoryTree } from '~/types';
 
 type ProductsProps = {
-  mergedCategoryTrees: listedCategories;
+  mergedCategoryTrees: CategoryTree[];
   keyword: string;
   categoryId: number;
 };
@@ -37,7 +37,7 @@ export default function ProductFilter({
 }
 
 type CategoryTreeProps = {
-  mergedCategoryTrees: listedCategories;
+  mergedCategoryTrees: CategoryTree[];
   baseUrl: string;
   selectedCategoryId: number;
 };
@@ -64,7 +64,7 @@ function CategoryTree({
 }
 
 type CategoryProps = {
-  categoryTree: listedCategories[number];
+  categoryTree: CategoryTree;
   baseUrl: string;
   selectedCategoryId: number;
 };

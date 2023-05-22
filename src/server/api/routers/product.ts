@@ -18,7 +18,7 @@ async function getChildCategories(categoryId: number, prisma: PrismaClient) {
 }
 
 export const productRouter = createTRPCRouter({
-  getCategories: publicProcedure
+  getBatchDetails: publicProcedure
     .input(
       z.object({
         keyword: z.string().optional(),
@@ -51,6 +51,7 @@ export const productRouter = createTRPCRouter({
       });
 
       const categories = products.map(({ category }) => category);
+      const numberOfResults = products.length;
 
       // remove duplicate from categories
       const uniqueCategories = [...new Set(categories)];
@@ -135,7 +136,7 @@ export const productRouter = createTRPCRouter({
       // merge all category trees
       const mergedCategoryTrees = mergeTrees(categoryTrees);
 
-      return mergedCategoryTrees;
+      return { mergedCategoryTrees, numberOfResults };
     }),
 
   getBatch: publicProcedure
