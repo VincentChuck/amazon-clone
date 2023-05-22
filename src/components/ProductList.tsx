@@ -1,8 +1,8 @@
-import type { listedProducts } from '~/types';
+import type { productsResponse } from '~/types';
 import Image from 'next/image';
 
 type ProductsProps = {
-  products: listedProducts;
+  products: productsResponse;
 };
 
 export default function ProductList({ products }: ProductsProps) {

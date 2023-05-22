@@ -23,6 +23,7 @@ async function seed() {
   // Create the root category
   const booksCategory = await prisma.productCategory.create({
     data: {
+      id: 0,
       categoryName: 'Books',
     },
   });
@@ -42,7 +43,7 @@ async function seed() {
   const booksCatIdArr = Array.from(booksCatMap, ([_, value]) => value);
 
   // Create the variation and options
-  await prisma.variation.create({
+  const bookFormatOptions = await prisma.variation.create({
     data: {
       variationName: 'Format',
       variationOptions: {
@@ -58,7 +59,16 @@ async function seed() {
         }),
       },
     },
+    select: {
+      variationOptions: {
+        select: {
+          id: true,
+          value: true,
+        },
+      },
+    },
   });
+  const bookFormatOptionsArr = bookFormatOptions.variationOptions;
 
   // Create the products
   for (let i = 0; i < 1000; i++) {
@@ -78,29 +88,30 @@ async function seed() {
 
     const basePrice = Math.floor(Math.random() * 5) + 1.99;
 
-    class ProductItem {
-      SKU: string;
-      quantityInStock: number;
-      price: Prisma.Decimal;
-      constructor(option: string) {
-        this.SKU = `${randomBookName.toUpperCase()}-${option}`;
-        this.quantityInStock = Math.floor(Math.random() * 1000);
-        this.price = new Prisma.Decimal(formatPrice(basePrice, option));
-      }
-    }
-
-    await prisma.product.create({
+    const productId = await prisma.product.create({
       data: {
         ...product,
-        productItems: {
-          create: [
-            new ProductItem('Kindle'),
-            new ProductItem('Hardcover'),
-            new ProductItem('Paperback'),
-          ],
-        },
       },
     });
+
+    for (let i = 0; i < bookFormatOptionsArr.length; i++) {
+      const bookFormat = bookFormatOptionsArr[i];
+      if (!bookFormat || !bookFormat.value || !bookFormat.id) continue;
+
+      await prisma.productItem.create({
+        data: {
+          product: {
+            connect: { id: productId.id },
+          },
+          SKU: `${randomBookName.toUpperCase()}-${bookFormat.value}`,
+          quantityInStock: Math.floor(Math.random() * 1000),
+          price: new Prisma.Decimal(formatPrice(basePrice, bookFormat.value)),
+          variationOptions: {
+            connect: { id: bookFormat.id },
+          },
+        },
+      });
+    }
   }
 
   function formatPrice(basePrice: number, format: string): number {
