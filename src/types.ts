@@ -3,6 +3,10 @@ import type { AppRouter } from './server/api/root';
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
-type productsResponse = RouterOutput['product']['getBatch'];
-export type listedProducts = productsResponse['products'];
-export type listedCategories = productsResponse['mergedCategoryTrees'];
+export type productsResponse = RouterOutput['product']['getBatch']['products'];
+
+export type CategoryTree = {
+  id: number;
+  name: string;
+  children?: CategoryTree[];
+};

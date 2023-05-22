@@ -28,6 +28,19 @@ export default function Products() {
     setPageLoaded(true);
   }, [router.isReady]);
 
+  const categories = api.product.getCategories.useQuery(
+    {
+      ...(keyword && { keyword }),
+      ...(categoryId && { categoryId }),
+    },
+    {
+      enabled: pageLoaded,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+  const mergedCategoryTrees = categories.data;
+
   const { data, isLoading, isError, isFetching, isPreviousData } =
     api.product.getBatch.useQuery(
       {
@@ -47,11 +60,11 @@ export default function Products() {
   if (isError)
     return <div className="text-center">Error fetching products ❌</div>;
 
-  const { products, mergedCategoryTrees, hasMore } = data;
+  const { products, hasMore } = data;
 
-  async function handleNextPage() {
+  function handleNextPage() {
     if (!isPreviousData && hasMore) {
-      router.push(
+      void router.push(
         { query: { ...router.query, page: pageParam + 1 } },
         undefined,
         { shallow: true }
@@ -59,8 +72,8 @@ export default function Products() {
     }
   }
 
-  async function handlePreviousPage() {
-    router.push(
+  function handlePreviousPage() {
+    void router.push(
       { query: { ...router.query, page: pageParam - 1 } },
       undefined,
       { shallow: true }
