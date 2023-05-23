@@ -73,14 +73,15 @@ model Product {
 }
 
 model ProductItem {
-  id               String            @id @default(cuid())
-  product          Product           @relation(fields: [productId], references: [id])
-  productId        String
-  SKU              String            @unique @default(cuid())
-  quantityInStock  Int
-  price            Decimal           @db.Money
-  itemImage        String?
-  variationOptions VariationOption[]
+  id                String          @id @default(cuid())
+  product           Product         @relation(fields: [productId], references: [id])
+  productId         String
+  SKU               String          @unique @default(cuid())
+  quantityInStock   Int
+  price             Decimal         @db.Money
+  itemImage         String?
+  variationOption   VariationOption @relation(fields: [variationOptionId], references: [id])
+  variationOptionId String
 }
 
 model VariationOption {

@@ -58,7 +58,7 @@ export const productRouter = createTRPCRouter({
             productItems: {
               take: 1,
               include: {
-                variationOptions: {
+                variationOption: {
                   select: {
                     value: true,
                   },
@@ -112,10 +112,10 @@ export const productRouter = createTRPCRouter({
         const products = pagedProducts.map(
           ({ id, name, productImage, productItems }) => {
             const cheapestItem = productItems.reduce((prev, curr) => {
-              return prev.price.gt(curr.price) ? curr : prev;
+              return curr ? curr : prev;
             });
-            const { price, variationOptions } = cheapestItem;
-            const option = variationOptions[0]?.value || '';
+            const { price, variationOption } = cheapestItem;
+            const option = variationOption.value;
             const product = {
               id,
               name,

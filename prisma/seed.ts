@@ -23,7 +23,6 @@ async function seed() {
   // Create the root category
   const booksCategory = await prisma.productCategory.create({
     data: {
-      id: 1,
       categoryName: 'Books',
     },
   });
@@ -106,7 +105,7 @@ async function seed() {
           SKU: `${randomBookName.toUpperCase()}-${bookFormat.value}`,
           quantityInStock: Math.floor(Math.random() * 1000),
           price: new Prisma.Decimal(formatPrice(basePrice, bookFormat.value)),
-          variationOptions: {
+          variationOption: {
             connect: { id: bookFormat.id },
           },
         },
