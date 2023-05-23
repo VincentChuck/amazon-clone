@@ -5,8 +5,7 @@ import ProductList from '~/components/ProductList';
 import SortBar from '~/components/SortBar';
 import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
-
-const RESULTPERPAGE = 16;
+import { RESULTSPERPAGE, type SortOption } from '~/utils/constants';
 
 export default function Products() {
   const router = useRouter();
@@ -23,6 +22,7 @@ export default function Products() {
   const categoryId = Number(parseParam(cid));
   const pageParam = Number(parseParam(page)) || 1;
   const pageIndex = pageParam - 1;
+  const [sortBy, setSortBy] = useState<SortOption>('');
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -49,16 +49,20 @@ export default function Products() {
     numberOfResults = details.data.numberOfResults;
   }
 
-  const skip = pageIndex * RESULTPERPAGE;
-  const productsOnPageIndex = `${skip + 1}-${skip + RESULTPERPAGE}`;
+  const skip = pageIndex * RESULTSPERPAGE;
+  const productsOnPageIndex = `${skip + 1}-${Math.min(
+    skip + RESULTSPERPAGE,
+    numberOfResults
+  )}`;
 
   const { data, isLoading, isError, isFetching, isPreviousData } =
     api.product.getBatch.useQuery(
       {
         ...(keyword && { keyword }),
         ...(categoryId && { categoryId }),
-        resultPerPage: RESULTPERPAGE,
+        resultPerPage: RESULTSPERPAGE,
         skip,
+        ...(sortBy && { sortBy }),
       },
       {
         enabled: pageLoaded,
@@ -97,6 +101,8 @@ export default function Products() {
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}
         keyword={keyword}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
       <button
         onClick={handlePreviousPage}

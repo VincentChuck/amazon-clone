@@ -215,7 +215,7 @@ function Layout({ children }: Props) {
         {/* bottom nav */}
         <section className="flex flex-col text-white">
           <a
-            className="flex h-12 flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
+            className="flex h-12 cursor-pointer flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
             onClick={goTop}
           >
             <Icon

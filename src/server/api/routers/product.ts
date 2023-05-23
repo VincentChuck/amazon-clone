@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import { type PrismaClient } from '@prisma/client';
 import type { CategoryTree } from '~/types';
+import { SORTOPTIONS } from '~/utils/constants';
 
 async function getChildCategories(categoryId: number, prisma: PrismaClient) {
   if (categoryId === 0) return [];
@@ -18,6 +19,118 @@ async function getChildCategories(categoryId: number, prisma: PrismaClient) {
 }
 
 export const productRouter = createTRPCRouter({
+  getBatch: publicProcedure
+    .input(
+      z.object({
+        keyword: z.string().optional(),
+        categoryId: z.number().optional().default(0),
+        resultPerPage: z.number(),
+        skip: z.number().optional(),
+        sortBy: z.enum(SORTOPTIONS).optional(),
+      })
+    )
+    .query(
+      async ({
+        ctx,
+        input: { keyword, categoryId, resultPerPage, skip, sortBy },
+      }) => {
+        const childCategoriesId = await getChildCategories(
+          categoryId,
+          ctx.prisma
+        );
+
+        const productsRaw = await ctx.prisma.product.findMany({
+          orderBy: { name: 'asc' },
+          where: {
+            AND: [
+              keyword
+                ? {
+                    name: {
+                      contains: keyword,
+                      mode: 'insensitive',
+                    },
+                  }
+                : {},
+              categoryId ? { categoryId: { in: childCategoriesId } } : {},
+            ],
+          },
+          include: {
+            productItems: {
+              take: 1,
+              include: {
+                variationOptions: {
+                  select: {
+                    value: true,
+                  },
+                },
+              },
+              orderBy: {
+                price: 'asc',
+              },
+            },
+            category: true,
+          },
+        });
+
+        const sortedProducts = sortBy
+          ? productsRaw.sort((a, b) => {
+              const cheapestPriceA = a.productItems[0]?.price.toNumber();
+              const cheapestPriceB = b.productItems[0]?.price.toNumber();
+              if (
+                !cheapestPriceA ||
+                typeof cheapestPriceA !== 'number' ||
+                !cheapestPriceB ||
+                typeof cheapestPriceB !== 'number'
+              )
+                return 0;
+              if (sortBy === 'price-asc') {
+                return cheapestPriceA - cheapestPriceB;
+              } else if (sortBy === 'price-desc') {
+                return cheapestPriceB - cheapestPriceA;
+              }
+              return 0;
+            })
+          : productsRaw;
+
+        const firstItemIndex = skip ? skip : 0;
+        const sliceEndIndex = firstItemIndex + resultPerPage;
+        const pagedProducts = sortedProducts.slice(
+          firstItemIndex,
+          sliceEndIndex
+        );
+
+        const hasMore = sortedProducts.length >= firstItemIndex + resultPerPage;
+
+        // if search filtered by category has no result
+        if (categoryId && keyword && !productsRaw.length) {
+          return {
+            products: [],
+            hasMore,
+          };
+        }
+
+        const products = pagedProducts.map(
+          ({ id, name, productImage, productItems }) => {
+            const cheapestItem = productItems.reduce((prev, curr) => {
+              return prev.price.gt(curr.price) ? curr : prev;
+            });
+            const { price, variationOptions } = cheapestItem;
+            const option = variationOptions[0]?.value || '';
+            const product = {
+              id,
+              name,
+              productImage,
+              price: price.toNumber(),
+              option,
+            };
+            return product;
+          }
+        );
+
+        return { products, hasMore };
+      }
+    ),
+
   getBatchDetails: publicProcedure
     .input(
       z.object({
@@ -138,90 +251,4 @@ export const productRouter = createTRPCRouter({
 
       return { mergedCategoryTrees, numberOfResults };
     }),
-
-  getBatch: publicProcedure
-    .input(
-      z.object({
-        keyword: z.string().optional(),
-        categoryId: z.number().optional().default(0),
-        resultPerPage: z.number(),
-        skip: z.number().optional(),
-        // sortBy: z.string().optional(),
-      })
-    )
-    .query(
-      async ({ ctx, input: { keyword, categoryId, resultPerPage, skip } }) => {
-        const childCategoriesId = await getChildCategories(
-          categoryId,
-          ctx.prisma
-        );
-
-        const productsRaw = await ctx.prisma.product.findMany({
-          take: resultPerPage + 1,
-          skip: skip,
-          orderBy: {
-            name: 'asc',
-          },
-          where: {
-            AND: [
-              keyword
-                ? {
-                    name: {
-                      contains: keyword,
-                      mode: 'insensitive',
-                    },
-                  }
-                : {},
-              categoryId ? { categoryId: { in: childCategoriesId } } : {},
-            ],
-          },
-          include: {
-            productItems: {
-              include: {
-                variationOptions: {
-                  select: {
-                    value: true,
-                  },
-                },
-              },
-            },
-            category: true,
-          },
-        });
-
-        let hasMore = false;
-        if (productsRaw.length > resultPerPage) {
-          productsRaw.pop();
-          hasMore = true;
-        }
-
-        // if search filtered by category has no result
-        if (categoryId && keyword && !productsRaw.length) {
-          return {
-            products: [],
-            hasMore,
-          };
-        }
-
-        const products = productsRaw.map(
-          ({ id, name, productImage, productItems }) => {
-            const cheapestItem = productItems.reduce((prev, curr) => {
-              return prev.price.gt(curr.price) ? curr : prev;
-            });
-            const { price, variationOptions } = cheapestItem;
-            const option = variationOptions[0]?.value || '';
-            const product = {
-              id,
-              name,
-              productImage,
-              price: price.toNumber(),
-              option,
-            };
-            return product;
-          }
-        );
-
-        return { products, hasMore };
-      }
-    ),
 });
