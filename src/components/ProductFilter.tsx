@@ -13,12 +13,12 @@ export default function ProductFilter({
   keyword,
   categoryId: selectedCategoryId,
 }: ProductsProps) {
-  const keywordParam = keyword ? `k=${keyword}&` : '';
+  const keywordParam = keyword ? `k=${keyword}` : '';
   const baseUrl = `/products?${keywordParam}`;
 
   return (
     <div>
-      <div className="hidden w-auto flex-shrink-0 flex-col whitespace-nowrap px-1 pr-20 text-sm outline md:flex">
+      <div className="hidden w-72 flex-shrink-0 flex-col whitespace-nowrap px-1 pr-3 text-sm outline md:flex">
         <span className="mb-2 font-bold">Department</span>
         {!!selectedCategoryId && (
           <CategoryItem
@@ -86,7 +86,7 @@ function Category({
       <CategoryItem
         {...{
           name: categoryTree.name,
-          url: `${baseUrl}cid=${categoryTree.id}`,
+          url: `${baseUrl}&cid=${categoryTree.id}`,
           bold,
           goUp,
         }}

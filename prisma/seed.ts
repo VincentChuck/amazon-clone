@@ -23,7 +23,7 @@ async function seed() {
   // Create the root category
   const booksCategory = await prisma.productCategory.create({
     data: {
-      id: 0,
+      id: 1,
       categoryName: 'Books',
     },
   });

@@ -6,6 +6,7 @@ import navLogo from 'public/amazon-logo.png';
 import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
 import { type SyntheticEvent } from 'react';
+import Link from 'next/link';
 
 const emberFont = localFont({
   variable: '--font-ember',
@@ -96,12 +97,14 @@ function Layout({ children }: Props) {
                 strokeWidth={1.5}
                 className="m-2 h-8 w-8 md:hidden"
               />
-              <Image
-                alt="amazon-logo"
-                priority
-                className="ml-2 mt-1.5 w-20 md:w-24"
-                src={navLogo}
-              />
+              <Link href="/">
+                <Image
+                  alt="amazon-logo"
+                  priority
+                  className="ml-2 mt-1.5 w-20 md:w-24"
+                  src={navLogo}
+                />
+              </Link>
             </div>
 
             {/* logo bar centre for larger screen */}
