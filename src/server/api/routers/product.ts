@@ -251,4 +251,29 @@ export const productRouter = createTRPCRouter({
 
       return { mergedCategoryTrees, numberOfResults };
     }),
+
+  get: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input: { id } }) => {
+      const product = await ctx.prisma.product.findUnique({
+        where: { id },
+        include: {
+          productItems: {
+            include: {
+              variationOption: {
+                include: {
+                  variations: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return product;
+    }),
 });

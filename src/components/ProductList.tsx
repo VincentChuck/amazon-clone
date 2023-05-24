@@ -12,20 +12,25 @@ export default function ProductList({ products }: ProductsProps) {
       <div>
         {products && products.length
           ? products.map((product) => {
+              const productLink = `/product?pid=${product.id}`;
               return (
                 <div
                   key={product.id}
                   className="flex flex-col items-start outline"
                 >
-                  <h1>{product.name}</h1>
+                  <a href={productLink}>
+                    <h1>{product.name}</h1>
+                  </a>
                   <div className="relative h-56 w-56">
-                    <Image
-                      alt={`${product.name} product image`}
-                      src={product.productImage}
-                      fill
-                      sizes="224px"
-                      className="object-contain"
-                    />
+                    <a href={productLink}>
+                      <Image
+                        alt={`${product.name} product image`}
+                        src={product.productImage}
+                        fill
+                        sizes="224px"
+                        className="object-contain"
+                      />
+                    </a>
                   </div>
                   <div>{product.price}</div>
                   <div>{product.option}</div>

@@ -6,21 +6,16 @@ import SortBar from '~/components/SortBar';
 import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
 import { RESULTSPERPAGE, type SortOption } from '~/utils/constants';
+import { parseRouterParam } from '~/utils/helpers';
 
 export default function Products() {
   const router = useRouter();
   const [pageLoaded, setPageLoaded] = useState(false);
 
-  function parseParam(k: unknown): string {
-    if (typeof k === 'string') return k;
-    if (Array.isArray(k) && typeof k[0] === 'string') return k[0];
-    return '';
-  }
-
   const { k, cid, page } = router.query;
-  const keyword = parseParam(k);
-  const categoryId = Number(parseParam(cid));
-  const pageParam = Number(parseParam(page)) || 1;
+  const keyword = parseRouterParam(k);
+  const categoryId = Number(parseRouterParam(cid));
+  const pageParam = Number(parseRouterParam(page)) || 1;
   const pageIndex = pageParam - 1;
   const [sortBy, setSortBy] = useState<SortOption>('');
 
