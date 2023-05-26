@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
@@ -27,11 +28,27 @@ export default function Product() {
     }
   );
 
-  if (isLoading) return <div className="text-center">Loading product 🔄</div>;
+  if (!pageLoaded || isLoading)
+    return <div className="text-center">Loading product 🔄</div>;
+
   if (isError)
     return <div className="text-center">Error fetching product ❌</div>;
 
+  if (!product) return <div className="text-center">Product not found ☹️</div>;
+
   return !pageLoaded ? null : (
-    <main className="items-center">{product?.name}</main>
+    <main className="items-center px-3 my-4">
+      <h1 className="text-lg font-bold">{product.name}</h1>
+      <div>
+        <Image
+          alt={`${product.name} product image`}
+          src={product.productImage}
+          width="0"
+          height="0"
+          sizes="100vh"
+          className="h-auto w-96 m-3"
+        />
+      </div>
+    </main>
   );
 }

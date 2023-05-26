@@ -202,7 +202,7 @@ function Layout({ children }: Props) {
             <a className="ml-5">Best Sellers</a>
             <a className="ml-5">Deals</a>
             <a className="ml-5">Amazon Basics</a>
-            <a className="ml-5">Books</a>
+            <Link className="ml-5" href='/products?cid=1'>Books</Link>
             <a className="ml-5">Computers & Accessories</a>
           </nav>
 

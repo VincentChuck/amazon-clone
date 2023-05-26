@@ -99,16 +99,19 @@ export default function Products() {
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
-      <button
-        onClick={handlePreviousPage}
-        disabled={pageParam === 1 || isFetching}
-      >
-        Prev page
-      </button>
-      <span>Page {pageParam}</span>
-      <button onClick={handleNextPage} disabled={isPreviousData || !hasMore}>
-        Next page
-      </button>
+
+      <div className='flex justify-center px-3 gap-4'>
+        <button
+          onClick={handlePreviousPage}
+          disabled={pageParam === 1 || isFetching}
+        >
+          Prev page
+        </button>
+        <span>Page {pageParam}</span>
+        <button onClick={handleNextPage} disabled={isPreviousData || !hasMore}>
+          Next page
+        </button>
+      </div>
 
       <div className="mx-3 flex justify-center py-4">
         <div className="flex flex-grow justify-center lg:max-w-[1800px]">
