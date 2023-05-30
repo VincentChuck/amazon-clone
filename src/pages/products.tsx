@@ -91,7 +91,7 @@ export default function Products() {
   }
 
   return !pageLoaded ? null : (
-    <div className="items-center">
+    <div>
       <SortBar
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}

@@ -37,7 +37,7 @@ export default function Product() {
   if (!product) return <div className="text-center">Product not found ☹️</div>;
 
   return !pageLoaded ? null : (
-    <div className="my-8 grid grid-cols-1 px-3 md:grid-cols-3">
+    <div className="my-8 grid grid-cols-1 px-3 md:max-w-[1500px] md:grid-cols-[384px_auto_244px]">
       <h1 className="my-2 text-lg font-bold md:hidden">{product.name}</h1>
       <div className="flex shrink-0 justify-center">
         <Image
