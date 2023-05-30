@@ -24,6 +24,7 @@ async function seed() {
   const booksCategory = await prisma.productCategory.create({
     data: {
       categoryName: 'Books',
+      id: 1,
     },
   });
 

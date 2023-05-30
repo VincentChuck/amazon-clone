@@ -83,11 +83,11 @@ function Layout({ children }: Props) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main
+      <div
         className={`${emberFont.variable} flex min-h-screen flex-col font-ember`}
       >
         {/* navbar container */}
-        <section className="bg-slate-800 text-white md:bg-slate-900">
+        <header className="bg-slate-800 text-white md:bg-slate-900">
           {/* logo bar */}
           <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between md:h-16 md:px-2">
             {/* logo bar left */}
@@ -202,7 +202,9 @@ function Layout({ children }: Props) {
             <a className="ml-5">Best Sellers</a>
             <a className="ml-5">Deals</a>
             <a className="ml-5">Amazon Basics</a>
-            <Link className="ml-5" href='/products?cid=1'>Books</Link>
+            <Link className="ml-5" href="/products?cid=1">
+              Books
+            </Link>
             <a className="ml-5">Computers & Accessories</a>
           </nav>
 
@@ -211,9 +213,9 @@ function Layout({ children }: Props) {
             <Icon name="location" strokeWidth={1.5} className="h-5 w-5" />
             <span className="ml-1 text-sm">Deliver to Seattle 98121</span>
           </section>
-        </section>
+        </header>
 
-        <div className="flex-grow">{children}</div>
+        <main className="flex-grow">{children}</main>
 
         {/* bottom nav */}
         <section className="flex flex-col text-white">
@@ -273,7 +275,7 @@ function Layout({ children }: Props) {
             © 1996-2023, Amazon.com, Inc. or its affiliates
           </div>
         </section>
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { productsResponse } from '~/types';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type ProductsProps = {
   products: productsResponse;
@@ -18,11 +19,11 @@ export default function ProductList({ products }: ProductsProps) {
                   key={product.id}
                   className="flex flex-col items-start outline"
                 >
-                  <a href={productLink}>
+                  <Link href={productLink}>
                     <h1>{product.name}</h1>
-                  </a>
+                  </Link>
                   <div className="relative h-56 w-56">
-                    <a href={productLink}>
+                    <Link href={productLink}>
                       <Image
                         alt={`${product.name} product image`}
                         src={product.productImage}
@@ -30,7 +31,7 @@ export default function ProductList({ products }: ProductsProps) {
                         sizes="224px"
                         className="object-contain"
                       />
-                    </a>
+                    </Link>
                   </div>
                   <div>{product.price}</div>
                   <div>{product.option}</div>

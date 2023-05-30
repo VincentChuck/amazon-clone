@@ -91,7 +91,7 @@ export default function Products() {
   }
 
   return !pageLoaded ? null : (
-    <main className="items-center">
+    <div className="items-center">
       <SortBar
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}
@@ -100,7 +100,7 @@ export default function Products() {
         setSortBy={setSortBy}
       />
 
-      <div className='flex justify-center px-3 gap-4'>
+      <div className="flex justify-center gap-4 px-3">
         <button
           onClick={handlePreviousPage}
           disabled={pageParam === 1 || isFetching}
@@ -114,11 +114,11 @@ export default function Products() {
       </div>
 
       <div className="mx-3 flex justify-center py-4">
-        <div className="flex flex-grow justify-center lg:max-w-[1800px]">
+        <div className="flex flex-grow justify-center md:max-w-[1800px]">
           <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
           <ProductList products={products} />
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "pnpm run open-browser && next dev -p 3030",
-    "open-browser": "open http://localhost:3030",
+    "dev": "next dev -p 3030",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
