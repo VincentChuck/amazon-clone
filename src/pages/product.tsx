@@ -40,14 +40,13 @@ export default function Product() {
     <div className="flex justify-center">
       <div className="my-8 grid grid-cols-1 px-3 md:max-w-[1500px] md:grid-cols-[384px_auto_244px]">
         <h1 className="my-2 text-lg font-bold md:hidden">{product.name}</h1>
-        <div className="flex shrink-0 justify-center">
+        <div className="relative h-72 w-72 md:h-96 md:w-96">
           <Image
             alt={`${product.name} product image`}
             src={product.productImage}
-            width="0"
-            height="0"
+            fill
             sizes="100vh"
-            className="h-72 w-auto md:h-auto md:w-96"
+            className="object-contain"
           />
         </div>
 
