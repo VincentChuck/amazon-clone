@@ -37,10 +37,10 @@ export default function Product() {
   if (!product) return <div className="text-center">Product not found ☹️</div>;
 
   return !pageLoaded ? null : (
-    <div className="flex justify-center">
-      <div className="my-8 grid grid-cols-1 px-3 md:max-w-[1500px] md:grid-cols-[384px_auto_244px]">
-        <h1 className="my-2 text-lg font-bold md:hidden">{product.name}</h1>
-        <div className="relative h-72 w-72 md:h-96 md:w-96">
+    <div className="flex w-screen justify-center">
+      <div className="grid w-full grid-cols-1 p-3 md:max-w-[1500px] md:grid-cols-[384px_auto_244px] md:py-8">
+        <h1 className="my-2 text-sm md:hidden">{product.name}</h1>
+        <div className="relative h-72 w-full bg-gray-100 md:h-96 md:w-96">
           <Image
             alt={`${product.name} product image`}
             src={product.productImage}
@@ -50,10 +50,10 @@ export default function Product() {
           />
         </div>
 
-        <div className="md:flex-grow">
+        <div className="hidden flex-grow px-2 md:block">
           <h1 className="my-2 text-lg font-bold">{product.name}</h1>
           <div className="flex items-center">
-            <div className="m-2 hidden flex-grow p-1 outline md:block">
+            <div className="m-2 flex-grow p-1">
               <div>{product.productItems.length}</div>
               <span className="font-bold">About this item</span>
               <div>{product.description}</div>
@@ -61,13 +61,15 @@ export default function Product() {
           </div>
         </div>
 
-        <div className="m-2 flex flex-col p-1 outline outline-gray-300">
+        <div className="flex flex-col px-4 py-8 outline-1 outline-gray-300 md:outline">
           <div>{product.productItems.length}</div>
           <div className="items-center">
-            <button className="my-2 w-full rounded-lg outline">
+            <button className="my-2 w-full rounded-3xl py-2 text-lg outline md:py-1 md:text-base">
               Add to cart
             </button>
-            <button className="my-2 w-full rounded-lg outline">Buy now</button>
+            <button className="my-2 w-full rounded-3xl py-2 text-lg outline md:py-1 md:text-base">
+              Buy now
+            </button>
           </div>
         </div>
       </div>
