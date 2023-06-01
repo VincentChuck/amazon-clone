@@ -259,10 +259,14 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input: { id } }) => {
-      const product = await ctx.prisma.product.findUnique({
+      if (!id) return;
+      const product = await ctx.prisma.product.findUniqueOrThrow({
         where: { id },
         include: {
           productItems: {
+            orderBy: {
+              price: 'desc',
+            },
             include: {
               variationOption: {
                 include: {
