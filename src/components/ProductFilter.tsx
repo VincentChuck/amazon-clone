@@ -13,8 +13,8 @@ export default function ProductFilter({
   keyword,
   categoryId: selectedCategoryId,
 }: ProductsProps) {
-  const keywordParam = keyword ? `k=${keyword}` : '';
-  const baseUrl = `/products?${keywordParam}`;
+  const keywordParam = keyword ? `?k=${keyword}` : '';
+  const baseUrl = `/products${keywordParam}`;
 
   return (
     <div>

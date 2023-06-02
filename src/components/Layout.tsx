@@ -215,7 +215,7 @@ function Layout({ children }: Props) {
           </section>
         </header>
 
-        <main className="flex-grow">{children}</main>
+        <main className="flex flex-grow">{children}</main>
 
         {/* bottom nav */}
         <section className="flex flex-col text-white">

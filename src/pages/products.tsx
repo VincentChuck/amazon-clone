@@ -91,7 +91,7 @@ export default function Products() {
   }
 
   return !pageLoaded ? null : (
-    <div>
+    <div className="flex-grow">
       <SortBar
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}

@@ -11,6 +11,8 @@ export default function Product() {
   const { pid } = router.query;
   const productId = parseRouterParam(pid);
 
+  // const [itemIndex, setItemIndex] = useState<number>();
+
   useEffect(() => {
     if (!router.isReady) return;
     setPageLoaded(true);
@@ -34,13 +36,16 @@ export default function Product() {
   if (isError)
     return <div className="text-center">Error fetching product ❌</div>;
 
-  if (!product) return <div className="text-center">Product not found ☹️</div>;
+  const productItems = product?.productItems;
+
+  if (!product || !productItems || productItems.length === 0)
+    return <div className="text-center">Product not found ☹️</div>;
 
   return !pageLoaded ? null : (
-    <div className="flex w-screen justify-center">
-      <div className="grid w-full grid-cols-1 p-3 md:max-w-[1500px] md:grid-cols-[384px_auto_244px] md:py-8">
+    <div className="flex w-screen flex-grow justify-center">
+      <div className="grid h-full w-full grid-cols-1 p-3 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
         <h1 className="my-2 text-sm md:hidden">{product.name}</h1>
-        <div className="relative h-72 w-full bg-gray-100 md:h-96 md:w-96">
+        <div className="relative h-96 w-full bg-gray-100 md:aspect-square md:h-auto">
           <Image
             alt={`${product.name} product image`}
             src={product.productImage}
