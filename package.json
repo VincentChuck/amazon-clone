@@ -7,7 +7,10 @@
     "dev": "next dev -p 3030",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start -p 3030"
+    "start": "next start -p 3030",
+    "db:push:dev": "pnpm exec dotenv -e .env.development -- prisma db push",
+    "db:seed:dev": "pnpm exec dotenv -e .env.development -- prisma db seed",
+    "db:studio:dev": "pnpm exec dotenv -e .env.development -- prisma studio"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.6",

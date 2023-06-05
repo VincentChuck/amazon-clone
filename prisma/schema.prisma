@@ -87,8 +87,9 @@ model ProductItem {
 model VariationOption {
   id           String        @id @default(cuid())
   productItems ProductItem[]
-  value        String        @unique
-  variations   Variation[]
+  value        String
+  variation    Variation     @relation(fields: [variationId], references: [id])
+  variationId  String
 }
 
 model Variation {

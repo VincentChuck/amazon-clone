@@ -270,7 +270,7 @@ export const productRouter = createTRPCRouter({
             include: {
               variationOption: {
                 include: {
-                  variations: true,
+                  variation: true,
                 },
               },
             },
