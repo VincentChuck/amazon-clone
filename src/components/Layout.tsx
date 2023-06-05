@@ -8,6 +8,8 @@ import localFont from 'next/font/local';
 import { type SyntheticEvent } from 'react';
 import Link from 'next/link';
 
+const TRADEMARK = '© 1996-2023, (Not) Amazon.com, Inc. or its affiliates';
+
 const emberFont = localFont({
   variable: '--font-ember',
   src: [
@@ -265,14 +267,12 @@ function Layout({ children }: Props) {
               <span>Already a customer? </span>
               <a className="font-bold text-white">Sign in</a>
             </div>
-            <div className="text-xs md:hidden">
-              © 1996-2023, Amazon.com, Inc. or its affiliates
-            </div>
+            <div className="text-xs md:hidden">{TRADEMARK}</div>
           </div>
 
           {/* bottom copyright notice */}
           <div className="hidden h-12 items-center justify-center bg-gray-900 text-xs md:flex">
-            © 1996-2023, Amazon.com, Inc. or its affiliates
+            {TRADEMARK}
           </div>
         </section>
       </div>
