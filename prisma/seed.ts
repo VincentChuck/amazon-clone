@@ -14,8 +14,8 @@ async function seed() {
 
   await prisma.$transaction([
     deleteProductItem,
-    deleteVariation,
     deleteVariationOption,
+    deleteVariation,
     deleteProduct,
     deleteProductCategory,
   ]);
@@ -78,7 +78,7 @@ async function seed() {
   const bookFormatOptionsArr = bookFormatOptions.variationOptions;
 
   // Create the products
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 100; i++) {
     const randomBooksCat = faker.helpers.arrayElement(booksCatIdArr);
     const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
 

@@ -1,3 +1,4 @@
+import { createContext, useContext } from 'react';
 import Link from 'next/link';
 import Icon from '~/components/Icon';
 import { CategoryTree } from '~/types';
@@ -8,43 +9,51 @@ type ProductsProps = {
   categoryId: number;
 };
 
+type HrefObj = {
+  pathname: string;
+  query: {
+    k?: string;
+    cid?: number;
+  };
+};
+
+const HrefContext = createContext<HrefObj>({
+  pathname: '/products',
+  query: {},
+});
+
 export default function ProductFilter({
   mergedCategoryTrees,
   keyword,
   categoryId: selectedCategoryId,
 }: ProductsProps) {
-  const keywordParam = keyword ? `?k=${keyword}` : '';
-  const baseUrl = `/products${keywordParam}`;
+  const hrefObj = {
+    pathname: '/products',
+    query: {
+      ...(keyword && { k: keyword }),
+    },
+  };
 
   return (
-    <div>
+    <HrefContext.Provider value={hrefObj}>
       <div className="hidden w-72 flex-shrink-0 flex-col whitespace-nowrap px-1 pr-3 text-sm outline md:flex">
         <span className="mb-2 font-bold">Department</span>
         {!!selectedCategoryId && (
-          <CategoryItem
-            name="Any Department"
-            url={baseUrl}
-            bold={false}
-            goUp={true}
-          />
+          <CategoryItem name="Any Department" id={0} bold={false} goUp={true} />
         )}
-        <CategoryTree
-          {...{ mergedCategoryTrees, baseUrl, selectedCategoryId }}
-        />
+        <CategoryTree {...{ mergedCategoryTrees, selectedCategoryId }} />
       </div>
-    </div>
+    </HrefContext.Provider>
   );
 }
 
 type CategoryTreeProps = {
   mergedCategoryTrees: CategoryTree[];
-  baseUrl: string;
   selectedCategoryId: number;
 };
 
 function CategoryTree({
   mergedCategoryTrees,
-  baseUrl,
   selectedCategoryId,
 }: CategoryTreeProps) {
   return (
@@ -54,7 +63,6 @@ function CategoryTree({
           <Category
             key={categoryTree.id}
             categoryTree={categoryTree}
-            baseUrl={baseUrl}
             selectedCategoryId={selectedCategoryId}
           />
         );
@@ -65,15 +73,10 @@ function CategoryTree({
 
 type CategoryProps = {
   categoryTree: CategoryTree;
-  baseUrl: string;
   selectedCategoryId: number;
 };
 
-function Category({
-  categoryTree,
-  baseUrl,
-  selectedCategoryId,
-}: CategoryProps) {
+function Category({ categoryTree, selectedCategoryId }: CategoryProps) {
   const bold = categoryTree.id === selectedCategoryId;
   const goUp =
     !!selectedCategoryId &&
@@ -82,43 +85,45 @@ function Category({
     categoryTree.children.length > 0 &&
     selectedCategoryId !== categoryTree.id;
   return (
-    <li key={categoryTree.id}>
+    <li>
       <CategoryItem
         {...{
           name: categoryTree.name,
-          url: `${baseUrl}&cid=${categoryTree.id}`,
+          id: categoryTree.id,
           bold,
           goUp,
         }}
       />
-      <ul className="pl-2">
-        {categoryTree.children &&
-          categoryTree.children.map((category) => {
+      {categoryTree.children && categoryTree.children.length > 0 && (
+        <ul className="pl-2">
+          {categoryTree.children.map((category) => {
             return (
               <Category
                 key={category.id}
                 categoryTree={category}
-                baseUrl={baseUrl}
                 selectedCategoryId={selectedCategoryId}
               />
             );
           })}
-      </ul>
+        </ul>
+      )}
     </li>
   );
 }
 
 type CategoryItemProps = {
   name: string;
-  url: string;
+  id: number;
   bold: boolean;
   goUp: boolean;
 };
 
-function CategoryItem({ name, url, bold, goUp }: CategoryItemProps) {
+function CategoryItem({ name, id, bold, goUp }: CategoryItemProps) {
+  const hrefObj = useContext(HrefContext);
+  if (id) hrefObj.query.cid = id;
   if (bold) return <span className="font-bold">{name}</span>;
   return (
-    <Link href={url}>
+    <Link href={hrefObj}>
       {goUp && (
         <Icon
           name="chevron_left"
