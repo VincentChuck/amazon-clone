@@ -8,13 +8,29 @@ type Props = {
 export default function ProductDetails({ product }: Props) {
   if (!product) return <div className="text-center">Product not found ☹️</div>;
 
-  const options = product.productItems.map((item) => {
+  const variationRaw = product.productItems.map((item) => {
     const variation = item.variationOption.variation.variationName;
     const variationOption = item.variationOption.value;
     return { variation, variationOption };
   });
 
-  console.log(options);
+  const variations = [...new Set(variationRaw.map((item) => item.variation))];
+
+  type VariationArr = {
+    variation: string;
+    options: string[];
+  }[];
+
+  const variationArr: VariationArr = [];
+
+  variations.forEach((variation) => {
+    variationArr.push({
+      variation,
+      options: variationRaw
+        .filter((item) => item.variation === variation)
+        .map((item) => item.variationOption),
+    });
+  });
 
   return (
     <div className="grid h-full w-full grid-cols-1 p-3 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
@@ -36,6 +52,22 @@ export default function ProductDetails({ product }: Props) {
             <div>{product.productItems.length}</div>
             <span className="font-bold">About this item</span>
             <div>{product.description}</div>
+            {variationArr.map((variation) => {
+              return (
+                <div key={variation.variation}>
+                  <span className="font-bold">{variation.variation}</span>
+                  <div>
+                    {variation.options.map((option) => {
+                      return (
+                        <div key={`${variation.variation}-${option}`}>
+                          {option}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
