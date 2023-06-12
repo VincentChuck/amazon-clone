@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import { parseRouterParam } from '~/utils/helpers';
 import ProductDetails from '~/components/ProductDetails';
+import type { ProductItemResponse, VariationArr } from '~/types';
 
 export default function Product() {
   const router = useRouter();
@@ -41,9 +42,31 @@ export default function Product() {
   if (!product || !productItems || productItems.length === 0)
     return <div className="text-center">Product not found ☹️</div>;
 
+  // product items are sorted by price desc
+  const defaultActive = productItems.at(-1) as ProductItemResponse;
+
+  const variationRaw = product.productItems.map((item) => {
+    const variation = item.variationOption.variation.variationName;
+    const variationOption = item.variationOption;
+    return { variation, variationOption };
+  });
+
+  const variations = [...new Set(variationRaw.map((item) => item.variation))];
+
+  const variationArr: VariationArr = [];
+
+  variations.forEach((variation) => {
+    variationArr.push({
+      variation,
+      options: variationRaw
+        .filter((item) => item.variation === variation)
+        .map((item) => item.variationOption),
+    });
+  });
+
   return !pageLoaded ? null : (
     <div className="flex w-screen flex-grow justify-center">
-      <ProductDetails product={product} />
+      <ProductDetails {...{ product, variationArr, defaultActive }} />
     </div>
   );
 }

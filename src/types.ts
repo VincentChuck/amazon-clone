@@ -4,7 +4,15 @@ import type { AppRouter } from './server/api/root';
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
 export type productsResponse = RouterOutput['product']['getBatch']['products'];
-export type productResponse = RouterOutput['product']['get'];
+
+type productResponseRaw = RouterOutput['product']['get'];
+export type productResponse = NonNullable<productResponseRaw>;
+export type ProductItemResponse = productResponse['productItems'][number];
+
+export type VariationArr = {
+  variation: string;
+  options: ProductItemResponse['variationOption'][];
+}[];
 
 export type CategoryTree = {
   id: number;
