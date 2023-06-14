@@ -29,7 +29,7 @@ export default function ProductDetails({
   }
 
   return (
-    <div className="grid h-full w-full grid-cols-1 p-3 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
+    <div className="grid h-full w-full grid-cols-1 p-3.5 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
       <h1 className="my-2 text-sm text-[#565959] md:hidden">{product.name}</h1>
       <div className="relative h-96 w-full bg-gray-100 md:aspect-square md:h-auto">
         <Image
@@ -41,10 +41,10 @@ export default function ProductDetails({
         />
       </div>
 
-      <div className="hidden flex-grow px-2 md:block">
+      <div className="hidden flex-grow p-1 px-2 md:block">
         <h1 className="my-2 text-2xl">{product.name}</h1>
         <div className="flex items-center">
-          <div className="m-2 flex-grow p-1">
+          <div className="m-2 flex-grow">
             <div className="flex align-top text-sm">
               <span>$</span>
               <span className="relative -top-1 text-3xl">
@@ -86,7 +86,43 @@ export default function ProductDetails({
         </div>
       </div>
 
-      <div className="flex h-fit flex-col px-4 py-8 outline-1 outline-gray-300 md:outline">
+      <div className="md:hidden">
+        {variationArr.map((variation) => {
+          return (
+            <div key={variation.variation} className="my-4">
+              <span className="text-sm">
+                {variation.variation}:{' '}
+                <span className="font-bold">
+                  {active.variationOption.value}
+                </span>
+              </span>
+              <div className="flex gap-2">
+                {variation.options.map((option) => {
+                  const isActive = active.variationOptionId === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      className={`${
+                        isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
+                      } my-2 h-24 w-36 items-start rounded-md p-1 text-sm outline`}
+                      onClick={() => setActiveVariation(option.id)}
+                    >
+                      <div className="flex flex-col p-0">
+                        <div className="bg-[#FCF8F7] font-bold">
+                          {option.value}
+                        </div>
+                        <div>In Stock</div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="my-3 flex h-fit flex-col px-4 outline-1 outline-gray-300 md:py-8 md:outline">
         <div className="flex align-top text-sm">
           <span>$</span>
           <span className="relative -top-1 text-3xl">
@@ -106,11 +142,11 @@ export default function ProductDetails({
         </div>
         <div className="text-lg text-[#007600]">In Stock</div>
         <div className="items-center">
-          <button className="my-2 w-full rounded-3xl bg-[#FFD814] py-2 text-lg outline outline-1 outline-[#FCD200] md:py-1 md:text-base">
-            Add to cart
+          <button className="my-2 h-11 w-full rounded-3xl bg-[#FFD814] py-2 text-base outline outline-1 outline-[#FCD200] md:h-8 md:py-1 md:text-sm">
+            Add to Cart
           </button>
-          <button className="my-2 w-full rounded-3xl bg-[#FFA41C] py-2 text-lg outline outline-1 outline-[#FF8F00] md:py-1 md:text-base">
-            Buy now
+          <button className="my-2 h-11 w-full rounded-3xl bg-[#FFA41C] py-2 text-base outline outline-1 outline-[#FF8F00] md:h-8 md:py-1 md:text-sm">
+            Buy Now
           </button>
         </div>
       </div>
