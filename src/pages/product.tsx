@@ -48,7 +48,8 @@ export default function Product() {
   const variationRaw = product.productItems.map((item) => {
     const variation = item.variationOption.variation.variationName;
     const variationOption = item.variationOption;
-    return { variation, variationOption };
+    const price = item.price;
+    return { variation, variationOption, price };
   });
 
   const variations = [...new Set(variationRaw.map((item) => item.variation))];
@@ -60,7 +61,9 @@ export default function Product() {
       variation,
       options: variationRaw
         .filter((item) => item.variation === variation)
-        .map((item) => item.variationOption),
+        .map((item) => {
+          return { ...item.variationOption, price: item.price };
+        }),
     });
   });
 

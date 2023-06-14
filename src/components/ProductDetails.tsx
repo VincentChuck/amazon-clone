@@ -31,7 +31,7 @@ export default function ProductDetails({
   return (
     <div className="grid h-full w-full grid-cols-1 p-3.5 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
       <h1 className="my-2 text-sm text-[#565959] md:hidden">{product.name}</h1>
-      <div className="relative h-96 w-full bg-gray-100 md:aspect-square md:h-auto">
+      <div className="relative h-96 w-full md:aspect-square md:h-auto md:bg-gray-100">
         <Image
           alt={`${product.name} product image`}
           src={product.productImage}
@@ -89,29 +89,38 @@ export default function ProductDetails({
       <div className="md:hidden">
         {variationArr.map((variation) => {
           return (
-            <div key={variation.variation} className="my-4">
-              <span className="text-sm">
+            <div key={variation.variation} className="mt-4">
+              <span>
                 {variation.variation}:{' '}
                 <span className="font-bold">
                   {active.variationOption.value}
                 </span>
               </span>
-              <div className="flex gap-2">
-                {variation.options.map((option) => {
+              <div className="flex overflow-x-auto py-4 pl-[2px]">
+                {[...variation.options].reverse().map((option) => {
                   const isActive = active.variationOptionId === option.id;
                   return (
                     <button
                       key={option.id}
                       className={`${
                         isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
-                      } my-2 h-24 w-36 items-start rounded-md p-1 text-sm outline`}
+                      } my-2 mr-4 flex h-28 w-36 shrink-0 flex-col rounded-md text-sm outline outline-1`}
                       onClick={() => setActiveVariation(option.id)}
                     >
-                      <div className="flex flex-col p-0">
-                        <div className="bg-[#FCF8F7] font-bold">
-                          {option.value}
+                      <div className="flex w-full grow flex-col text-left">
+                        <div className="flex h-10 items-center bg-[#FCF8F7] p-2 font-bold">
+                          <span>{option.value}</span>
                         </div>
-                        <div>In Stock</div>
+                        <div className="flex grow flex-col p-2 ">
+                          <div className="flex align-top text-xs">
+                            <span>$</span>
+                            <span className="relative -top-1 text-base">
+                              {option.price.toString().split('.')[0]}
+                            </span>
+                            <span>{option.price.toString().split('.')[1]}</span>
+                          </div>
+                          <div>In Stock</div>
+                        </div>
                       </div>
                     </button>
                   );
@@ -122,7 +131,7 @@ export default function ProductDetails({
         })}
       </div>
 
-      <div className="my-3 flex h-fit flex-col px-4 outline-1 outline-gray-300 md:py-8 md:outline">
+      <div className="my-3 flex h-fit flex-col outline-1 outline-gray-300 md:px-4 md:py-8 md:outline">
         <div className="flex align-top text-sm">
           <span>$</span>
           <span className="relative -top-1 text-3xl">
@@ -149,6 +158,11 @@ export default function ProductDetails({
             Buy Now
           </button>
         </div>
+      </div>
+
+      <div className="my-3 md:hidden">
+        <span className="text-lg font-bold">Features & details</span>
+        <div>{product.description}</div>
       </div>
     </div>
   );

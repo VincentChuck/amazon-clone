@@ -1,5 +1,6 @@
 import type { inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from './server/api/root';
+import type { Decimal } from '@prisma/client/runtime';
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
@@ -11,7 +12,9 @@ export type ProductItemResponse = productResponse['productItems'][number];
 
 export type VariationArr = {
   variation: string;
-  options: ProductItemResponse['variationOption'][];
+  options: Array<
+    ProductItemResponse['variationOption'] & Record<'price', Decimal>
+  >;
 }[];
 
 export type CategoryTree = {
