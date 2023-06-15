@@ -1,13 +1,18 @@
-import router from 'next/router';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 // import { signIn, signOut, useSession } from 'next-auth/react';
 // import { api } from '~/utils/api';
 
 export default function Home() {
-  void router.push({
-    pathname: '/products',
-    query: { cid: 1 },
+  const router = useRouter();
+
+  useEffect(() => {
+    void router.push({ pathname: '/products', query: { cid: 1 } }, undefined, {
+      shallow: true,
+    });
   });
-  // return <div>Nothing to see here yet...</div>;
+
+  return <div>Nothing to see here yet...</div>;
 }
 
 // const AuthShowcase: React.FC = () => {
