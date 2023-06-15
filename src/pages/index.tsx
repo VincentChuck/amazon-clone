@@ -1,12 +1,14 @@
-import { type NextPage } from 'next';
+import router from 'next/router';
 // import { signIn, signOut, useSession } from 'next-auth/react';
 // import { api } from '~/utils/api';
 
-const Home: NextPage = () => {
-  return <div>Nothing to see here yet...</div>;
-};
-
-export default Home;
+export default function Home() {
+  void router.push({
+    pathname: '/products',
+    query: { cid: 1 },
+  });
+  // return <div>Nothing to see here yet...</div>;
+}
 
 // const AuthShowcase: React.FC = () => {
 //   const { data: sessionData } = useSession();
