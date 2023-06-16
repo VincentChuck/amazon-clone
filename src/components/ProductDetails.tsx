@@ -100,8 +100,8 @@ export default function ProductDetails({
                         <button
                           key={option.id}
                           className={`${
-                            isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
-                          } p-1 text-sm font-bold outline outline-1`}
+                            isActive ? 'border-[#FFA41C]' : 'border-gray-300'
+                          } border-1 border p-1 text-sm font-bold`}
                           onClick={() => setActiveVariation(option.id)}
                         >
                           {option.value}
@@ -128,10 +128,7 @@ export default function ProductDetails({
                   {active.variationOption.value}
                 </span>
               </span>
-              <div
-                id="mobile-option-div"
-                className="flex overflow-x-auto py-4 pl-[2px]"
-              >
+              <div id="mobile-option-div" className="flex overflow-x-auto py-4">
                 {[...variation.options].reverse().map((option) => {
                   const isActive = active.variationOptionId === option.id;
                   return (
@@ -139,8 +136,8 @@ export default function ProductDetails({
                       key={option.id}
                       id={`mobile-option-${option.id}`}
                       className={`${
-                        isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
-                      } my-2 mr-4 flex h-28 w-36 shrink-0 flex-col rounded-md text-sm outline outline-1`}
+                        isActive ? 'border-[#FFA41C]' : 'border-gray-300'
+                      } border-1 my-2 mr-4 flex h-28 w-36 shrink-0 flex-col rounded-md border text-sm`}
                       onClick={mobileSetActive(option.id)}
                     >
                       <div className="flex w-full grow flex-col text-left">
@@ -167,7 +164,7 @@ export default function ProductDetails({
         })}
       </div>
 
-      <div className="my-3 flex h-fit flex-col outline-1 outline-gray-300 md:px-4 md:py-8 md:outline">
+      <div className="border-1 my-3 flex h-fit flex-col border-gray-300 md:border md:px-4 md:py-8">
         <div className="flex align-top text-sm">
           <span>$</span>
           <span className="relative -top-1 text-3xl">
@@ -187,10 +184,10 @@ export default function ProductDetails({
         </div>
         <div className="text-lg text-[#007600]">In Stock</div>
         <div className="items-center">
-          <button className="my-2 h-11 w-full rounded-3xl bg-[#FFD814] py-2 text-base outline outline-1 outline-[#FCD200] md:h-8 md:py-1 md:text-sm">
+          <button className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FCD200] bg-[#FFD814] py-2 text-base md:h-8 md:py-1 md:text-sm">
             Add to Cart
           </button>
-          <button className="my-2 h-11 w-full rounded-3xl bg-[#FFA41C] py-2 text-base outline outline-1 outline-[#FF8F00] md:h-8 md:py-1 md:text-sm">
+          <button className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FF8F00] bg-[#FFA41C] py-2 text-base md:h-8 md:py-1 md:text-sm">
             Buy Now
           </button>
         </div>

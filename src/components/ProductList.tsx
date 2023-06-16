@@ -17,7 +17,7 @@ export default function ProductList({ products }: ProductsProps) {
               return (
                 <div
                   key={product.id}
-                  className="mb-2 flex h-60 items-start outline outline-1 outline-[#F5F5F5]"
+                  className="border-1 mb-2 flex h-60 items-start border border-[#F5F5F5]"
                 >
                   <div className="relative h-full w-[42%] shrink-0 bg-[#F8F8F8] md:min-w-[200px] md:max-w-[20%] md:grow">
                     <Link href={productLink}>

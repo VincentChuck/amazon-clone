@@ -83,7 +83,12 @@ async function seed() {
   // Create the products
   for (let i = 0; i < 100; i++) {
     const randomBooksCat = faker.helpers.arrayElement(booksCatIdArr);
-    const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
+    // const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
+    const randomBookName = faker.lorem
+      .words({ min: 3, max: 38 })
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
     const product: Omit<Product, 'id'> = {
       name: randomBookName,
