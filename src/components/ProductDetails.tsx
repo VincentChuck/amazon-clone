@@ -32,10 +32,30 @@ export default function ProductDetails({
     return () => {
       const container = document.getElementById('mobile-option-div');
       const element = document.getElementById(`mobile-option-${variationId}`);
-      container?.scrollTo({
-        left: element?.offsetLeft ? element?.offsetLeft - 16 : 0,
-        behavior: 'smooth',
-      });
+
+      if (container && element) {
+        const containerWidth = container.clientWidth;
+        const elementWidth = element.clientWidth;
+
+        const containerXScroll = container.scrollLeft;
+        const elementXPos = element.offsetLeft - 16;
+
+        if (elementXPos < containerXScroll) {
+          container.scrollTo({
+            left: elementXPos,
+            behavior: 'smooth',
+          });
+        } else if (
+          elementXPos >
+          containerXScroll + containerWidth - elementWidth
+        ) {
+          container.scrollTo({
+            left: elementXPos + elementWidth - containerWidth + 4,
+            behavior: 'smooth',
+          });
+        }
+      }
+
       setActiveVariation(variationId);
     };
   }
