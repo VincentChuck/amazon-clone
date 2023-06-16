@@ -58,6 +58,9 @@ async function seed() {
           { value: 'Kindle' },
           { value: 'Hardcover' },
           { value: 'Paperback' },
+          { value: 'KindleSpecial' },
+          { value: 'HardcoverSpecial' },
+          { value: 'PaperbackSpecial' },
         ],
       },
       ProductCategories: {
@@ -84,7 +87,7 @@ async function seed() {
 
     const product: Omit<Product, 'id'> = {
       name: randomBookName,
-      description: faker.commerce.productDescription(),
+      description: faker.lorem.paragraphs(5),
       categoryId: randomBooksCat,
       productImage: faker.helpers.arrayElement([
         '/product_images/sapiens.jpg',
