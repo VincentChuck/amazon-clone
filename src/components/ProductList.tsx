@@ -9,7 +9,7 @@ type ProductsProps = {
 export default function ProductList({ products }: ProductsProps) {
   return (
     <section className="mx-1 w-full flex-grow md:mx-4">
-      <h1 className="text-xl font-bold">Results</h1>
+      <h1 className="mb-1 text-xl font-bold">Results</h1>
       <div>
         {products && products.length
           ? products.map((product) => {
@@ -32,7 +32,9 @@ export default function ProductList({ products }: ProductsProps) {
                   </div>
                   <div className="flex flex-col py-2 pl-2 pr-1">
                     <Link href={productLink}>
-                      <span className="text-lg">{product.name}</span>
+                      <span className="line-clamp-3 text-lg">
+                        {product.name}
+                      </span>
                     </Link>
                     <div className="my-2 flex align-top text-sm">
                       <span>$</span>
