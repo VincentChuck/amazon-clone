@@ -93,7 +93,7 @@ export default function ProductDetails({
                       {active.variationOption.value}
                     </span>
                   </span>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-x-3 gap-y-2 py-2">
                     {variation.options.map((option) => {
                       const isActive = active.variationOptionId === option.id;
                       return (
@@ -101,7 +101,7 @@ export default function ProductDetails({
                           key={option.id}
                           className={`${
                             isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
-                          } my-2 p-1 text-sm font-bold outline outline-1`}
+                          } p-1 text-sm font-bold outline outline-1`}
                           onClick={() => setActiveVariation(option.id)}
                         >
                           {option.value}
