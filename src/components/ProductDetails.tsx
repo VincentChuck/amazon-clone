@@ -28,6 +28,18 @@ export default function ProductDetails({
     );
   }
 
+  function mobileSetActive(variationId: string) {
+    return () => {
+      const container = document.getElementById('mobile-option-div');
+      const element = document.getElementById(`mobile-option-${variationId}`);
+      container?.scrollTo({
+        left: element?.offsetLeft ? element?.offsetLeft - 16 : 0,
+        behavior: 'smooth',
+      });
+      setActiveVariation(variationId);
+    };
+  }
+
   return (
     <div className="grid h-full w-full grid-cols-1 p-3.5 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
       <h1 className="my-2 text-sm text-[#565959] md:hidden">{product.name}</h1>
@@ -96,25 +108,29 @@ export default function ProductDetails({
                   {active.variationOption.value}
                 </span>
               </span>
-              <div className="flex overflow-x-auto py-4 pl-[2px]">
+              <div
+                id="mobile-option-div"
+                className="flex overflow-x-auto py-4 pl-[2px]"
+              >
                 {[...variation.options].reverse().map((option) => {
                   const isActive = active.variationOptionId === option.id;
                   return (
                     <button
                       key={option.id}
+                      id={`mobile-option-${option.id}`}
                       className={`${
                         isActive ? 'outline-[#FFA41C]' : 'outline-gray-300'
                       } my-2 mr-4 flex h-28 w-36 shrink-0 flex-col rounded-md text-sm outline outline-1`}
-                      onClick={() => setActiveVariation(option.id)}
+                      onClick={mobileSetActive(option.id)}
                     >
                       <div className="flex w-full grow flex-col text-left">
                         <div className="flex h-10 items-center bg-[#FCF8F7] p-2 font-bold">
                           <span>{option.value}</span>
                         </div>
                         <div className="flex grow flex-col p-2 ">
-                          <div className="flex align-top text-xs">
+                          <div className="flex align-top text-[10px]">
                             <span>$</span>
-                            <span className="relative -top-1 text-base">
+                            <span className="relative -top-[2px] text-lg">
                               {option.price.toString().split('.')[0]}
                             </span>
                             <span>{option.price.toString().split('.')[1]}</span>
