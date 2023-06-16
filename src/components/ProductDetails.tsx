@@ -137,14 +137,14 @@ export default function ProductDetails({
                       id={`mobile-option-${option.id}`}
                       className={`${
                         isActive ? 'border-[#FFA41C]' : 'border-gray-300'
-                      } border-1 my-2 mr-4 flex h-28 w-36 shrink-0 flex-col rounded-md border text-sm`}
+                      } border-1 my-2 mr-4 flex h-full w-36 shrink-0 flex-col rounded-md border text-sm`}
                       onClick={mobileSetActive(option.id)}
                     >
                       <div className="flex w-full grow flex-col text-left">
-                        <div className="flex h-10 items-center bg-[#FCF8F7] p-2 font-bold">
+                        <div className="flex h-10 items-center rounded-t-md bg-[#FCF8F7] p-2 font-bold">
                           <span>{option.value}</span>
                         </div>
-                        <div className="flex grow flex-col p-2 ">
+                        <div className="flex h-20 grow flex-col p-2">
                           <div className="flex align-top text-[10px]">
                             <span>$</span>
                             <span className="relative -top-[2px] text-lg">
@@ -152,7 +152,9 @@ export default function ProductDetails({
                             </span>
                             <span>{option.price.toString().split('.')[1]}</span>
                           </div>
-                          <div>In Stock</div>
+                          <div className="text-sm text-[#008a00]">
+                            In Stock.
+                          </div>
                         </div>
                       </div>
                     </button>
