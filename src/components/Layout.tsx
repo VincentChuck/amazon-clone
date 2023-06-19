@@ -147,8 +147,12 @@ function Layout({ children }: Props) {
             <div className="ml-2 flex w-auto flex-shrink-0 items-center whitespace-nowrap">
               {/* mobile login button */}
               <div className="flex items-center md:hidden">
-                <div>Sign in ›</div>
-                <Icon name="user" strokeWidth={2.5} className="h-6 w-6" />
+                <div className="max-[290px]:hidden">Sign in ›</div>
+                <Icon
+                  name="user"
+                  strokeWidth={2.5}
+                  className="h-6 w-6 max-[240px]:hidden"
+                />
               </div>
 
               {/* larger screen login button */}
