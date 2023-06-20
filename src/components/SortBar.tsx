@@ -1,4 +1,8 @@
-import { SORTOPTIONS, type SortOption } from '~/utils/constants';
+import {
+  SORTOPTIONS,
+  sortOptionsDisplay,
+  type SortOption,
+} from '~/utils/constants';
 
 type SortBarProps = {
   productsOnPageIndex: string;
@@ -6,12 +10,6 @@ type SortBarProps = {
   keyword: string;
   sortBy: SortOption;
   setSortBy: React.Dispatch<React.SetStateAction<SortOption>>;
-};
-
-const sortOptionsDisplay = {
-  '': 'Default',
-  'price-asc': 'Price: Low to High',
-  'price-desc': 'Price: High to Low',
 };
 
 export default function SortBar({
@@ -24,7 +22,7 @@ export default function SortBar({
 }: SortBarProps) {
   return (
     <div className="mb-2 hidden h-9 w-screen flex-row items-center justify-center text-sm shadow-sm shadow-gray-400 md:flex">
-      <div className="flex flex-grow lg:max-w-[1800px] px-3">
+      <div className="flex flex-grow px-3 lg:max-w-[1800px]">
         <div className="flex-grow">
           {productsOnPageIndex} of over{' '}
           {numberOfResults.toLocaleString(undefined, {

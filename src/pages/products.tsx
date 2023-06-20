@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import MobileFilter from '~/components/MobileFilter';
 import ProductFilter from '~/components/ProductFilter';
 import ProductList from '~/components/ProductList';
 import SortBar from '~/components/SortBar';
@@ -96,6 +97,12 @@ export default function Products() {
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}
         keyword={keyword}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
+
+      <MobileFilter
+        numberOfResults={numberOfResults}
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
