@@ -1,12 +1,11 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
 import Icon from './Icon';
 
 export default function MobileFilterModal() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="inline-flex h-full items-center justify-center border-l-[1px] border-[#e6e6e6] bg-white p-3 px-[15px] text-sm leading-none text-[#007185]">
+        <button className="inline-flex h-full items-center justify-center border-l border-[#e6e6e6] bg-white p-3 px-[15px] text-sm leading-none text-[#007185]">
           Filters
           <Icon
             name="chevron_down"
@@ -16,55 +15,54 @@ export default function MobileFilterModal() {
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-blackA9 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow">
-          <Dialog.Title className="m-0 text-[17px] font-medium text-mauve12">
-            Edit profile
-          </Dialog.Title>
-          <Dialog.Description className="mb-5 mt-[10px] text-[15px] leading-normal text-mauve11">
-            Make changes to your profile here. Click save when you&aposre done.
-          </Dialog.Description>
-          <fieldset className="mb-[15px] flex items-center gap-5">
-            <label
-              className="w-[90px] text-right text-[15px] text-violet11"
-              htmlFor="name"
-            >
-              Name
-            </label>
-            <input
-              className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 outline-none focus:shadow-[0_0_0_2px] focus:shadow-violet8"
-              id="name"
-              defaultValue="Pedro Duarte"
-            />
-          </fieldset>
-          <fieldset className="mb-[15px] flex items-center gap-5">
-            <label
-              className="w-[90px] text-right text-[15px] text-violet11"
-              htmlFor="username"
-            >
-              Username
-            </label>
-            <input
-              className="inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 outline-none focus:shadow-[0_0_0_2px] focus:shadow-violet8"
-              id="username"
-              defaultValue="@peduarte"
-            />
-          </fieldset>
-          <div className="mt-[25px] flex justify-end">
+        <Dialog.Overlay className="fixed inset-0 bg-blackA9 data-[state=closed]:animate-overlayHide data-[state=open]:animate-overlayShow" />
+        <Dialog.Content className="fixed bottom-0 h-auto w-full rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
+          <div className="flex h-12 flex-row-reverse items-center border-b-[2px] border-[#e6e6e6] px-[18px]">
             <Dialog.Close asChild>
-              <button className="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green4 px-[15px] font-medium leading-none text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 focus:outline-none">
-                Save changes
+              <span className="text-[15px] font-[500] text-[#007185]">
+                Close
+              </span>
+            </Dialog.Close>
+          </div>
+
+          <div className="px-3">
+            <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
+              <h3 className="my-3 font-[500]">Categories</h3>
+              <div className="mb-1 flex flex-wrap gap-2">
+                {new Array(8).fill(0).map((_item, index) => (
+                  <button
+                    key={index}
+                    className="rounded-lg border border-[rgb(244,244,244)] bg-[#f4f4f4] px-[7px] py-[9px] text-xs font-[500]"
+                  >
+                    Category {'a'.repeat(index)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
+              <h3 className="my-3 font-[500]">Sort by</h3>
+              <div className="mb-1 flex flex-wrap gap-2">
+                {new Array(8).fill(0).map((_item, index) => (
+                  <button
+                    key={index}
+                    className="rounded-lg border border-[rgb(244,244,244)] bg-[#f4f4f4] px-[7px] py-[9px] text-xs font-[500]"
+                  >
+                    Button {'a'.repeat(index)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between">
+            <button>Clear Filters</button>
+            <Dialog.Close asChild>
+              <button className="inline-flex h-[35px] items-center justify-center rounded-s bg-[#007185] px-[9px] text-[15px] text-white">
+                Show Results
               </button>
             </Dialog.Close>
           </div>
-          <Dialog.Close asChild>
-            <button
-              className="absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full text-violet11 hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 focus:outline-none"
-              aria-label="Close"
-            >
-              <Cross2Icon />
-            </button>
-          </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
