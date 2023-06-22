@@ -17,7 +17,8 @@ export default function MobileFilterModal() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-blackA9 data-[state=closed]:animate-overlayHide data-[state=open]:animate-overlayShow" />
         <Dialog.Content className="fixed bottom-0 h-auto w-full rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
-          <div className="flex h-12 flex-row-reverse items-center border-b-[2px] border-[#e6e6e6] px-[18px]">
+          <div className="flex h-12 items-center justify-between border-b border-[#e7e7e7] px-[18px]">
+            <span className="text-[15px] font-[500]">Filters</span>
             <Dialog.Close asChild>
               <span className="text-[15px] font-[500] text-[#007185]">
                 Close
@@ -40,7 +41,7 @@ export default function MobileFilterModal() {
               </div>
             </div>
 
-            <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
+            <div className="flex flex-col pb-3">
               <h3 className="my-3 font-[500]">Sort by</h3>
               <div className="mb-1 flex flex-wrap gap-2">
                 {new Array(8).fill(0).map((_item, index) => (
@@ -55,10 +56,12 @@ export default function MobileFilterModal() {
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <button>Clear Filters</button>
+          <div className="flex h-auto items-center justify-between border border-[#e6e6e6] p-[10px]">
+            <button className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#f1f1f1] bg-white px-[9px] py-[6px] text-[13px] text-[#007185]">
+              Clear Filters
+            </button>
             <Dialog.Close asChild>
-              <button className="inline-flex h-[35px] items-center justify-center rounded-s bg-[#007185] px-[9px] text-[15px] text-white">
+              <button className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#007185] bg-[#007185] px-[9px] py-[6px] text-[13px] text-white">
                 Show Results
               </button>
             </Dialog.Close>
