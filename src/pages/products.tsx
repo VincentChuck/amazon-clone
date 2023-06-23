@@ -6,7 +6,11 @@ import ProductList from '~/components/ProductList';
 import SortBar from '~/components/SortBar';
 import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
-import { RESULTSPERPAGE, type SortOption } from '~/utils/constants';
+import {
+  RESULTSPERPAGE,
+  SORTOPTIONS,
+  type SortOption,
+} from '~/utils/constants';
 import { parseRouterParam } from '~/utils/helpers';
 
 export default function Products() {
@@ -18,7 +22,7 @@ export default function Products() {
   const categoryId = Number(parseRouterParam(cid));
   const pageParam = Number(parseRouterParam(page)) || 1;
   const pageIndex = pageParam - 1;
-  const [sortBy, setSortBy] = useState<SortOption>('');
+  const [sortBy, setSortBy] = useState<SortOption>(SORTOPTIONS[0]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -91,6 +95,16 @@ export default function Products() {
     );
   }
 
+  function handleMobileFilter(sortOption?: SortOption, cid?: number) {
+    if (sortOption) setSortBy(sortOption);
+
+    if (typeof cid === 'number') {
+      void router.push({ query: { ...router.query, cid } }, undefined, {
+        shallow: true,
+      });
+    }
+  }
+
   return !pageLoaded ? null : (
     <div className="flex-grow">
       <SortBar
@@ -102,9 +116,13 @@ export default function Products() {
       />
 
       <MobileFilter
-        numberOfResults={numberOfResults}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
+        {...{
+          numberOfResults,
+          mergedCategoryTrees,
+          categoryId,
+          sortBy,
+          handleMobileFilter,
+        }}
       />
 
       <div className="mx-3 flex justify-center py-4">

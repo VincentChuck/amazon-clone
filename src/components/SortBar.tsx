@@ -1,6 +1,6 @@
 import {
   SORTOPTIONS,
-  sortOptionsDisplay,
+  SORTOPTIONSDISPLAY,
   type SortOption,
 } from '~/utils/constants';
 
@@ -40,7 +40,7 @@ export default function SortBar({
           >
             {SORTOPTIONS.map((option) => (
               <option key={option} value={option}>
-                {sortOptionsDisplay[option]}
+                {SORTOPTIONSDISPLAY[option]}
               </option>
             ))}
           </select>

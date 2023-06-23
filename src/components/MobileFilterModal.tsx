@@ -1,7 +1,25 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import Icon from './Icon';
+import { useState } from 'react';
+import {
+  type SortOption,
+  SORTOPTIONS,
+  SORTOPTIONSDISPLAY,
+} from '~/utils/constants';
+import type { CategoryTree } from '~/types';
 
-export default function MobileFilterModal() {
+type Props = {
+  sortBy: SortOption;
+  mergedCategoryTrees: CategoryTree[];
+  categoryId: number;
+  handleMobileFilter: (sortOption?: SortOption, cid?: number) => void;
+};
+
+export default function MobileFilterModal(props: Props) {
+  const [tempSortBy, setTempSortBy] = useState<SortOption>(props.sortBy);
+  const [tempCat, setTempCat] = useState<string>();
+  // function handleClose() {}
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -30,28 +48,45 @@ export default function MobileFilterModal() {
             <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
               <h3 className="my-3 font-[500]">Categories</h3>
               <div className="mb-1 flex flex-wrap gap-2">
-                {new Array(8).fill(0).map((_item, index) => (
-                  <button
-                    key={index}
-                    className="rounded-lg border border-[rgb(244,244,244)] bg-[#f4f4f4] px-[7px] py-[9px] text-xs font-[500]"
-                  >
-                    Category {'a'.repeat(index)}
-                  </button>
-                ))}
+                {new Array(8).fill(0).map((_item, index) => {
+                  const isActive =
+                    index.toString() === (tempCat?.split('-')[1] || '0');
+                  return (
+                    <button
+                      key={index}
+                      className={`rounded-lg border ${
+                        isActive
+                          ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
+                          : 'border-[#f4f4f4] bg-[#f4f4f4]'
+                      } px-[7px] py-[9px] text-xs font-[500]`}
+                      onClick={() => setTempCat(`cat-${index}`)}
+                    >
+                      Category {'a'.repeat(index)}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div className="flex flex-col pb-3">
               <h3 className="my-3 font-[500]">Sort by</h3>
               <div className="mb-1 flex flex-wrap gap-2">
-                {new Array(8).fill(0).map((_item, index) => (
-                  <button
-                    key={index}
-                    className="rounded-lg border border-[rgb(244,244,244)] bg-[#f4f4f4] px-[7px] py-[9px] text-xs font-[500]"
-                  >
-                    Button {'a'.repeat(index)}
-                  </button>
-                ))}
+                {SORTOPTIONS.map((item) => {
+                  const isActive = item === tempSortBy;
+                  return (
+                    <button
+                      key={`SORT-${item}`}
+                      className={`rounded-lg border ${
+                        isActive
+                          ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
+                          : 'border-[#f4f4f4] bg-[#f4f4f4]'
+                      } px-[7px] py-[9px] text-xs font-[500]`}
+                      onClick={() => setTempSortBy(item)}
+                    >
+                      {SORTOPTIONSDISPLAY[item]}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -61,7 +96,10 @@ export default function MobileFilterModal() {
               Clear Filters
             </button>
             <Dialog.Close asChild>
-              <button className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#007185] bg-[#007185] px-[9px] py-[6px] text-[13px] text-white">
+              <button
+                className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#007185] bg-[#007185] px-[9px] py-[6px] text-[13px] text-white"
+                onClick={() => null}
+              >
                 Show Results
               </button>
             </Dialog.Close>
