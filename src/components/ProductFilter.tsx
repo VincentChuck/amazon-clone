@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import Link from 'next/link';
 import Icon from '~/components/Icon';
-import { CategoryTree } from '~/types';
+import type { CategoryTree } from '~/types';
 
 type ProductsProps = {
   mergedCategoryTrees: CategoryTree[];
@@ -41,7 +41,9 @@ export default function ProductFilter({
         {!!selectedCategoryId && (
           <CategoryItem name="Any Department" id={0} bold={false} goUp={true} />
         )}
-        <CategoryTree {...{ mergedCategoryTrees, selectedCategoryId }} />
+        <CategoryTreeComponent
+          {...{ mergedCategoryTrees, selectedCategoryId }}
+        />
       </div>
     </HrefContext.Provider>
   );
@@ -52,7 +54,7 @@ type CategoryTreeProps = {
   selectedCategoryId: number;
 };
 
-function CategoryTree({
+function CategoryTreeComponent({
   mergedCategoryTrees,
   selectedCategoryId,
 }: CategoryTreeProps) {

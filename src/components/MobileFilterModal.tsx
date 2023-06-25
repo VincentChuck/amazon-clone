@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import Icon from './Icon';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 import {
   type SortOption,
   SORTOPTIONS,
@@ -17,7 +17,7 @@ type Props = {
 
 export default function MobileFilterModal(props: Props) {
   const [tempSortBy, setTempSortBy] = useState<SortOption>(props.sortBy);
-  const [tempCat, setTempCat] = useState<string>();
+  const [tempCat, setTempCat] = useState<number>(props.categoryId);
   // function handleClose() {}
 
   return (
@@ -34,7 +34,7 @@ export default function MobileFilterModal(props: Props) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-blackA9 data-[state=closed]:animate-overlayHide data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed bottom-0 h-auto w-full rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed bottom-0 h-auto max-h-[65%] w-full overflow-y-auto rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
           <div className="flex h-12 items-center justify-between border-b border-[#e7e7e7] px-[18px]">
             <span className="text-[15px] font-[500]">Filters</span>
             <Dialog.Close asChild>
@@ -47,25 +47,11 @@ export default function MobileFilterModal(props: Props) {
           <div className="px-3">
             <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
               <h3 className="my-3 font-[500]">Categories</h3>
-              <div className="mb-1 flex flex-wrap gap-2">
-                {new Array(8).fill(0).map((_item, index) => {
-                  const isActive =
-                    index.toString() === (tempCat?.split('-')[1] || '0');
-                  return (
-                    <button
-                      key={index}
-                      className={`rounded-lg border ${
-                        isActive
-                          ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
-                          : 'border-[#f4f4f4] bg-[#f4f4f4]'
-                      } px-[7px] py-[9px] text-xs font-[500]`}
-                      onClick={() => setTempCat(`cat-${index}`)}
-                    >
-                      Category {'a'.repeat(index)}
-                    </button>
-                  );
-                })}
-              </div>
+              <CategoryTreeComponent
+                mergedCategoryTrees={props.mergedCategoryTrees}
+                selectedCategoryId={tempCat}
+                setTempCat={setTempCat}
+              />
             </div>
 
             <div className="flex flex-col pb-3">
@@ -107,5 +93,61 @@ export default function MobileFilterModal(props: Props) {
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
+  );
+}
+
+type CategoryTreeProps = {
+  mergedCategoryTrees: CategoryTree[];
+  selectedCategoryId: number;
+  setTempCat: Dispatch<SetStateAction<number>>;
+};
+
+function CategoryTreeComponent({
+  mergedCategoryTrees,
+  selectedCategoryId,
+  setTempCat,
+}: CategoryTreeProps) {
+  return (
+    <div>
+      {mergedCategoryTrees.map((categoryTree) => {
+        return (
+          <div key={categoryTree.id}>
+            <span className="mb-1 inline-block py-1 text-[13px] font-[500]">
+              {categoryTree.name}
+            </span>
+            <div className="mb-1 flex flex-wrap gap-2">
+              <button
+                key={categoryTree.id}
+                className={`rounded-lg border ${
+                  categoryTree.id === selectedCategoryId
+                    ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
+                    : 'border-[#f4f4f4] bg-[#f4f4f4]'
+                } min-w-[44px] px-[7px] py-[9px] text-xs font-[500]`}
+                onClick={() => setTempCat(categoryTree.id)}
+              >
+                All
+              </button>
+              {categoryTree.children &&
+                categoryTree.children.map((child) => {
+                  const isActive = child.id === selectedCategoryId;
+                  return (
+                    <button
+                      key={child.id}
+                      className={`rounded-lg border ${
+                        isActive
+                          ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
+                          : 'border-[#f4f4f4] bg-[#f4f4f4]'
+                      } px-[7px] py-[9px] text-xs font-[500]`}
+                      onClick={() => setTempCat(child.id)}
+                    >
+                      {child.name}
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
