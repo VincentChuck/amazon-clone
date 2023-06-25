@@ -95,11 +95,18 @@ export default function Products() {
     );
   }
 
-  function handleMobileFilter(sortOption?: SortOption, cid?: number) {
+  function applyMobileFilter(
+    sortOption?: SortOption,
+    categoryIdOption?: number
+  ) {
     if (sortOption) setSortBy(sortOption);
 
-    if (typeof cid === 'number') {
-      void router.push({ query: { ...router.query, cid } }, undefined, {
+    if (typeof categoryIdOption === 'number') {
+      const cleanQuery = {
+        ...(keyword && { k: keyword }),
+        ...(categoryIdOption && { cid: categoryIdOption }),
+      };
+      void router.push({ query: cleanQuery }, undefined, {
         shallow: true,
       });
     }
@@ -121,7 +128,7 @@ export default function Products() {
           mergedCategoryTrees,
           categoryId,
           sortBy,
-          handleMobileFilter,
+          applyMobileFilter,
         }}
       />
 

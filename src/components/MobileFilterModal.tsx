@@ -12,16 +12,25 @@ type Props = {
   sortBy: SortOption;
   mergedCategoryTrees: CategoryTree[];
   categoryId: number;
-  handleMobileFilter: (sortOption?: SortOption, cid?: number) => void;
+  applyMobileFilter: (sortOption?: SortOption, cid?: number) => void;
 };
 
 export default function MobileFilterModal(props: Props) {
   const [tempSortBy, setTempSortBy] = useState<SortOption>(props.sortBy);
   const [tempCat, setTempCat] = useState<number>(props.categoryId);
-  // function handleClose() {}
+
+  function resetFilter() {
+    setTempSortBy(props.sortBy);
+    setTempCat(props.categoryId);
+  }
+
+  function clearFilter() {
+    setTempSortBy(SORTOPTIONS[0]);
+    setTempCat(0);
+  }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root onOpenChange={resetFilter}>
       <Dialog.Trigger asChild>
         <button className="inline-flex h-full items-center justify-center border-l border-[#e6e6e6] bg-white p-3 px-[15px] text-sm leading-none text-[#007185]">
           Filters
@@ -44,7 +53,7 @@ export default function MobileFilterModal(props: Props) {
             </Dialog.Close>
           </div>
 
-          <div className="px-3">
+          <div className="mb-[68px] px-3">
             <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
               <h3 className="my-3 font-[500]">Categories</h3>
               <CategoryTreeComponent
@@ -77,14 +86,17 @@ export default function MobileFilterModal(props: Props) {
             </div>
           </div>
 
-          <div className="flex h-auto items-center justify-between border border-[#e6e6e6] p-[10px]">
-            <button className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#f1f1f1] bg-white px-[9px] py-[6px] text-[13px] text-[#007185]">
+          <div className="fixed bottom-0 flex h-[68px] w-full items-center justify-between border border-[#e6e6e6] bg-white p-[10px]">
+            <button
+              className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#f1f1f1] bg-white px-[9px] py-[6px] text-[13px] text-[#007185]"
+              onClick={clearFilter}
+            >
               Clear Filters
             </button>
             <Dialog.Close asChild>
               <button
                 className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#007185] bg-[#007185] px-[9px] py-[6px] text-[13px] text-white"
-                onClick={() => null}
+                onClick={() => props.applyMobileFilter(tempSortBy, tempCat)}
               >
                 Show Results
               </button>

@@ -7,7 +7,7 @@ type Props = {
   sortBy: SortOption;
   mergedCategoryTrees: CategoryTree[];
   categoryId: number;
-  handleMobileFilter: (sortOption?: SortOption, cid?: number) => void;
+  applyMobileFilter: (sortOption?: SortOption, cid?: number) => void;
 };
 
 export default function MobileFilter(props: Props) {
