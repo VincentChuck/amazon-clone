@@ -41,35 +41,19 @@ export default function ProductFilter({
         {!!selectedCategoryId && (
           <CategoryItem name="Any Department" id={0} bold={false} goUp={true} />
         )}
-        <CategoryTreeComponent
-          {...{ mergedCategoryTrees, selectedCategoryId }}
-        />
+        <ul>
+          {mergedCategoryTrees?.map((categoryTree) => {
+            return (
+              <Category
+                key={categoryTree.id}
+                categoryTree={categoryTree}
+                selectedCategoryId={selectedCategoryId}
+              />
+            );
+          })}
+        </ul>
       </div>
     </HrefContext.Provider>
-  );
-}
-
-type CategoryTreeProps = {
-  mergedCategoryTrees: CategoryTree[];
-  selectedCategoryId: number;
-};
-
-function CategoryTreeComponent({
-  mergedCategoryTrees,
-  selectedCategoryId,
-}: CategoryTreeProps) {
-  return (
-    <ul>
-      {mergedCategoryTrees?.map((categoryTree) => {
-        return (
-          <Category
-            key={categoryTree.id}
-            categoryTree={categoryTree}
-            selectedCategoryId={selectedCategoryId}
-          />
-        );
-      })}
-    </ul>
   );
 }
 

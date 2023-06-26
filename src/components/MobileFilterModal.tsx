@@ -55,10 +55,13 @@ export default function MobileFilterModal(props: Props) {
 
           <div className="mb-[68px] px-3">
             <div className="flex flex-col border-b border-[#e6e6e6] pb-3">
-              <h3 className="my-3 font-[500]">Categories</h3>
+              <h3 className="my-3 font-[500]">
+                Categories {tempCat ? '(1)' : ''}
+              </h3>
               <CategoryTreeComponent
                 mergedCategoryTrees={props.mergedCategoryTrees}
-                selectedCategoryId={tempCat}
+                selectedCategoryId={props.categoryId}
+                tempCat={tempCat}
                 setTempCat={setTempCat}
               />
             </div>
@@ -111,17 +114,91 @@ export default function MobileFilterModal(props: Props) {
 type CategoryTreeProps = {
   mergedCategoryTrees: CategoryTree[];
   selectedCategoryId: number;
+  tempCat: number;
   setTempCat: Dispatch<SetStateAction<number>>;
 };
 
 function CategoryTreeComponent({
   mergedCategoryTrees,
   selectedCategoryId,
+  tempCat,
   setTempCat,
 }: CategoryTreeProps) {
+  if (selectedCategoryId) {
+    const path: CategoryTree[] = [];
+    let cat: CategoryTree | null = mergedCategoryTrees[0] as CategoryTree;
+    while (cat) {
+      path.push(cat);
+      if (!cat.children || cat.children.length < 1 || !cat.children[0]) {
+        if (cat.id === selectedCategoryId) {
+          path.pop();
+        }
+        cat = null;
+      } else if (cat.id === selectedCategoryId) {
+        cat = null;
+      } else {
+        cat = cat.children[0];
+      }
+    }
+
+    return (
+      <div>
+        <CategoryPath path={path} />
+        <CategoryDisplay
+          categoryTree={[path.at(-1) as CategoryTree]}
+          tempCat={tempCat}
+          setTempCat={setTempCat}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <CategoryDisplay
+          categoryTree={mergedCategoryTrees}
+          tempCat={tempCat}
+          setTempCat={setTempCat}
+        />
+      </div>
+    );
+  }
+}
+
+type CategoryPathProps = {
+  path: CategoryTree[];
+};
+
+function CategoryPath({ path }: CategoryPathProps) {
+  return (
+    <div className="mb-3 flex flex-wrap items-center gap-1">
+      <span className="text-[13px] font-[500]">Any Category</span>
+      <span className="text-[13px] font-[500]"> &gt; </span>
+      {path.map((cat, ind) => {
+        return (
+          <span key={cat.id} className="text-[13px] font-[500]">
+            {cat.name}
+            {`${ind !== path.length - 1 ? ' > ' : ''}`}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+type CategoryDisplayProps = {
+  categoryTree: CategoryTree[];
+  tempCat: number;
+  setTempCat: Dispatch<SetStateAction<number>>;
+};
+
+function CategoryDisplay({
+  categoryTree,
+  tempCat,
+  setTempCat,
+}: CategoryDisplayProps) {
   return (
     <div>
-      {mergedCategoryTrees.map((categoryTree) => {
+      {categoryTree.map((categoryTree) => {
         return (
           <div key={categoryTree.id}>
             <span className="mb-1 inline-block py-1 text-[13px] font-[500]">
@@ -131,17 +208,21 @@ function CategoryTreeComponent({
               <button
                 key={categoryTree.id}
                 className={`rounded-lg border ${
-                  categoryTree.id === selectedCategoryId
+                  categoryTree.id === tempCat
                     ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
                     : 'border-[#f4f4f4] bg-[#f4f4f4]'
                 } min-w-[44px] px-[7px] py-[9px] text-xs font-[500]`}
-                onClick={() => setTempCat(categoryTree.id)}
+                onClick={() =>
+                  setTempCat((prev) => {
+                    return prev === categoryTree.id ? 0 : categoryTree.id;
+                  })
+                }
               >
                 All
               </button>
               {categoryTree.children &&
                 categoryTree.children.map((child) => {
-                  const isActive = child.id === selectedCategoryId;
+                  const isActive = child.id === tempCat;
                   return (
                     <button
                       key={child.id}
@@ -150,7 +231,11 @@ function CategoryTreeComponent({
                           ? 'border-[#c7e4e8] bg-[#e7f4f5] text-[#007185]'
                           : 'border-[#f4f4f4] bg-[#f4f4f4]'
                       } px-[7px] py-[9px] text-xs font-[500]`}
-                      onClick={() => setTempCat(child.id)}
+                      onClick={() =>
+                        setTempCat((prev) => {
+                          return prev === child.id ? 0 : child.id;
+                        })
+                      }
                     >
                       {child.name}
                     </button>
