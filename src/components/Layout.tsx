@@ -45,7 +45,7 @@ type Props = {
     | null;
 };
 
-function goTop(event: SyntheticEvent) {
+function scrollTop(event: SyntheticEvent) {
   event.preventDefault();
   const duration = 300; // arbitrary number for smooth and noticeable animation
   const initY = window.scrollY;
@@ -227,7 +227,7 @@ function Layout({ children }: Props) {
         <section className="flex flex-col text-white">
           <a
             className="flex h-12 cursor-pointer flex-col items-center justify-center bg-[#37475A] hover:bg-[#485769]"
-            onClick={goTop}
+            onClick={scrollTop}
           >
             <Icon
               name="chevron_up"

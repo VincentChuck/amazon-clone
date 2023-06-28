@@ -85,6 +85,7 @@ export default function Products() {
         undefined,
         { shallow: true }
       );
+      window.scrollTo({ top: 0 });
     }
   }
 
@@ -94,12 +95,14 @@ export default function Products() {
       undefined,
       { shallow: true }
     );
+    window.scrollTo({ top: 0 });
   }
 
   function handleJumpPage(page: number) {
     void router.push({ query: { ...router.query, page } }, undefined, {
       shallow: true,
     });
+    window.scrollTo({ top: 0 });
   }
 
   function applyMobileFilter(
