@@ -14,8 +14,7 @@ export default function MobileFilter(props: Props) {
   const { numberOfResults, ...modalProps } = props;
   return (
     <div className="flex h-12 shadow-sm shadow-[rgba(17,17,17,.15)] md:hidden">
-      <div className="line-clamp-1 grow self-center px-3 text-sm">
-        Over{' '}
+      <div className="line-clamp-1 grow self-center px-3">
         {numberOfResults.toLocaleString(undefined, {
           minimumFractionDigits: 0,
         })}{' '}

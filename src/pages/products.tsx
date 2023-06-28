@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import MobileFilter from '~/components/MobileFilter';
 import ProductFilter from '~/components/ProductFilter';
 import ProductList from '~/components/ProductList';
+import ProductsPagination from '~/components/ProductsPagination';
 import SortBar from '~/components/SortBar';
 import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
@@ -95,6 +96,12 @@ export default function Products() {
     );
   }
 
+  function handleJumpPage(page: number) {
+    void router.push({ query: { ...router.query, page } }, undefined, {
+      shallow: true,
+    });
+  }
+
   function applyMobileFilter(
     sortOption?: SortOption,
     categoryIdOption?: number
@@ -111,6 +118,8 @@ export default function Products() {
       });
     }
   }
+
+  const lastPage = Math.ceil(numberOfResults / RESULTSPERPAGE);
 
   return !pageLoaded ? null : (
     <div className="flex-grow">
@@ -139,18 +148,18 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-4 px-3 pb-4">
-        <button
-          onClick={handlePreviousPage}
-          disabled={pageParam === 1 || isFetching}
-        >
-          Prev page
-        </button>
-        <span>Page {pageParam}</span>
-        <button onClick={handleNextPage} disabled={isPreviousData || !hasMore}>
-          Next page
-        </button>
-      </div>
+      <ProductsPagination
+        {...{
+          handlePreviousPage,
+          handleNextPage,
+          handleJumpPage,
+          lastPage,
+          isFetching,
+          hasMore,
+          isPreviousData,
+        }}
+        page={pageParam}
+      />
     </div>
   );
 }

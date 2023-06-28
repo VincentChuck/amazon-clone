@@ -1,4 +1,4 @@
-import { violet, blackA, mauve, green } from '@radix-ui/colors';
+import { blackA } from '@radix-ui/colors';
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -9,9 +9,6 @@ const config = {
         ember: ['var(--font-ember)'],
       },
       colors: {
-        ...mauve,
-        ...violet,
-        ...green,
         ...blackA,
       },
       keyframes: {
@@ -19,15 +16,15 @@ const config = {
           from: { opacity: '0' },
           to: { opacity: '1' },
         },
+        overlayHide: {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
         contentShow: {
           from: {
             transform: 'translate(0%, 100%)',
           },
           to: { transform: 'translate(0%, 0%)' },
-        },
-        overlayHide: {
-          from: { opacity: '1' },
-          to: { opacity: '0' },
         },
         contentHide: {
           from: { transform: 'translate(0%, 0%)' },

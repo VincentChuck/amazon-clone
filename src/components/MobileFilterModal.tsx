@@ -48,7 +48,7 @@ export default function MobileFilterModal(props: Props) {
             <span className="text-[15px] font-[500]">Filters</span>
             <Dialog.Close asChild>
               <span className="text-[15px] font-[500] text-[#007185]">
-                Close
+                Cancel
               </span>
             </Dialog.Close>
           </div>
@@ -101,7 +101,7 @@ export default function MobileFilterModal(props: Props) {
                 className="mx-[5px] mb-[8px] inline-flex h-[38px] items-center justify-center rounded-lg border border-[#007185] bg-[#007185] px-[9px] py-[6px] text-[13px] text-white"
                 onClick={() => props.applyMobileFilter(tempSortBy, tempCat)}
               >
-                Show Results
+                Apply Filters
               </button>
             </Dialog.Close>
           </div>
