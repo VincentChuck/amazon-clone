@@ -58,7 +58,7 @@ export default function ProductsPagination({
 
         <Pagination {...{ page, lastPage, handleJumpPage }} />
 
-        {lastPage !== 1 && (
+        {lastPage > 1 && (
           <PageItem page={lastPage} handleJumpPage={handleJumpPage} />
         )}
 
