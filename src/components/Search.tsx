@@ -30,7 +30,7 @@ export default function Search() {
         value={searchTerm}
         ref={inputRef}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="flex h-full flex-grow items-center text-gray-900 focus-visible:outline-0"
+        className="flex h-full flex-grow items-center text-gray-900 focus-visible:outline-none"
         placeholder="Search Amazon"
       />
       <button
