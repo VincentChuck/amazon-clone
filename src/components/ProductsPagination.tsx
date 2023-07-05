@@ -56,7 +56,9 @@ export default function ProductsPagination({
 
         <PageItem page={1} handleJumpPage={handleJumpPage} />
 
-        <Pagination {...{ page, lastPage, handleJumpPage }} />
+        {lastPage > 2 && (
+          <PaginationMiddle {...{ page, lastPage, handleJumpPage }} />
+        )}
 
         {lastPage > 1 && (
           <PageItem page={lastPage} handleJumpPage={handleJumpPage} />
@@ -107,13 +109,17 @@ function PageItem({ page, handleJumpPage }: PageItemProps) {
   );
 }
 
-type PaginationProps = {
+type PaginationMiddleProps = {
   page: number;
   lastPage: number;
   handleJumpPage: (page: number) => void;
 };
 
-function Pagination({ page, lastPage, handleJumpPage }: PaginationProps) {
+function PaginationMiddle({
+  page,
+  lastPage,
+  handleJumpPage,
+}: PaginationMiddleProps) {
   if (lastPage <= 5) {
     const pageArr = new Array(lastPage)
       .map((_, i) => i + 1)
@@ -136,8 +142,8 @@ function Pagination({ page, lastPage, handleJumpPage }: PaginationProps) {
     if ((pageArrWithGap[pageArrWithGap.length - 1] as number) < lastPage - 1)
       pageArrWithGap.push('...');
 
-    return pageArrWithGap.map((page) => (
-      <PageItem page={page} key={page} handleJumpPage={handleJumpPage} />
+    return pageArrWithGap.map((page, ind) => (
+      <PageItem page={page} key={ind} handleJumpPage={handleJumpPage} />
     ));
   }
 }
