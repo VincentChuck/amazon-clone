@@ -36,7 +36,7 @@ export default function ProductFilter({
 
   return (
     <HrefContext.Provider value={hrefObj}>
-      <div className="hidden w-72 flex-shrink-0 flex-col whitespace-nowrap px-1 pr-3 text-sm md:flex">
+      <div className="hidden w-[20vw] max-w-[360px] flex-shrink-0 flex-col px-1 pr-3 text-sm md:flex">
         <span className="mb-2 font-bold">Department</span>
         {!!selectedCategoryId && (
           <CategoryItem name="Any Department" id={0} bold={false} goUp={true} />

@@ -85,7 +85,7 @@ async function seed() {
     const randomBooksCat = faker.helpers.arrayElement(booksCatIdArr);
     // const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
     const randomBookName = faker.lorem
-      .words({ min: 3, max: 38 })
+      .words({ min: 3, max: 10 })
       .split(' ')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');

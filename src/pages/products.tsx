@@ -145,7 +145,7 @@ export default function Products() {
       />
 
       <div className="mx-3 flex flex-grow flex-col items-center py-4">
-        <div className="flex flex-grow justify-center md:max-w-[1800px]">
+        <div className="flex w-full flex-grow justify-center md:max-w-[1800px]">
           <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
           <ProductList products={products} />
         </div>
