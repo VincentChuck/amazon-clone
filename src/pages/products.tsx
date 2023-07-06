@@ -125,7 +125,7 @@ export default function Products() {
   const lastPage = Math.ceil(numberOfResults / RESULTSPERPAGE);
 
   return !pageLoaded ? null : (
-    <div className="flex-grow">
+    <div className="flex flex-grow flex-col">
       <SortBar
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}
@@ -144,25 +144,25 @@ export default function Products() {
         }}
       />
 
-      <div className="mx-3 flex justify-center py-4">
+      <div className="mx-3 flex flex-grow flex-col items-center py-4">
         <div className="flex flex-grow justify-center md:max-w-[1800px]">
           <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
           <ProductList products={products} />
         </div>
-      </div>
 
-      <ProductsPagination
-        {...{
-          handlePreviousPage,
-          handleNextPage,
-          handleJumpPage,
-          lastPage,
-          isFetching,
-          hasMore,
-          isPreviousData,
-        }}
-        page={pageParam}
-      />
+        <ProductsPagination
+          {...{
+            handlePreviousPage,
+            handleNextPage,
+            handleJumpPage,
+            lastPage,
+            isFetching,
+            hasMore,
+            isPreviousData,
+          }}
+          page={pageParam}
+        />
+      </div>
     </div>
   );
 }
