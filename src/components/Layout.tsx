@@ -7,10 +7,12 @@ import localFont from 'next/font/local';
 import {
   type SyntheticEvent,
   useState,
+  useEffect,
   createContext,
   type SetStateAction,
   type Dispatch,
 } from 'react';
+import { getLocalCart, setCart, useAppDispatch } from '~/reducers/cartReducer';
 import Link from 'next/link';
 import Search from './Search';
 
@@ -85,6 +87,13 @@ export type SearchTermObjectType = {
 
 function Layout({ children }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const cartFromStorage = getLocalCart();
+    if (cartFromStorage) {
+      dispatch(setCart(cartFromStorage));
+    }
+  });
 
   return (
     <SearchTermCtx.Provider value={{ searchTerm, setSearchTerm }}>
@@ -172,15 +181,17 @@ function Layout({ children }: Props) {
                     />
                   </div>
                 </div>
-                <div className="ml-4 flex w-auto items-center justify-center">
-                  <Image alt="amazon-cart" className="w-10" src={cartIcon} />
-                  <span className="text-md absolute -top-0 font-bold text-orange-300 md:top-2">
-                    99
+                <Link href="/cart" className="flex items-center">
+                  <div className="ml-4 flex w-auto items-center justify-center">
+                    <Image alt="amazon-cart" className="w-10" src={cartIcon} />
+                    <span className="text-md absolute -top-0 font-bold text-orange-300 md:top-2">
+                      99
+                    </span>
+                  </div>
+                  <span className="relative -bottom-2 right-2 hidden text-sm font-bold lg:flex">
+                    Cart
                   </span>
-                </div>
-                <span className="relative -bottom-2 right-2 hidden text-sm font-bold lg:flex">
-                  Cart
-                </span>
+                </Link>
               </div>
             </section>
 

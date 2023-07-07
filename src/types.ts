@@ -1,6 +1,7 @@
 import type { inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from './server/api/root';
 import type { Decimal } from '@prisma/client/runtime';
+import { z } from 'zod';
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
@@ -22,3 +23,15 @@ export type CategoryTree = {
   name: string;
   children?: CategoryTree[];
 };
+
+export const CartSchema = z
+  .object({
+    id: z.string(),
+    productId: z.string(),
+    SKU: z.string(),
+    count: z.number(),
+  })
+  .array()
+  .catch(() => []);
+
+export type Cart = z.infer<typeof CartSchema>;

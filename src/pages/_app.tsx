@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { api } from '~/utils/api';
 import '~/styles/globals.css';
 import Layout from '~/components/Layout';
+import { Provider } from 'react-redux';
+import store from '~/reducers/store';
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -12,10 +14,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Provider store={store}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
     </SessionProvider>
   );
 };
