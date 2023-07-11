@@ -5,7 +5,6 @@ import navLogo from 'public/amazon-logo.png';
 import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
 import {
-  type SyntheticEvent,
   useState,
   useEffect,
   createContext,
@@ -15,8 +14,8 @@ import {
 import { getLocalCart, setCart, useAppDispatch } from '~/reducers/cartReducer';
 import Link from 'next/link';
 import Search from './Search';
-
-const TRADEMARK = '© 1996-2023, (Not) Amazon.com, Inc. or its affiliates';
+import { TRADEMARK } from '~/utils/constants';
+import { scrollTop } from '~/utils/helpers';
 
 const emberFont = localFont({
   variable: '--font-ember',
@@ -52,31 +51,6 @@ type Props = {
     | JSX.Element
     | null;
 };
-
-function scrollTop(event: SyntheticEvent) {
-  event.preventDefault();
-  const duration = 300; // arbitrary number for smooth and noticeable animation
-  const initY = window.scrollY;
-
-  //ease in and ease out function
-  function timingFunc(t: number) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
-
-  let startTime: number;
-
-  const step = (timeStamp: number) => {
-    startTime = startTime || timeStamp;
-    const progress = Math.min(1, (timeStamp - startTime) / duration); // in percentage
-
-    window.scrollTo(0, initY - timingFunc(progress) * initY);
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  };
-
-  window.requestAnimationFrame(step);
-}
 
 export const SearchTermCtx = createContext<SearchTermObjectType | null>(null);
 

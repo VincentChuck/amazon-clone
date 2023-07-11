@@ -1,3 +1,6 @@
+export const TRADEMARK =
+  '© 1996-2023, (Not) Amazon.com, Inc. or its affiliates';
+
 export const RESULTSPERPAGE = 16;
 
 export const SORTOPTIONS = ['default', 'price-asc', 'price-desc'] as const;
