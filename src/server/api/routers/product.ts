@@ -278,6 +278,12 @@ export const productRouter = createTRPCRouter({
         },
       });
 
-      return product;
+      return {
+        ...product,
+        productItems: product.productItems.map((item) => ({
+          ...item,
+          price: item.price.toNumber(),
+        })),
+      };
     }),
 });

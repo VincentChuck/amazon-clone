@@ -1,9 +1,9 @@
-import type { productsResponse } from '~/types';
+import type { ProductsResponse } from '~/types';
 import Image from 'next/image';
 import Link from 'next/link';
 
 type ProductsProps = {
-  products: productsResponse;
+  products: ProductsResponse;
 };
 
 export default function ProductList({ products }: ProductsProps) {

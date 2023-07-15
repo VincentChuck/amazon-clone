@@ -6,12 +6,10 @@ import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
 import {
   useState,
-  useEffect,
   createContext,
   type SetStateAction,
   type Dispatch,
 } from 'react';
-import { getLocalCart, setCart, useAppDispatch } from '~/reducers/cartReducer';
 import Link from 'next/link';
 import Search from './Search';
 import { TRADEMARK } from '~/utils/constants';
@@ -61,13 +59,6 @@ export type SearchTermObjectType = {
 
 function Layout({ children }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    const cartFromStorage = getLocalCart();
-    if (cartFromStorage) {
-      dispatch(setCart(cartFromStorage));
-    }
-  });
 
   return (
     <SearchTermCtx.Provider value={{ searchTerm, setSearchTerm }}>

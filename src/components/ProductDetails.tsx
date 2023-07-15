@@ -3,12 +3,17 @@ import { useState } from 'react';
 import type {
   ProductItemResponse,
   VariationArr,
-  productResponse,
+  ProductResponse,
 } from '~/types';
 import Icon from './Icon';
+import {
+  addToCart,
+  useAppDispatch,
+  useAppSelector,
+} from '~/reducers/cartReducer';
 
 type Props = {
-  product: productResponse;
+  product: ProductResponse;
   variationArr: VariationArr;
   defaultActive: ProductItemResponse;
 };
@@ -59,6 +64,9 @@ export default function ProductDetails({
       setActiveVariation(variationId);
     };
   }
+
+  const cart = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="grid h-full w-full grid-cols-1 p-3.5 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
@@ -186,7 +194,10 @@ export default function ProductDetails({
         </div>
         <div className="text-lg text-[#007600]">In Stock</div>
         <div className="items-center">
-          <button className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FCD200] bg-[#FFD814] py-2 text-base md:h-8 md:py-1 md:text-sm">
+          <button
+            onClick={() => dispatch(addToCart(active, 1, product, cart))}
+            className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FCD200] bg-[#FFD814] py-2 text-base md:h-8 md:py-1 md:text-sm"
+          >
             Add to Cart
           </button>
           <button className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FF8F00] bg-[#FFA41C] py-2 text-base md:h-8 md:py-1 md:text-sm">
