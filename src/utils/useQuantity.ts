@@ -3,7 +3,6 @@ import { updateItemQuantity, useAppDispatch } from '~/reducers/cartReducer';
 import type { CartType } from '~/types';
 
 export function useQuantity(itemId: string, val: number, cart: CartType) {
-  console.log('useQuantity by', itemId);
   const [value, setValue] = useState<number | ''>(val);
   const dispatch = useAppDispatch();
 

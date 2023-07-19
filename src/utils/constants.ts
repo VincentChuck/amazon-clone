@@ -12,3 +12,8 @@ export const SORTOPTIONSDISPLAY = {
   'price-asc': 'Price: Low to High',
   'price-desc': 'Price: High to Low',
 };
+
+export const USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});

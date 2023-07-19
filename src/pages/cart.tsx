@@ -4,6 +4,7 @@ import type { CartType } from '~/types';
 import { removeFromCart, useAppDispatch } from '~/reducers/cartReducer';
 import { useCartItems } from '~/utils/useCart';
 import { useQuantity } from '~/utils/useQuantity';
+import { USDollar } from '~/utils/constants';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
@@ -66,7 +67,7 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
           <Link href={productLink}>
             <span className="line-clamp-2 text-xl">{item.name}</span>
           </Link>
-          <div className="text-lg font-bold">${item.price}</div>
+          <div className="text-lg font-bold">{USDollar.format(item.price)}</div>
           <div className="text-xs">
             <span className="font-bold">{item.variationOption}: </span>
             <span>{item.variation}</span>
@@ -118,7 +119,7 @@ function CartTotal({ cartSize, cartTotal }: CartTotalProps) {
       <span>
         ({cartSize} item{cartSize > 1 ? 's' : ''}):{' '}
       </span>
-      <span className="font-bold">${cartTotal}</span>
+      <span className="font-bold">{USDollar.format(cartTotal)}</span>
     </div>
   );
 }
