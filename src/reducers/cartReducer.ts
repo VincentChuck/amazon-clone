@@ -27,20 +27,15 @@ const cartSlice = createSlice({
       state = { ...state, ...newItem };
       return state;
     },
-    updateItem(state, action: PayloadAction<CartType[number]>) {
-      const updatedItem = action.payload;
-      state = { ...state, updatedItem };
-      return state;
-    },
-    removeItem(state, action: PayloadAction<CartType[number]>) {
-      const itemToRemove = action.payload;
-      state = { ...state, itemToRemove };
+    removeItem(state, action: PayloadAction<keyof CartType>) {
+      const itemToRemoveId = action.payload;
+      delete state[itemToRemoveId];
       return state;
     },
   },
 });
 
-export const { setCart, addItem, updateItem, removeItem } = cartSlice.actions;
+export const { setCart, addItem, removeItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
@@ -93,7 +88,33 @@ function addToCart(
   };
 }
 
-export { getLocalCart, setLocalCart, addToCart };
+function removeFromCart(itemId: keyof CartType, cart: CartType) {
+  const updatedCart = { ...cart };
+  delete updatedCart[itemId];
+  return function (dispatch: AppDispatch) {
+    dispatch(removeItem(itemId));
+    setLocalCart(updatedCart);
+    console.log(`removed ${itemId} from cart`);
+  };
+}
+
+function updateItemQuantity(
+  itemId: keyof CartType,
+  count: number,
+  cart: CartType
+) {
+  const updatedCart = {
+    ...cart,
+    [itemId]: { ...(cart[itemId] as CartType[keyof CartType]), count },
+  };
+  return function (dispatch: AppDispatch) {
+    dispatch(setCart(updatedCart));
+    setLocalCart(updatedCart);
+    console.log(`updated ${itemId} quantity`);
+  };
+}
+
+export { addToCart, updateItemQuantity, removeFromCart };
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

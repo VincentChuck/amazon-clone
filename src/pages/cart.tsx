@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { CartType } from '~/types';
+import { removeFromCart, useAppDispatch } from '~/reducers/cartReducer';
 import { useCartItems } from '~/utils/useCart';
 import { useQuantity } from '~/utils/useQuantity';
 
@@ -16,7 +17,14 @@ export default function Cart() {
         </h1>
         {cartItemKeys.map((key) => {
           const item = cartItems[key] as CartType[number];
-          return <CartItem key={key} item={item} />;
+          return (
+            <CartItem
+              key={key}
+              itemId={key}
+              item={item}
+              cartItems={cartItems}
+            />
+          );
         })}
         <div className="mb-4 mt-1 flex justify-end">
           <CartTotal cartSize={cartItemKeys.length} cartTotal={cartTotal} />
@@ -27,11 +35,18 @@ export default function Cart() {
 }
 
 type CartItemProps = {
+  itemId: keyof CartType;
   item: CartType[keyof CartType];
+  cartItems: CartType;
 };
 
-function CartItem({ item }: CartItemProps) {
-  const quantity = useQuantity(item.count);
+function CartItem({ itemId, item, cartItems }: CartItemProps) {
+  const dispatch = useAppDispatch();
+  const { quantity, plusOne, minusOne } = useQuantity(
+    itemId,
+    item.count,
+    cartItems
+  );
   const productLink = `/product?pid=${item.productId}`;
   return (
     <div className="flex h-48 border-b border-[#E7E7E7] p-3">
@@ -47,7 +62,7 @@ function CartItem({ item }: CartItemProps) {
         </Link>
       </div>
       <div className="flex flex-col justify-between py-2 pl-2 pr-1">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <Link href={productLink}>
             <span className="line-clamp-2 text-xl">{item.name}</span>
           </Link>
@@ -59,17 +74,30 @@ function CartItem({ item }: CartItemProps) {
         </div>
         <div className="flex gap-2">
           <div className="round-lg h-[33px] shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
+            <button
+              onClick={() => minusOne()}
+              disabled={quantity.value === 1}
+              className="h-[33px] w-[35px] rounded-l-lg border-y border-l border-[#D5D9D9] bg-[linear-gradient(to_bottom,#f7f8fa,#e7e9ec)]"
+            >
+              -
+            </button>
             <input
-              type="number"
               {...quantity}
               required
-              className="h-[33px] w-[54px] rounded-l-lg border border-[#D5D9D9] text-center text-base"
+              className="h-[33px] w-[54px] border border-[#D5D9D9] text-center text-base"
             />
-            <button className="h-[33px] w-[35px] rounded-r-lg border-y border-r border-[#D5D9D9] bg-[linear-gradient(to_bottom,#f7f8fa,#e7e9ec)]">
+            <button
+              onClick={() => plusOne()}
+              disabled={quantity.value === 99}
+              className="h-[33px] w-[35px] rounded-r-lg border-y border-r border-[#D5D9D9] bg-[linear-gradient(to_bottom,#f7f8fa,#e7e9ec)]"
+            >
               +
             </button>
           </div>
-          <button className="h-[33px] rounded-lg border border-[#D5D9D9] px-3 text-center text-[13px] shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
+          <button
+            onClick={() => dispatch(removeFromCart(itemId, cartItems))}
+            className="h-[33px] rounded-lg border border-[#D5D9D9] px-3 text-center text-[13px] shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
+          >
             Delete
           </button>
         </div>

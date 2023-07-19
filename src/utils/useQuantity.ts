@@ -1,23 +1,67 @@
 import { useState } from 'react';
+import { updateItemQuantity, useAppDispatch } from '~/reducers/cartReducer';
+import type { CartType } from '~/types';
 
-export function useQuantity(val: number) {
-  const [value, setValue] = useState<number | string>(val);
+export function useQuantity(itemId: string, val: number, cart: CartType) {
+  console.log('useQuantity by', itemId);
+  const [value, setValue] = useState<number | ''>(val);
+  const dispatch = useAppDispatch();
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let ctrlValue = Math.floor(Number(event.target.value)) || '';
-    if (typeof ctrlValue === 'number' && ctrlValue < 0) ctrlValue = 0;
-    if (typeof ctrlValue === 'number' && ctrlValue > 99)
-      ctrlValue = Math.trunc(ctrlValue / 10);
-    setValue(ctrlValue);
-  };
+  function parseChange(target: number, change = 0) {
+    let outputNum: number;
 
-  const onBlur = () => {
-    if (value === '') setValue(1);
-  };
+    outputNum = target + change;
+    if (outputNum < 1) outputNum = 1;
+    if (outputNum > 99) {
+      outputNum = Math.trunc(outputNum / 10);
+    }
+
+    return outputNum;
+  }
+
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const input = event.target.value;
+    if (input === '') {
+      setValue('');
+      return;
+    }
+
+    if (/[^0-9]/.test(input)) {
+      setValue(Number(input.replace(/[^0-9]/g, '')));
+      return;
+    }
+
+    const parsedValue = parseChange(Number(input));
+    setValue(parsedValue);
+    dispatch(updateItemQuantity(itemId, parsedValue, cart));
+  }
+
+  function onBlur() {
+    if (value === '') {
+      setValue(1);
+      dispatch(updateItemQuantity(itemId, 1, cart));
+    }
+  }
+
+  function plusOne() {
+    const parsedValue = parseChange(Number(value), 1);
+    setValue(parsedValue);
+    dispatch(updateItemQuantity(itemId, parsedValue, cart));
+  }
+
+  function minusOne() {
+    const parsedValue = parseChange(Number(value), -1);
+    setValue(parsedValue);
+    dispatch(updateItemQuantity(itemId, parsedValue, cart));
+  }
 
   return {
-    value,
-    onChange,
-    onBlur,
+    quantity: {
+      value,
+      onChange,
+      onBlur,
+    },
+    plusOne,
+    minusOne,
   };
 }
