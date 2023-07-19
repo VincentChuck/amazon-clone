@@ -13,7 +13,7 @@ import {
 } from '~/types';
 // import type { Decimal } from '@prisma/client/runtime';
 
-const initialState: CartType = {};
+const initialState: CartType = getLocalCart();
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -45,14 +45,14 @@ export const { setCart, addItem, updateItem, removeItem } = cartSlice.actions;
 export default cartSlice.reducer;
 
 function getLocalCart() {
+  if (typeof window === 'undefined') return {};
+
   const cartStorageJSON = window.localStorage.getItem('CART');
-  if (cartStorageJSON) {
-    const cartStorage = CartSchema.parse(JSON.parse(cartStorageJSON));
-    console.log('get local cart', cartStorage);
-    return cartStorage;
-  } else {
-    return {};
-  }
+  if (!cartStorageJSON) return {};
+
+  const cartStorage = CartSchema.parse(JSON.parse(cartStorageJSON));
+  console.log('get local cart', cartStorage);
+  return cartStorage;
 }
 
 function setLocalCart(cart: CartType) {

@@ -14,6 +14,7 @@ import Link from 'next/link';
 import Search from './Search';
 import { TRADEMARK } from '~/utils/constants';
 import { scrollTop } from '~/utils/helpers';
+import { useCartItems } from '~/utils/useCart';
 
 const emberFont = localFont({
   variable: '--font-ember',
@@ -59,6 +60,7 @@ export type SearchTermObjectType = {
 
 function Layout({ children }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const { cartCount } = useCartItems();
 
   return (
     <SearchTermCtx.Provider value={{ searchTerm, setSearchTerm }}>
@@ -150,7 +152,7 @@ function Layout({ children }: Props) {
                   <div className="ml-4 flex w-auto items-center justify-center">
                     <Image alt="amazon-cart" className="w-10" src={cartIcon} />
                     <span className="text-md absolute -top-0 font-bold text-orange-300 md:top-2">
-                      99
+                      {cartCount}
                     </span>
                   </div>
                   <span className="relative -bottom-2 right-2 hidden text-sm font-bold lg:flex">
