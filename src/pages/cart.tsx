@@ -6,6 +6,7 @@ import { useQuantity } from '~/utils/useQuantity';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
+  const cartItemKeys = Object.keys(cartItems);
 
   return (
     <div className="w-full bg-[#EAEDED] p-4">
@@ -13,10 +14,13 @@ export default function Cart() {
         <h1 className="border-b border-[#E7E7E7] text-[28px] font-[400]">
           Shopping Cart
         </h1>
-        {Object.keys(cartItems).map((key) => {
+        {cartItemKeys.map((key) => {
           const item = cartItems[key] as CartType[number];
           return <CartItem key={key} item={item} />;
         })}
+        <div className="mb-4 mt-1 flex justify-end">
+          <CartTotal cartSize={cartItemKeys.length} cartTotal={cartTotal} />
+        </div>
       </div>
     </div>
   );
@@ -30,7 +34,7 @@ function CartItem({ item }: CartItemProps) {
   const quantity = useQuantity(item.count);
   const productLink = `/product?pid=${item.productId}`;
   return (
-    <div className="flex h-48 p-3">
+    <div className="flex h-48 border-b border-[#E7E7E7] p-3">
       <div className="relative h-full w-[42%] shrink-0 md:min-w-[200px] md:max-w-[20%] md:grow">
         <Link href={productLink}>
           <Image
@@ -42,25 +46,51 @@ function CartItem({ item }: CartItemProps) {
           />
         </Link>
       </div>
-      <div className="flex flex-col py-2 pl-2 pr-1">
-        <Link href={productLink}>
-          <span className="line-clamp-2 text-lg">{item.name}</span>
-        </Link>
-        <div className="text-lg font-bold">${item.price}</div>
-        <div className="text-xs">
-          <span className="font-bold">{item.variationOption}: </span>
-          <span>{item.variation}</span>
+      <div className="flex flex-col justify-between py-2 pl-2 pr-1">
+        <div className="flex flex-col gap-2">
+          <Link href={productLink}>
+            <span className="line-clamp-2 text-xl">{item.name}</span>
+          </Link>
+          <div className="text-lg font-bold">${item.price}</div>
+          <div className="text-xs">
+            <span className="font-bold">{item.variationOption}: </span>
+            <span>{item.variation}</span>
+          </div>
         </div>
-        <div>
-          <input
-            type="number"
-            {...quantity}
-            required
-            className="w-[40px] rounded-lg border text-center text-base"
-          />
-          <button>Delete</button>
+        <div className="flex gap-2">
+          <div className="round-lg h-[33px] shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
+            <input
+              type="number"
+              {...quantity}
+              required
+              className="h-[33px] w-[54px] rounded-l-lg border border-[#D5D9D9] text-center text-base"
+            />
+            <button className="h-[33px] w-[35px] rounded-r-lg border-y border-r border-[#D5D9D9] bg-[linear-gradient(to_bottom,#f7f8fa,#e7e9ec)]">
+              +
+            </button>
+          </div>
+          <button className="h-[33px] rounded-lg border border-[#D5D9D9] px-3 text-center text-[13px] shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
+            Delete
+          </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+type CartTotalProps = {
+  cartSize: number;
+  cartTotal: number;
+};
+
+function CartTotal({ cartSize, cartTotal }: CartTotalProps) {
+  return (
+    <div className="text-lg">
+      <span>Subtotal </span>
+      <span>
+        ({cartSize} item{cartSize > 1 ? 's' : ''}):{' '}
+      </span>
+      <span className="font-bold">${cartTotal}</span>
     </div>
   );
 }
