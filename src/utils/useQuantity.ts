@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateItemQuantity, useAppDispatch } from '~/reducers/cartReducer';
 import type { CartType } from '~/types';
 
 export function useQuantity(itemId: string, val: number, cart: CartType) {
   const [value, setValue] = useState<number | ''>(val);
+  useEffect(() => {
+    setValue(val);
+  }, [val]);
   const dispatch = useAppDispatch();
 
   function parseChange(target: number, change = 0) {

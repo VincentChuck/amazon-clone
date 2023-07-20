@@ -151,9 +151,9 @@ function Layout({ children }: Props) {
                 <Link href="/cart" className="flex items-center">
                   <div className="ml-4 flex w-auto items-center justify-center">
                     <Image alt="amazon-cart" className="w-10" src={cartIcon} />
-                    <span className="text-md absolute -top-0 font-bold text-orange-300 md:top-2">
-                      {cartCount}
-                    </span>
+                    <div className="text-md absolute -top-0 flex w-[30px] justify-center font-bold text-orange-300 md:top-2">
+                      <span>{cartCount > 99 ? '99+' : cartCount}</span>
+                    </div>
                   </div>
                   <span className="relative -bottom-2 right-2 hidden text-sm font-bold lg:flex">
                     Cart

@@ -6,10 +6,31 @@ import { useCartItems } from '~/utils/useCart';
 import { useQuantity } from '~/utils/useQuantity';
 import { USDollar } from '~/utils/constants';
 import Icon from '~/components/Icon';
+import emptyCart from 'public/emtpy_cart.svg';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
   const cartItemKeys = Object.keys(cartItems);
+
+  if (cartItemKeys.length === 0) {
+    return (
+      <div className="flex w-full flex-col items-center justify-center bg-white">
+        <div className="relative aspect-square h-72 sm:h-96">
+          <Image
+            alt="Cart is empty"
+            priority
+            // eslint-disable-next-line
+            src={emptyCart}
+            fill
+            sizes="100vh"
+            className="object-contain"
+          />
+        </div>
+        <h1 className="text-center text-2xl font-bold">Your Cart is empty</h1>
+        <span className="text-[#565959]">Good stuff goes in here</span>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-[#EAEDED] sm:p-4">
