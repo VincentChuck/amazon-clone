@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import { booksSubCategories } from '../src/utils/data';
+import { intermediateCatArr, bottomCatArr } from '../src/utils/data';
 
 const prisma = new PrismaClient();
 
@@ -28,26 +28,11 @@ async function seed() {
     },
   });
 
-  const booksCategory = await prisma.productCategory.create({
-    data: {
-      categoryName: 'Books',
-      id: 1,
-    },
+  await prisma.productCategory.createMany({
+    data: [...intermediateCatArr, ...bottomCatArr],
   });
 
-  // Create the child categories
-  const booksCatMap = new Map<string, number>();
-  for (const cat of booksSubCategories) {
-    const catObject = await prisma.productCategory.create({
-      data: {
-        categoryName: cat,
-        parentCategoryId: booksCategory.id,
-      },
-    });
-    booksCatMap.set(cat, catObject.id);
-  }
-
-  const booksCatIdArr = Array.from(booksCatMap, ([_, value]) => value);
+  const bottomCatIdArr = bottomCatArr.map(({ id }) => id);
 
   // Create the variation and options
   const bookFormatOptions = await prisma.variation.create({
@@ -58,13 +43,12 @@ async function seed() {
           { value: 'Kindle' },
           { value: 'Hardcover' },
           { value: 'Paperback' },
-          { value: 'KindleSpecial' },
-          { value: 'HardcoverSpecial' },
-          { value: 'PaperbackSpecial' },
+          { value: 'Audible Audiobook' },
+          { value: 'Spiral-bound' },
         ],
       },
       ProductCategories: {
-        connect: booksCatIdArr.map((id) => {
+        connect: bottomCatIdArr.map((id) => {
           return { id };
         }),
       },
@@ -81,11 +65,11 @@ async function seed() {
   const bookFormatOptionsArr = bookFormatOptions.variationOptions;
 
   // Create the products
-  for (let i = 0; i < 100; i++) {
-    const randomBooksCat = faker.helpers.arrayElement(booksCatIdArr);
+  for (let i = 0; i < 500; i++) {
+    const randomBooksCat = faker.helpers.arrayElement(bottomCatIdArr);
     // const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
-    const randomBookName = faker.lorem
-      .words({ min: 3, max: 10 })
+    const randomBookName = faker.word
+      .words({ count: { min: 5, max: 10 } })
       .split(' ')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
@@ -136,13 +120,16 @@ async function seed() {
       case 'Paperback':
         return basePrice + 10;
       case 'Hardcover':
-        return basePrice + 25;
+        return basePrice + 20;
+      case 'Audible Audiobook':
+        return basePrice + 5;
+      case 'Spiral-bound':
+        return basePrice + 30;
       default:
         return basePrice;
     }
   }
 
-  console.log(booksCategory);
   console.log('Seed complete!');
 }
 
