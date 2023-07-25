@@ -66,15 +66,12 @@ function Layout({ children }: Props) {
     <SearchTermCtx.Provider value={{ searchTerm, setSearchTerm }}>
       <div>
         <Head>
-          <title>Amazon.com. Spend less. Smile more.</title>
+          <title>Amazon Clone</title>
           <meta
             name="description"
-            content="Free shipping on millions of items. Get the best of Shopping and Entertainment with Prime. Enjoy low prices and great deals on the largest selection of everyday essentials and other products, including fashion, home, beauty, electronics, Alexa Devices, sporting goods, toys, automotive, pets, baby, books, video games, musical instruments, office supplies, and more."
+            content="Amazon clone. This is not the real Amazon website."
           />
-          <meta
-            name="keywords"
-            content="Amazon, Amazon.com, Books, Online Shopping, Book Store, Magazine, Subscription, Music, CDs, DVDs, Videos, Electronics, Video Games, Computers, Cell Phones, Toys, Games, Apparel, Accessories, Shoes, Jewelry, Watches, Office Products, Sports & Outdoors, Sporting Goods, Baby Products, Health, Personal Care, Beauty, Home, Garden, Bed & Bath, Furniture, Tools, Hardware, Vacuums, Outdoor Living, Automotive Parts, Pet Supplies, Broadband, DSL"
-          />
+          <meta name="keywords" content="Amazon Clone" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div

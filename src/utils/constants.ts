@@ -1,5 +1,4 @@
-export const TRADEMARK =
-  '© 1996-2023, (Not) Amazon.com, Inc. or its affiliates';
+export const TRADEMARK = '© 2023, Not Amazon or its affiliates';
 
 export const RESULTSPERPAGE = 16;
 
