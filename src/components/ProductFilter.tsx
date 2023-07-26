@@ -47,16 +47,18 @@ export default function ProductFilter({
           />
         )}
         <ul>
-          {mergedCategoryTrees?.map((categoryTree) => {
-            return (
-              <Category
-                key={categoryTree.id}
-                categoryTree={categoryTree}
-                selectedCategoryId={selectedCategoryId}
-                nestLevel={0}
-              />
-            );
-          })}
+          {mergedCategoryTrees
+            ?.sort((a, b) => a.id - b.id)
+            .map((categoryTree) => {
+              return (
+                <Category
+                  key={categoryTree.id}
+                  categoryTree={categoryTree}
+                  selectedCategoryId={selectedCategoryId}
+                  nestLevel={0}
+                />
+              );
+            })}
         </ul>
       </div>
     </HrefContext.Provider>

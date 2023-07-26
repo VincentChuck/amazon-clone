@@ -141,6 +141,7 @@ export default function Products() {
           categoryId,
           sortBy,
           applyMobileFilter,
+          keyword,
         }}
       />
 
