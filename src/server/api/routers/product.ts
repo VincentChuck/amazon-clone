@@ -1,22 +1,10 @@
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
-import { type PrismaClient } from '@prisma/client';
 import type { CategoryTree } from '~/types';
 import { SORTOPTIONS } from '~/utils/constants';
-
-async function getChildCategories(categoryId: number, prisma: PrismaClient) {
-  if (categoryId === 0) return [];
-  const childCategories = await prisma.productCategory.findMany({
-    where: {
-      parentCategoryId: categoryId,
-    },
-    select: {
-      id: true,
-    },
-  });
-  const childCategoriesId = childCategories.map(({ id }) => id);
-  return [categoryId, ...childCategoriesId];
-}
+import categoryMapJson from '~/utils/data/categoryMap.json';
+import { type CategoryTreeData } from '~/utils/data/dataUtils';
+const categoryMap: CategoryTreeData = categoryMapJson;
 
 export const productRouter = createTRPCRouter({
   getBatch: publicProcedure
@@ -34,10 +22,10 @@ export const productRouter = createTRPCRouter({
         ctx,
         input: { keyword, categoryId, resultPerPage, skip, sortBy },
       }) => {
-        const childCategoriesId = await getChildCategories(
+        const childCategoriesId = [
+          ...(categoryMap[categoryId]?.descendentIds ?? []),
           categoryId,
-          ctx.prisma
-        );
+        ];
 
         const productsRaw = await ctx.prisma.product.findMany({
           orderBy: { name: 'asc' },
@@ -139,10 +127,10 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input: { keyword, categoryId } }) => {
-      const childCategoriesId = await getChildCategories(
+      const childCategoriesId = [
+        ...(categoryMap[categoryId]?.descendentIds ?? []),
         categoryId,
-        ctx.prisma
-      );
+      ];
 
       const products = await ctx.prisma.product.findMany({
         where: {

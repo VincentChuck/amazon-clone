@@ -39,7 +39,12 @@ export default function ProductFilter({
       <div className="hidden w-[20vw] max-w-[360px] flex-shrink-0 flex-col px-1 pr-3 text-sm md:flex">
         <span className="mb-2 font-bold">Department</span>
         {!!selectedCategoryId && (
-          <CategoryItem name="Any Department" id={0} bold={false} goUp={true} />
+          <CategoryItem
+            name="All Books"
+            id={0}
+            bold={false}
+            isAncestor={true}
+          />
         )}
         <ul>
           {mergedCategoryTrees?.map((categoryTree) => {
@@ -48,6 +53,7 @@ export default function ProductFilter({
                 key={categoryTree.id}
                 categoryTree={categoryTree}
                 selectedCategoryId={selectedCategoryId}
+                nestLevel={0}
               />
             );
           })}
@@ -60,24 +66,31 @@ export default function ProductFilter({
 type CategoryProps = {
   categoryTree: CategoryTree;
   selectedCategoryId: number;
+  nestLevel: number;
 };
 
-function Category({ categoryTree, selectedCategoryId }: CategoryProps) {
-  const bold = categoryTree.id === selectedCategoryId;
-  const goUp =
+function Category({
+  categoryTree,
+  selectedCategoryId,
+  nestLevel,
+}: CategoryProps) {
+  const isSelected = categoryTree.id === selectedCategoryId;
+  const bold = isSelected;
+  const isAncestor =
     !!selectedCategoryId &&
     categoryTree &&
     !!categoryTree.children &&
-    categoryTree.children.length > 0 &&
+    categoryTree.children?.map((cat) => cat.id).includes(selectedCategoryId) &&
     selectedCategoryId !== categoryTree.id;
+  if (isSelected) nestLevel = 0;
   return (
-    <li>
+    <li className={`${nestLevel > 1 ? 'hidden' : ''}`}>
       <CategoryItem
         {...{
           name: categoryTree.name,
           id: categoryTree.id,
           bold,
-          goUp,
+          isAncestor: isAncestor,
         }}
       />
       {categoryTree.children && categoryTree.children.length > 0 && (
@@ -88,6 +101,7 @@ function Category({ categoryTree, selectedCategoryId }: CategoryProps) {
                 key={category.id}
                 categoryTree={category}
                 selectedCategoryId={selectedCategoryId}
+                nestLevel={nestLevel + 1}
               />
             );
           })}
@@ -101,16 +115,16 @@ type CategoryItemProps = {
   name: string;
   id: number;
   bold: boolean;
-  goUp: boolean;
+  isAncestor: boolean;
 };
 
-function CategoryItem({ name, id, bold, goUp }: CategoryItemProps) {
+function CategoryItem({ name, id, bold, isAncestor }: CategoryItemProps) {
   const hrefObj = useContext(HrefContext);
   if (id) hrefObj.query.cid = id;
   if (bold) return <span className="font-bold">{name}</span>;
   return (
     <Link href={hrefObj}>
-      {goUp && (
+      {isAncestor && (
         <Icon
           name="chevron_left"
           strokeWidth={2.5}

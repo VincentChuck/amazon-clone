@@ -12,8 +12,6 @@ export default function Product() {
   const { pid } = router.query;
   const productId = parseRouterParam(pid);
 
-  // const [itemIndex, setItemIndex] = useState<number>();
-
   useEffect(() => {
     if (!router.isReady) return;
     setPageLoaded(true);

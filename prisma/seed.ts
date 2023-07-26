@@ -1,7 +1,9 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import { intermediateCatArr, bottomCatArr } from '../src/utils/data';
+import categoryMapJson from '../src/utils/data/categoryMap.json';
+import { type CategoryTreeData } from '~/utils/data/dataUtils';
+const categoryMap: CategoryTreeData = categoryMapJson;
 
 const prisma = new PrismaClient();
 
@@ -20,13 +22,33 @@ async function seed() {
     deleteProductCategory,
   ]);
 
-  // Create the root category
-  await prisma.productCategory.create({
-    data: {
-      categoryName: 'Any',
-      id: 0,
-    },
-  });
+  const intermediateCatArr = [...Object.values(categoryMap)]
+    .filter((cat) => {
+      return cat.descendentIds && cat.descendentIds.length > 0;
+    })
+    .map((cat) => {
+      return {
+        id: cat.id,
+        categoryName: cat.categoryName,
+        ...(cat.parentCategoryId
+          ? { parentCategoryId: cat.parentCategoryId }
+          : {}),
+      };
+    });
+
+  const bottomCatArr = [...Object.values(categoryMap)]
+    .filter((cat) => {
+      return !Object.keys(cat).includes('descendentIds');
+    })
+    .map((cat) => {
+      return {
+        id: cat.id,
+        categoryName: cat.categoryName,
+        ...(cat.parentCategoryId
+          ? { parentCategoryId: cat.parentCategoryId }
+          : {}),
+      };
+    });
 
   await prisma.productCategory.createMany({
     data: [...intermediateCatArr, ...bottomCatArr],
