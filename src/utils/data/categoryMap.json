@@ -2,90 +2,35 @@
   "1": {
     "categoryName": "Fiction",
     "id": 1,
-    "descendentIds": [
-      4,
-      5,
-      6,
-      7,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      41,
-      42
-    ]
+    "descendentIds": [4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 22, 23, 41, 42]
   },
   "2": {
     "categoryName": "Non-Fiction",
     "id": 2,
-    "descendentIds": [
-      8,
-      9,
-      10,
-      11,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30
-    ]
+    "descendentIds": [8, 9, 10, 11, 24, 25, 26, 27, 28, 29, 30]
   },
   "3": {
     "categoryName": "Children's Books",
     "id": 3,
-    "descendentIds": [
-      12,
-      13,
-      14,
-      15,
-      31,
-      32,
-      33,
-      34,
-      35,
-      36,
-      37,
-      38,
-      39,
-      40
-    ]
+    "descendentIds": [12, 13, 14, 15, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
   },
   "4": {
     "categoryName": "Mystery & Thrillers",
     "id": 4,
     "parentCategoryId": 1,
-    "descendentIds": [
-      16,
-      17,
-      18
-    ]
+    "descendentIds": [16, 17, 18]
   },
   "5": {
     "categoryName": "Romance",
     "id": 5,
     "parentCategoryId": 1,
-    "descendentIds": [
-      19,
-      20,
-      21
-    ]
+    "descendentIds": [19, 20, 21]
   },
   "6": {
     "categoryName": "Science Fiction & Fantasy",
     "id": 6,
     "parentCategoryId": 1,
-    "descendentIds": [
-      22,
-      23,
-      41,
-      42
-    ]
+    "descendentIds": [22, 23, 41, 42]
   },
   "7": {
     "categoryName": "Historical Fiction",
@@ -101,67 +46,43 @@
     "categoryName": "Biographies & Memoirs",
     "id": 9,
     "parentCategoryId": 2,
-    "descendentIds": [
-      24,
-      25
-    ]
+    "descendentIds": [24, 25]
   },
   "10": {
     "categoryName": "Travel & Adventure",
     "id": 10,
     "parentCategoryId": 2,
-    "descendentIds": [
-      26,
-      27
-    ]
+    "descendentIds": [26, 27]
   },
   "11": {
     "categoryName": "Health & Wellness",
     "id": 11,
     "parentCategoryId": 2,
-    "descendentIds": [
-      28,
-      29,
-      30
-    ]
+    "descendentIds": [28, 29, 30]
   },
   "12": {
     "categoryName": "Picture Books",
     "id": 12,
     "parentCategoryId": 3,
-    "descendentIds": [
-      31,
-      32
-    ]
+    "descendentIds": [31, 32]
   },
   "13": {
     "categoryName": "Early Readers",
     "id": 13,
     "parentCategoryId": 3,
-    "descendentIds": [
-      33,
-      34
-    ]
+    "descendentIds": [33, 34]
   },
   "14": {
     "categoryName": "Middle Grade",
     "id": 14,
     "parentCategoryId": 3,
-    "descendentIds": [
-      35,
-      36,
-      37
-    ]
+    "descendentIds": [35, 36, 37]
   },
   "15": {
     "categoryName": "Young Adult",
     "id": 15,
     "parentCategoryId": 3,
-    "descendentIds": [
-      38,
-      39,
-      40
-    ]
+    "descendentIds": [38, 39, 40]
   },
   "16": {
     "categoryName": "Detective Fiction",
@@ -202,10 +123,7 @@
     "categoryName": "Fantasy",
     "id": 23,
     "parentCategoryId": 6,
-    "descendentIds": [
-      41,
-      42
-    ]
+    "descendentIds": [41, 42]
   },
   "24": {
     "categoryName": "Autobiographies",

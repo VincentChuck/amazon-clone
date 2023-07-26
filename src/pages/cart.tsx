@@ -14,7 +14,7 @@ export default function Cart() {
 
   if (cartItemKeys.length === 0) {
     return (
-      <div className="flex min-h-[400px] w-full flex-col items-center justify-center bg-white">
+      <div className="flex min-h-[500px] w-full flex-col items-center justify-center bg-white sm:min-h-[600px]">
         <div className="relative aspect-square h-72 sm:h-96">
           <Image
             alt="Cart is empty"

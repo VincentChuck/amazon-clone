@@ -83,16 +83,11 @@ function Layout({ children }: Props) {
             <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between md:h-16 md:px-2">
               {/* logo bar left */}
               <div className="flex w-auto flex-shrink-0 items-center">
-                <Icon
-                  name="hamburger"
-                  strokeWidth={1.5}
-                  className="m-2 h-8 w-8 md:hidden"
-                />
                 <Link href="/">
                   <Image
                     alt="amazon-logo"
                     priority
-                    className="ml-2 mt-1.5 w-20 md:w-24"
+                    className="ml-4 mt-1.5 w-20 md:w-24"
                     src={navLogo}
                   />
                 </Link>
@@ -166,21 +161,18 @@ function Layout({ children }: Props) {
 
             {/* nav links bar */}
             <nav className="no-scrollbar flex h-11  items-center overflow-x-auto whitespace-nowrap pr-5 md:h-9 md:bg-slate-800 md:text-sm">
-              <div className="hidden items-center font-bold md:flex">
-                <Icon
-                  name="hamburger"
-                  strokeWidth={1.5}
-                  className="ml-2 h-7 w-7"
-                />
-                <span>All</span>
-              </div>
-              <a className="ml-5">Best Sellers</a>
-              <a className="ml-5">Deals</a>
-              <a className="ml-5">Amazon Basics</a>
-              <Link className="ml-5" href="/products?cid=1">
-                Books
+              <Link href="/products" className="ml-4">
+                All Books
               </Link>
-              <a className="ml-5">Computers & Accessories</a>
+              <Link href="/products?cid=1" className="ml-5">
+                Fiction
+              </Link>
+              <Link href="/products?cid=2" className="ml-5">
+                Non-Fiction
+              </Link>
+              <Link href="/products?cid=3" className="ml-5">
+                Children&apos;s Books
+              </Link>
             </nav>
 
             {/* nav location bar */}
@@ -213,7 +205,9 @@ function Layout({ children }: Props) {
                 <a className="my-1">Your orders</a>
                 <a className="my-1">Your account</a>
                 <a className="my-1">Browsing History</a>
-                <a className="my-1">Your Cart</a>
+                <Link href="/cart" className="my-1">
+                  Your Cart
+                </Link>
               </nav>
             </div>
 
