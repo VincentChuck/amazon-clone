@@ -21,6 +21,7 @@ export type CategoryTree = {
   id: number;
   name: string;
   children?: CategoryTree[];
+  level?: number;
 };
 
 export const CartSchema = z

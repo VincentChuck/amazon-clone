@@ -2,35 +2,43 @@
   "1": {
     "categoryName": "Fiction",
     "id": 1,
-    "descendentIds": [4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 22, 23, 41, 42]
+    "descendentIds": [
+      4, 5, 6, 7, 8, 9, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+      33, 63, 64, 65
+    ]
   },
   "2": {
     "categoryName": "Non-Fiction",
     "id": 2,
-    "descendentIds": [8, 9, 10, 11, 24, 25, 26, 27, 28, 29, 30]
+    "descendentIds": [
+      10, 11, 12, 13, 14, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46
+    ]
   },
   "3": {
     "categoryName": "Children's Books",
     "id": 3,
-    "descendentIds": [12, 13, 14, 15, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+    "descendentIds": [
+      15, 16, 17, 18, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+      61, 62, 66, 67
+    ]
   },
   "4": {
     "categoryName": "Mystery & Thrillers",
     "id": 4,
     "parentCategoryId": 1,
-    "descendentIds": [16, 17, 18]
+    "descendentIds": [19, 20, 21, 22]
   },
   "5": {
     "categoryName": "Romance",
     "id": 5,
     "parentCategoryId": 1,
-    "descendentIds": [19, 20, 21]
+    "descendentIds": [23, 24, 25, 26]
   },
   "6": {
     "categoryName": "Science Fiction & Fantasy",
     "id": 6,
     "parentCategoryId": 1,
-    "descendentIds": [22, 23, 41, 42]
+    "descendentIds": [27, 28, 63, 64, 65]
   },
   "7": {
     "categoryName": "Historical Fiction",
@@ -38,186 +46,315 @@
     "parentCategoryId": 1
   },
   "8": {
-    "categoryName": "Self-Help & Personal Development",
+    "categoryName": "Fantasy Fiction",
     "id": 8,
-    "parentCategoryId": 2
+    "parentCategoryId": 1,
+    "descendentIds": [29, 30]
   },
   "9": {
-    "categoryName": "Biographies & Memoirs",
+    "categoryName": "Horror",
     "id": 9,
-    "parentCategoryId": 2,
-    "descendentIds": [24, 25]
+    "parentCategoryId": 1,
+    "descendentIds": [31, 32, 33]
   },
   "10": {
-    "categoryName": "Travel & Adventure",
+    "categoryName": "Self-Help & Personal Development",
     "id": 10,
-    "parentCategoryId": 2,
-    "descendentIds": [26, 27]
+    "parentCategoryId": 2
   },
   "11": {
-    "categoryName": "Health & Wellness",
+    "categoryName": "Biographies & Memoirs",
     "id": 11,
     "parentCategoryId": 2,
-    "descendentIds": [28, 29, 30]
+    "descendentIds": [34, 35]
   },
   "12": {
-    "categoryName": "Picture Books",
+    "categoryName": "Travel & Adventure",
     "id": 12,
-    "parentCategoryId": 3,
-    "descendentIds": [31, 32]
+    "parentCategoryId": 2,
+    "descendentIds": [36, 37, 38]
   },
   "13": {
-    "categoryName": "Early Readers",
+    "categoryName": "Health & Wellness",
     "id": 13,
-    "parentCategoryId": 3,
-    "descendentIds": [33, 34]
+    "parentCategoryId": 2,
+    "descendentIds": [39, 40, 41, 42, 43]
   },
   "14": {
-    "categoryName": "Middle Grade",
+    "categoryName": "History & Politics",
     "id": 14,
-    "parentCategoryId": 3,
-    "descendentIds": [35, 36, 37]
+    "parentCategoryId": 2,
+    "descendentIds": [44, 45, 46]
   },
   "15": {
-    "categoryName": "Young Adult",
+    "categoryName": "Picture Books",
     "id": 15,
     "parentCategoryId": 3,
-    "descendentIds": [38, 39, 40]
+    "descendentIds": [47, 48, 49]
   },
   "16": {
-    "categoryName": "Detective Fiction",
+    "categoryName": "Early Readers",
     "id": 16,
-    "parentCategoryId": 4
+    "parentCategoryId": 3,
+    "descendentIds": [50, 51, 52, 53, 66, 67]
   },
   "17": {
-    "categoryName": "Psychological Thrillers",
+    "categoryName": "Middle Grade",
     "id": 17,
-    "parentCategoryId": 4
+    "parentCategoryId": 3,
+    "descendentIds": [54, 55, 56, 57]
   },
   "18": {
-    "categoryName": "Crime Fiction",
+    "categoryName": "Young Adult",
     "id": 18,
-    "parentCategoryId": 4
+    "parentCategoryId": 3,
+    "descendentIds": [58, 59, 60, 61, 62]
   },
   "19": {
-    "categoryName": "Contemporary Romance",
+    "categoryName": "Detective Fiction",
     "id": 19,
-    "parentCategoryId": 5
+    "parentCategoryId": 4
   },
   "20": {
-    "categoryName": "Historical Romance",
+    "categoryName": "Psychological Thrillers",
     "id": 20,
-    "parentCategoryId": 5
+    "parentCategoryId": 4
   },
   "21": {
-    "categoryName": "Paranormal Romance",
+    "categoryName": "Crime Fiction",
     "id": 21,
-    "parentCategoryId": 5
+    "parentCategoryId": 4
   },
   "22": {
-    "categoryName": "Hard Science Fiction",
+    "categoryName": "Historical Mystery",
     "id": 22,
-    "parentCategoryId": 6
+    "parentCategoryId": 4
   },
   "23": {
-    "categoryName": "Fantasy",
+    "categoryName": "Contemporary Romance",
     "id": 23,
-    "parentCategoryId": 6,
-    "descendentIds": [41, 42]
+    "parentCategoryId": 5
   },
   "24": {
-    "categoryName": "Autobiographies",
+    "categoryName": "Historical Romance",
     "id": 24,
-    "parentCategoryId": 9
+    "parentCategoryId": 5
   },
   "25": {
-    "categoryName": "Political Figures",
+    "categoryName": "Paranormal Romance",
     "id": 25,
-    "parentCategoryId": 9
+    "parentCategoryId": 5
   },
   "26": {
-    "categoryName": "Travel Guides",
+    "categoryName": "Fantasy Romance",
     "id": 26,
-    "parentCategoryId": 10
+    "parentCategoryId": 5
   },
   "27": {
-    "categoryName": "Adventure Stories",
+    "categoryName": "Hard Science Fiction",
     "id": 27,
-    "parentCategoryId": 10
+    "parentCategoryId": 6
   },
   "28": {
-    "categoryName": "Fitness & Exercise",
+    "categoryName": "Fantasy",
     "id": 28,
-    "parentCategoryId": 11
+    "parentCategoryId": 6,
+    "descendentIds": [63, 64, 65]
   },
   "29": {
-    "categoryName": "Mental Health & Psychology",
+    "categoryName": "Mythical Creatures",
     "id": 29,
-    "parentCategoryId": 11
+    "parentCategoryId": 8
   },
   "30": {
-    "categoryName": "Nutrition & Dieting",
+    "categoryName": "Sword & Sorcery",
     "id": 30,
-    "parentCategoryId": 11
+    "parentCategoryId": 8
   },
   "31": {
-    "categoryName": "Bedtime Stories",
+    "categoryName": "Supernatural Horror",
     "id": 31,
-    "parentCategoryId": 12
+    "parentCategoryId": 9
   },
   "32": {
-    "categoryName": "ABC & Counting Books",
+    "categoryName": "Psychological Horror",
     "id": 32,
-    "parentCategoryId": 12
+    "parentCategoryId": 9
   },
   "33": {
-    "categoryName": "Learn-to-Read Books",
+    "categoryName": "Monsters & Creatures",
     "id": 33,
-    "parentCategoryId": 13
+    "parentCategoryId": 9
   },
   "34": {
-    "categoryName": "Phonics & Sight Words",
+    "categoryName": "Autobiographies",
     "id": 34,
-    "parentCategoryId": 13
+    "parentCategoryId": 11
   },
   "35": {
-    "categoryName": "Adventure & Mystery",
+    "categoryName": "Political Figures",
     "id": 35,
-    "parentCategoryId": 14
+    "parentCategoryId": 11
   },
   "36": {
-    "categoryName": "Fantasy & Magic",
+    "categoryName": "Travel Guides",
     "id": 36,
-    "parentCategoryId": 14
+    "parentCategoryId": 12
   },
   "37": {
-    "categoryName": "Friendship & School Life",
+    "categoryName": "Adventure Stories",
     "id": 37,
-    "parentCategoryId": 14
+    "parentCategoryId": 12
   },
   "38": {
-    "categoryName": "Contemporary YA",
+    "categoryName": "Survival Stories",
     "id": 38,
-    "parentCategoryId": 15
+    "parentCategoryId": 12
   },
   "39": {
-    "categoryName": "Dystopian & Sci-Fi YA",
+    "categoryName": "Fitness & Exercise",
     "id": 39,
-    "parentCategoryId": 15
+    "parentCategoryId": 13
   },
   "40": {
-    "categoryName": "Fantasy & Paranormal YA",
+    "categoryName": "Mental Health & Psychology",
     "id": 40,
-    "parentCategoryId": 15
+    "parentCategoryId": 13
   },
   "41": {
-    "categoryName": "Epic Fantasy",
+    "categoryName": "Nutrition & Dieting",
     "id": 41,
-    "parentCategoryId": 23
+    "parentCategoryId": 13
   },
   "42": {
-    "categoryName": "Urban Fantasy",
+    "categoryName": "Yoga & Meditation",
     "id": 42,
-    "parentCategoryId": 23
+    "parentCategoryId": 13
+  },
+  "43": {
+    "categoryName": "Holistic Healing",
+    "id": 43,
+    "parentCategoryId": 13
+  },
+  "44": {
+    "categoryName": "World History",
+    "id": 44,
+    "parentCategoryId": 14
+  },
+  "45": {
+    "categoryName": "Political Science",
+    "id": 45,
+    "parentCategoryId": 14
+  },
+  "46": {
+    "categoryName": "American History",
+    "id": 46,
+    "parentCategoryId": 14
+  },
+  "47": {
+    "categoryName": "Bedtime Stories",
+    "id": 47,
+    "parentCategoryId": 15
+  },
+  "48": {
+    "categoryName": "ABC & Counting Books",
+    "id": 48,
+    "parentCategoryId": 15
+  },
+  "49": {
+    "categoryName": "Animal Stories",
+    "id": 49,
+    "parentCategoryId": 15
+  },
+  "50": {
+    "categoryName": "Learn-to-Read Books",
+    "id": 50,
+    "parentCategoryId": 16
+  },
+  "51": {
+    "categoryName": "Phonics & Sight Words",
+    "id": 51,
+    "parentCategoryId": 16
+  },
+  "52": {
+    "categoryName": "Coloring Books",
+    "id": 52,
+    "parentCategoryId": 16
+  },
+  "53": {
+    "categoryName": "Educational Books",
+    "id": 53,
+    "parentCategoryId": 16,
+    "descendentIds": [66, 67]
+  },
+  "54": {
+    "categoryName": "Adventure & Mystery",
+    "id": 54,
+    "parentCategoryId": 17
+  },
+  "55": {
+    "categoryName": "Fantasy & Magic",
+    "id": 55,
+    "parentCategoryId": 17
+  },
+  "56": {
+    "categoryName": "Friendship & School Life",
+    "id": 56,
+    "parentCategoryId": 17
+  },
+  "57": {
+    "categoryName": "Historical Fantasy",
+    "id": 57,
+    "parentCategoryId": 17
+  },
+  "58": {
+    "categoryName": "Contemporary YA",
+    "id": 58,
+    "parentCategoryId": 18
+  },
+  "59": {
+    "categoryName": "Dystopian & Sci-Fi YA",
+    "id": 59,
+    "parentCategoryId": 18
+  },
+  "60": {
+    "categoryName": "Fantasy & Paranormal YA",
+    "id": 60,
+    "parentCategoryId": 18
+  },
+  "61": {
+    "categoryName": "Coming of Age",
+    "id": 61,
+    "parentCategoryId": 18
+  },
+  "62": {
+    "categoryName": "Romance & Relationships",
+    "id": 62,
+    "parentCategoryId": 18
+  },
+  "63": {
+    "categoryName": "Epic Fantasy",
+    "id": 63,
+    "parentCategoryId": 28
+  },
+  "64": {
+    "categoryName": "Urban Fantasy",
+    "id": 64,
+    "parentCategoryId": 28
+  },
+  "65": {
+    "categoryName": "High Fantasy",
+    "id": 65,
+    "parentCategoryId": 28
+  },
+  "66": {
+    "categoryName": "Science & Nature",
+    "id": 66,
+    "parentCategoryId": 53
+  },
+  "67": {
+    "categoryName": "History & Social Studies",
+    "id": 67,
+    "parentCategoryId": 53
   }
 }

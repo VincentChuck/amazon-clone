@@ -19,17 +19,19 @@ export default function ProductList({ products }: ProductsProps) {
                   key={product.id}
                   className="border-1 mb-2 flex h-60 items-start border border-[#F5F5F5]"
                 >
-                  <div className="relative h-full w-[42%] shrink-0 bg-[#F8F8F8] md:min-w-[200px] md:max-w-[20%] md:grow">
-                    <Link href={productLink}>
-                      <Image
-                        alt={`${product.name} product image`}
-                        src={product.productImage}
-                        fill
-                        sizes="224px"
-                        className="object-contain"
-                      />
-                    </Link>
-                  </div>
+                  <Link
+                    href={productLink}
+                    className="relative h-full w-[42%] shrink-0 bg-[#F8F8F8] md:min-w-[200px] md:max-w-[20%] md:grow"
+                  >
+                    <Image
+                      alt={`${product.name} product image`}
+                      src={product.productImage}
+                      fill
+                      sizes="224px"
+                      className="object-contain"
+                      priority
+                    />
+                  </Link>
                   <div className="flex flex-col py-2 pl-2 pr-1">
                     <Link href={productLink}>
                       <span className="line-clamp-3 text-lg">

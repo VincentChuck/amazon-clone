@@ -3,21 +3,33 @@
     "Mystery & Thrillers": {
       "Detective Fiction": null,
       "Psychological Thrillers": null,
-      "Crime Fiction": null
+      "Crime Fiction": null,
+      "Historical Mystery": null
     },
     "Romance": {
       "Contemporary Romance": null,
       "Historical Romance": null,
-      "Paranormal Romance": null
+      "Paranormal Romance": null,
+      "Fantasy Romance": null
     },
     "Science Fiction & Fantasy": {
       "Hard Science Fiction": null,
       "Fantasy": {
         "Epic Fantasy": null,
-        "Urban Fantasy": null
+        "Urban Fantasy": null,
+        "High Fantasy": null
       }
     },
-    "Historical Fiction": null
+    "Historical Fiction": null,
+    "Fantasy Fiction": {
+      "Mythical Creatures": null,
+      "Sword & Sorcery": null
+    },
+    "Horror": {
+      "Supernatural Horror": null,
+      "Psychological Horror": null,
+      "Monsters & Creatures": null
+    }
   },
   "Non-Fiction": {
     "Self-Help & Personal Development": null,
@@ -27,32 +39,49 @@
     },
     "Travel & Adventure": {
       "Travel Guides": null,
-      "Adventure Stories": null
+      "Adventure Stories": null,
+      "Survival Stories": null
     },
     "Health & Wellness": {
       "Fitness & Exercise": null,
       "Mental Health & Psychology": null,
-      "Nutrition & Dieting": null
+      "Nutrition & Dieting": null,
+      "Yoga & Meditation": null,
+      "Holistic Healing": null
+    },
+    "History & Politics": {
+      "World History": null,
+      "Political Science": null,
+      "American History": null
     }
   },
   "Children's Books": {
     "Picture Books": {
       "Bedtime Stories": null,
-      "ABC & Counting Books": null
+      "ABC & Counting Books": null,
+      "Animal Stories": null
     },
     "Early Readers": {
       "Learn-to-Read Books": null,
-      "Phonics & Sight Words": null
+      "Phonics & Sight Words": null,
+      "Coloring Books": null,
+      "Educational Books": {
+        "Science & Nature": null,
+        "History & Social Studies": null
+      }
     },
     "Middle Grade": {
       "Adventure & Mystery": null,
       "Fantasy & Magic": null,
-      "Friendship & School Life": null
+      "Friendship & School Life": null,
+      "Historical Fantasy": null
     },
     "Young Adult": {
       "Contemporary YA": null,
       "Dystopian & Sci-Fi YA": null,
-      "Fantasy & Paranormal YA": null
+      "Fantasy & Paranormal YA": null,
+      "Coming of Age": null,
+      "Romance & Relationships": null
     }
   }
 }

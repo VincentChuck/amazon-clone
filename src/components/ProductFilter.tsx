@@ -7,6 +7,7 @@ type ProductsProps = {
   mergedCategoryTrees: CategoryTree[];
   keyword: string;
   categoryId: number;
+  categoryLevel?: number;
 };
 
 type HrefObj = {
@@ -26,6 +27,7 @@ export default function ProductFilter({
   mergedCategoryTrees,
   keyword,
   categoryId: selectedCategoryId,
+  categoryLevel = 1,
 }: ProductsProps) {
   const hrefObj = {
     pathname: '/products',
@@ -56,6 +58,7 @@ export default function ProductFilter({
                   categoryTree={categoryTree}
                   selectedCategoryId={selectedCategoryId}
                   nestLevel={0}
+                  maxNestLevel={categoryLevel}
                 />
               );
             })}
@@ -69,24 +72,21 @@ type CategoryProps = {
   categoryTree: CategoryTree;
   selectedCategoryId: number;
   nestLevel: number;
+  maxNestLevel: number;
 };
 
 function Category({
   categoryTree,
   selectedCategoryId,
   nestLevel,
+  maxNestLevel,
 }: CategoryProps) {
   const isSelected = categoryTree.id === selectedCategoryId;
   const bold = isSelected;
-  const isAncestor =
-    !!selectedCategoryId &&
-    categoryTree &&
-    !!categoryTree.children &&
-    categoryTree.children?.map((cat) => cat.id).includes(selectedCategoryId) &&
-    selectedCategoryId !== categoryTree.id;
-  if (isSelected) nestLevel = 0;
+  const isAncestor = !!selectedCategoryId && nestLevel < maxNestLevel;
+
   return (
-    <li className={`${nestLevel > 1 ? 'hidden' : ''}`}>
+    <li className={`${nestLevel > maxNestLevel ? 'hidden' : ''}`}>
       <CategoryItem
         {...{
           name: categoryTree.name,
@@ -104,6 +104,7 @@ function Category({
                 categoryTree={category}
                 selectedCategoryId={selectedCategoryId}
                 nestLevel={nestLevel + 1}
+                maxNestLevel={maxNestLevel}
               />
             );
           })}

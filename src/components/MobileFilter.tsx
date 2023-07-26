@@ -8,6 +8,7 @@ type Props = {
   mergedCategoryTrees: CategoryTree[];
   categoryId: number;
   applyMobileFilter: (sortOption?: SortOption, cid?: number) => void;
+  keyword: string;
 };
 
 export default function MobileFilter(props: Props) {

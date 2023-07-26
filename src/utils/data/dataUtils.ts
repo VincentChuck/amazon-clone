@@ -3,7 +3,7 @@ import categoryTreeRawJson from './categoryTreeRaw.json';
 
 const categoryTreeRaw: CategoryTreeRaw = categoryTreeRawJson;
 
-type CategoryObject = {
+export type CategoryObject = {
   categoryName: string;
   id: number;
   parentCategoryId?: number;

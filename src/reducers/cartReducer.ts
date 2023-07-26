@@ -46,13 +46,11 @@ function getLocalCart() {
   if (!cartStorageJSON) return {};
 
   const cartStorage = CartSchema.parse(JSON.parse(cartStorageJSON));
-  console.log('get local cart', cartStorage);
   return cartStorage;
 }
 
 function setLocalCart(cart: CartType) {
   window.localStorage.setItem('CART', JSON.stringify(cart));
-  console.log('set local cart');
 }
 
 function addToCart(
@@ -84,7 +82,6 @@ function addToCart(
   return function (dispatch: AppDispatch) {
     dispatch(addItem(cartItem));
     setLocalCart({ ...cart, ...cartItem });
-    console.log(`added ${item.SKU} to cart`);
   };
 }
 
@@ -94,7 +91,6 @@ function removeFromCart(itemId: keyof CartType, cart: CartType) {
   return function (dispatch: AppDispatch) {
     dispatch(removeItem(itemId));
     setLocalCart(updatedCart);
-    console.log(`removed ${itemId} from cart`);
   };
 }
 
@@ -110,7 +106,6 @@ function updateItemQuantity(
   return function (dispatch: AppDispatch) {
     dispatch(setCart(updatedCart));
     setLocalCart(updatedCart);
-    console.log(`updated ${itemId} quantity`);
   };
 }
 

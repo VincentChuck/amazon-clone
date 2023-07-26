@@ -68,8 +68,7 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
   return (
     <div className="flex flex-col border-b border-[#E7E7E7] py-3 sm:px-3">
       <div className="flex h-40 sm:h-56">
-        <div className="relative h-full w-[160px] shrink-0 bg-gray-100 sm:min-w-[200px] sm:max-w-[20%] sm:bg-white">
-          <Link href={productLink}>
+        <Link href={productLink} className="relative h-full w-[160px] shrink-0 bg-gray-100 sm:min-w-[200px] sm:max-w-[20%] sm:bg-white">
             <Image
               alt={`${item.name} product image`}
               src={item.image}
@@ -78,7 +77,6 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
               className="object-contain"
             />
           </Link>
-        </div>
         <div className="flex flex-col justify-between py-2 pl-2 pr-1">
           <div className="flex flex-col gap-1">
             <Link href={productLink}>

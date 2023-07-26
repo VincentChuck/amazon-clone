@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { CategoryTree } from '~/types';
 import { SORTOPTIONS } from '~/utils/constants';
 import categoryMapJson from '~/utils/data/categoryMap.json';
-import { type CategoryTreeData } from '~/utils/data/dataUtils';
+import type { CategoryTreeData, CategoryObject } from '~/utils/data/dataUtils';
 const categoryMap: CategoryTreeData = categoryMapJson;
 
 export const productRouter = createTRPCRouter({
@@ -22,10 +22,18 @@ export const productRouter = createTRPCRouter({
         ctx,
         input: { keyword, categoryId, resultPerPage, skip, sortBy },
       }) => {
-        const childCategoriesId = [
-          ...(categoryMap[categoryId]?.descendentIds ?? []),
-          categoryId,
-        ];
+        const childCategoriesId = [categoryId];
+
+        if (categoryId) {
+          const currCategory = categoryMap[categoryId] as CategoryObject;
+
+          if (
+            currCategory.descendentIds &&
+            currCategory.descendentIds.length > 0
+          ) {
+            childCategoriesId.push(...currCategory.descendentIds);
+          }
+        }
 
         const productsRaw = await ctx.prisma.product.findMany({
           orderBy: { name: 'asc' },
@@ -127,10 +135,18 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input: { keyword, categoryId } }) => {
-      const childCategoriesId = [
-        ...(categoryMap[categoryId]?.descendentIds ?? []),
-        categoryId,
-      ];
+      const childCategoriesId = [categoryId];
+
+      if (categoryId) {
+        const currCategory = categoryMap[categoryId] as CategoryObject;
+
+        if (
+          currCategory.descendentIds &&
+          currCategory.descendentIds.length > 0
+        ) {
+          childCategoriesId.push(...currCategory.descendentIds);
+        }
+      }
 
       const products = await ctx.prisma.product.findMany({
         where: {
@@ -197,6 +213,22 @@ export const productRouter = createTRPCRouter({
         }
       }
 
+      let level = 1;
+      if (categoryId) {
+        let searching = true;
+        let curr = categoryMap[categoryId] as CategoryObject;
+
+        while (searching) {
+          const parentId = curr.parentCategoryId;
+          if (parentId) {
+            curr = categoryMap[parentId] as CategoryObject;
+            level++;
+          } else {
+            searching = false;
+          }
+        }
+      }
+
       type CategoryMapValue = Omit<CategoryTree, 'children'> & {
         children: Map<number, CategoryMapValue>;
       };
@@ -237,7 +269,11 @@ export const productRouter = createTRPCRouter({
       // merge all category trees
       const mergedCategoryTrees = mergeTrees(categoryTrees);
 
-      return { mergedCategoryTrees, numberOfResults };
+      return {
+        mergedCategoryTrees,
+        numberOfResults,
+        ...(categoryId && { categoryLevel: level }),
+      };
     }),
 
   get: publicProcedure

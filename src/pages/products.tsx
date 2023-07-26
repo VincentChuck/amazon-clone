@@ -50,6 +50,8 @@ export default function Products() {
     numberOfResults = details.data.numberOfResults;
   }
 
+  const categoryLevel = details.data?.categoryLevel;
+
   const skip = pageIndex * RESULTSPERPAGE;
   const productsOnPageIndex = `${skip + 1}-${Math.min(
     skip + RESULTSPERPAGE,
@@ -147,7 +149,9 @@ export default function Products() {
 
       <div className="mx-3 flex flex-grow flex-col items-center py-4">
         <div className="flex w-full flex-grow justify-center md:max-w-[1800px]">
-          <ProductFilter {...{ mergedCategoryTrees, keyword, categoryId }} />
+          <ProductFilter
+            {...{ mergedCategoryTrees, keyword, categoryId, categoryLevel }}
+          />
           <ProductList products={products} />
         </div>
 
