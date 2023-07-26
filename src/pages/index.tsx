@@ -7,7 +7,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    void router.push({ pathname: '/products', query: { cid: 1 } }, undefined, {
+    void router.push({ pathname: '/products' }, undefined, {
       shallow: true,
     });
   });
