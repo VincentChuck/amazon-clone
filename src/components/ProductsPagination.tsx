@@ -121,12 +121,12 @@ function PaginationMiddle({
   handleJumpPage,
 }: PaginationMiddleProps) {
   if (lastPage <= 5) {
-    const pageArr = new Array(lastPage)
-      .map((_, i) => i + 1)
-      .filter((page) => page > 1 && page < lastPage);
+    const pageArr = new Array(lastPage - 2).fill(0).map((_, i) => i + 2);
 
-    return pageArr.map((_, i) => {
-      return <PageItem page={i + 1} key={i} handleJumpPage={handleJumpPage} />;
+    return pageArr.map((page) => {
+      return (
+        <PageItem page={page} key={page} handleJumpPage={handleJumpPage} />
+      );
     });
   } else {
     let pageArr: Array<number> = [];
