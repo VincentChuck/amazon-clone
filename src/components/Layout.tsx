@@ -72,7 +72,8 @@ function Layout({ children }: Props) {
             content="Find your favourite books on Rainforest Books."
           />
           <meta name="keywords" content="Rainforest Books" />
-          <link rel="icon" href="/favicon.ico" />
+          {/* icon from https://icons8.com/icon/25glCOHPGhxS/floating-island-forest */}
+          <link rel="icon" href="/favicon.png" />
         </Head>
         <div
           className={`${emberFont.variable} flex min-h-screen flex-col font-ember`}
