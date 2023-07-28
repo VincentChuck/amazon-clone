@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Icon from '~/components/Icon';
-import navLogo from 'public/amazon-logo.png';
 import cartIcon from '/public/cart.png';
 import localFont from 'next/font/local';
+import logo from '/public/logo.png';
 import {
   useState,
   createContext,
@@ -66,30 +66,34 @@ function Layout({ children }: Props) {
     <SearchTermCtx.Provider value={{ searchTerm, setSearchTerm }}>
       <div>
         <Head>
-          <title>Amazon Clone</title>
+          <title>Rainforest Books</title>
           <meta
             name="description"
-            content="Amazon clone. This is not the real Amazon website."
+            content="Find your favourite books on Rainforest Books."
           />
-          <meta name="keywords" content="Amazon Clone" />
+          <meta name="keywords" content="Rainforest Books" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div
           className={`${emberFont.variable} flex min-h-screen flex-col font-ember`}
         >
           {/* navbar container */}
-          <header className="bg-slate-800 text-white md:bg-slate-900">
+          <header className="w-full bg-slate-800 text-white md:bg-slate-900">
             {/* logo bar */}
             <section className="flex h-12 w-full flex-row flex-nowrap items-center justify-between md:h-16 md:px-2">
               {/* logo bar left */}
               <div className="flex w-auto flex-shrink-0 items-center">
-                <Link href="/">
+                <Link className="flex items-center" href="/">
                   <Image
-                    alt="amazon-logo"
+                    alt="logo"
                     priority
-                    className="ml-4 mt-1.5 w-20 md:w-24"
-                    src={navLogo}
+                    className="w-15 mt-1.5"
+                    src={logo}
                   />
+                  <div className="flex flex-col gap-0 font-bold leading-none text-white">
+                    <span>Rainforest</span>
+                    <span>Books</span>
+                  </div>
                 </Link>
               </div>
 
@@ -142,7 +146,7 @@ function Layout({ children }: Props) {
                 </div>
                 <Link href="/cart" className="flex items-center">
                   <div className="ml-4 flex w-auto items-center justify-center">
-                    <Image alt="amazon-cart" className="w-10" src={cartIcon} />
+                    <Image alt="cart" className="w-10" src={cartIcon} />
                     <div className="text-md absolute -top-0 flex w-[30px] justify-center font-bold text-orange-300 md:top-2">
                       <span>{cartCount > 99 ? '99+' : cartCount}</span>
                     </div>
@@ -213,12 +217,21 @@ function Layout({ children }: Props) {
 
             {/* bottom region and language selection */}
             <div className="flex h-44 flex-col items-center justify-around bg-[#0F1111] p-6 text-gray-300 md:h-20 md:flex-row md:justify-center md:gap-20 md:bg-slate-800">
-              <Image
-                alt="amazon-logo"
-                priority
-                className="mt-1.5 hidden w-20 md:flex"
-                src={navLogo}
-              />
+              <div className="hidden w-auto flex-shrink-0 items-center md:flex">
+                <Link className="ml-4 flex items-center" href="/">
+                  <Image
+                    alt="logo"
+                    priority
+                    className="w-15 mt-1.5 hidden md:flex"
+                    src={logo}
+                  />
+                  <div className="flex flex-col gap-0">
+                    <span className="font-bold leading-none text-white">
+                      Rainforest Books
+                    </span>
+                  </div>
+                </Link>
+              </div>
               <div className="flex gap-8">
                 <div>
                   <Icon

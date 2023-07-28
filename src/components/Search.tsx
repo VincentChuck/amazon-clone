@@ -31,7 +31,7 @@ export default function Search() {
         ref={inputRef}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="flex h-full flex-grow items-center text-gray-900 focus-visible:outline-none"
-        placeholder="Search Amazon"
+        placeholder="Search books"
       />
       <button
         type="submit"

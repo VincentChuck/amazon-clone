@@ -1,4 +1,4 @@
-export const TRADEMARK = '© 2023, Not Amazon or its affiliates';
+export const TRADEMARK = '© 2023, Rainforest Books';
 
 export const RESULTSPERPAGE = 16;
 
