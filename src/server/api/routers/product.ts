@@ -2,9 +2,7 @@ import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import type { CategoryTree } from '~/types';
 import { SORTOPTIONS } from '~/utils/constants';
-import categoryMapJson from '~/utils/data/categoryMap.json';
-import type { CategoryTreeData, CategoryObject } from '~/utils/data/dataUtils';
-const categoryMap: CategoryTreeData = categoryMapJson;
+import { getCategoryObject, getDescendentCategoryIds } from '~/utils/helpers';
 
 export const productRouter = createTRPCRouter({
   getBatch: publicProcedure
@@ -22,19 +20,7 @@ export const productRouter = createTRPCRouter({
         ctx,
         input: { keyword, categoryId, resultPerPage, skip, sortBy },
       }) => {
-        const childCategoriesId = [categoryId];
-
-        if (categoryId) {
-          const currCategory = categoryMap[categoryId] as CategoryObject;
-
-          if (
-            currCategory.descendentIds &&
-            currCategory.descendentIds.length > 0
-          ) {
-            childCategoriesId.push(...currCategory.descendentIds);
-          }
-        }
-
+        const descendentCategoryIds = getDescendentCategoryIds(categoryId);
         const productsRaw = await ctx.prisma.product.findMany({
           orderBy: { name: 'asc' },
           where: {
@@ -47,7 +33,9 @@ export const productRouter = createTRPCRouter({
                     },
                   }
                 : {},
-              categoryId ? { categoryId: { in: childCategoriesId } } : {},
+              descendentCategoryIds
+                ? { categoryId: { in: descendentCategoryIds } }
+                : {},
             ],
           },
           include: {
@@ -135,18 +123,7 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input: { keyword, categoryId } }) => {
-      const childCategoriesId = [categoryId];
-
-      if (categoryId) {
-        const currCategory = categoryMap[categoryId] as CategoryObject;
-
-        if (
-          currCategory.descendentIds &&
-          currCategory.descendentIds.length > 0
-        ) {
-          childCategoriesId.push(...currCategory.descendentIds);
-        }
-      }
+      const descendentCategoryIds = getDescendentCategoryIds(categoryId);
 
       const products = await ctx.prisma.product.findMany({
         where: {
@@ -159,7 +136,9 @@ export const productRouter = createTRPCRouter({
                   },
                 }
               : {},
-            categoryId ? { categoryId: { in: childCategoriesId } } : {},
+            descendentCategoryIds
+              ? { categoryId: { in: descendentCategoryIds } }
+              : {},
           ],
         },
         include: {
@@ -176,32 +155,34 @@ export const productRouter = createTRPCRouter({
       async function findAncestor(
         id: number,
         children: CategoryTree[] = []
-      ): Promise<CategoryTree | void> {
-        const curr = await ctx.prisma.productCategory.findUnique({
-          where: { id },
-        });
-
-        if (!curr) {
-          throw new Error(`Category ${id} not found`);
+      ): Promise<CategoryTree | null> {
+        const currCategory = getCategoryObject(id);
+        if (!currCategory) {
+          return null;
         }
 
         // if curr category is the highest level
-        if (curr.parentCategoryId === null) {
+        if (
+          !currCategory.parentCategoryId ||
+          currCategory.parentCategoryId < 1
+        ) {
           return {
             id,
-            name: curr.categoryName,
+            name: currCategory.categoryName,
             children,
           };
-        }
+        } else {
+          // if curr category is not the highest level
+          const self: CategoryTree = { id, name: currCategory.categoryName };
+          if (children.length !== 0) {
+            self.children = children;
+          }
+          const parent = await findAncestor(currCategory.parentCategoryId, [
+            self,
+          ]);
 
-        // if curr category is not the highest level
-        const self: CategoryTree = { id, name: curr.categoryName };
-        if (children.length !== 0) {
-          self.children = children;
+          return parent;
         }
-        const parent = await findAncestor(curr.parentCategoryId, [self]);
-
-        return parent;
       }
 
       // create an array of category trees
@@ -216,12 +197,12 @@ export const productRouter = createTRPCRouter({
       let level = 1;
       if (categoryId) {
         let searching = true;
-        let curr = categoryMap[categoryId] as CategoryObject;
+        let curr = getCategoryObject(categoryId);
 
         while (searching) {
-          const parentId = curr.parentCategoryId;
+          const parentId = curr?.parentCategoryId;
           if (parentId) {
-            curr = categoryMap[parentId] as CategoryObject;
+            curr = getCategoryObject(parentId);
             level++;
           } else {
             searching = false;

@@ -13,10 +13,11 @@ import {
   SORTOPTIONS,
   type SortOption,
 } from '~/utils/constants';
-import { parseRouterParam } from '~/utils/helpers';
-import categoryMapJson from '~/utils/data/categoryMap.json';
-import type { CategoryTreeData, CategoryObject } from '~/utils/data/dataUtils';
-const categoryMap: CategoryTreeData = categoryMapJson;
+import {
+  getCategoryObject,
+  parseCidParam,
+  parseRouterParam,
+} from '~/utils/helpers';
 
 export default function Products() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Products() {
 
   const { k, cid, page } = router.query;
   const keyword = parseRouterParam(k);
-  const categoryId = Number(parseRouterParam(cid));
+  const categoryId = parseCidParam(cid);
   const pageParam = Number(parseRouterParam(page)) || 1;
   const pageIndex = pageParam - 1;
   const [sortBy, setSortBy] = useState<SortOption>(SORTOPTIONS[0]);
@@ -54,9 +55,14 @@ export default function Products() {
     numberOfResults = details.data.numberOfResults;
   }
 
-  const currCategory = categoryId
-    ? (categoryMap[categoryId] as CategoryObject).categoryName
-    : 'All Books';
+  const currCategoryObject = getCategoryObject(categoryId);
+  let currCategory = '';
+  if (categoryId === 0) {
+    currCategory = 'All Books';
+  } else {
+    currCategory = currCategoryObject?.categoryName ?? '';
+  }
+
   const categoryLevel = details.data?.categoryLevel;
 
   const skip = pageIndex * RESULTSPERPAGE;
