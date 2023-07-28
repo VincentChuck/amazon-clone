@@ -71,8 +71,8 @@ export default function MobileFilterModal(props: Props) {
           </button>
         </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-blackA9 data-[state=closed]:animate-overlayHide data-[state=open]:animate-overlayShow" />
-          <Dialog.Content className="fixed bottom-0 h-auto max-h-[65%] w-full overflow-y-auto rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
+          <Dialog.Overlay className="fixed inset-0 z-20 bg-blackA9 data-[state=closed]:animate-overlayHide data-[state=open]:animate-overlayShow" />
+          <Dialog.Content className="fixed bottom-0 z-20 h-auto max-h-[65%] w-full overflow-y-auto rounded-t-xl bg-white focus:outline-none data-[state=closed]:animate-contentHide data-[state=open]:animate-contentShow">
             <div className="flex h-12 items-center justify-between border-b border-[#e7e7e7] px-[18px]">
               <span className="text-[15px] font-[500]">Filters</span>
               <Dialog.Close asChild>
