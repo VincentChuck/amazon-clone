@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import MobileFilter from '~/components/MobileFilter';
@@ -13,6 +14,9 @@ import {
   type SortOption,
 } from '~/utils/constants';
 import { parseRouterParam } from '~/utils/helpers';
+import categoryMapJson from '~/utils/data/categoryMap.json';
+import type { CategoryTreeData, CategoryObject } from '~/utils/data/dataUtils';
+const categoryMap: CategoryTreeData = categoryMapJson;
 
 export default function Products() {
   const router = useRouter();
@@ -50,6 +54,9 @@ export default function Products() {
     numberOfResults = details.data.numberOfResults;
   }
 
+  const currCategory = categoryId
+    ? (categoryMap[categoryId] as CategoryObject).categoryName
+    : 'All Books';
   const categoryLevel = details.data?.categoryLevel;
 
   const skip = pageIndex * RESULTSPERPAGE;
@@ -128,6 +135,9 @@ export default function Products() {
 
   return !pageLoaded ? null : (
     <div className="flex flex-grow flex-col">
+      <Head>
+        <title>Rainforest Books: {keyword ? keyword : currCategory}</title>
+      </Head>
       <SortBar
         productsOnPageIndex={productsOnPageIndex}
         numberOfResults={numberOfResults}

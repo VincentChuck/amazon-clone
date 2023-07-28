@@ -88,7 +88,7 @@ function Layout({ children }: Props) {
                   <Image
                     alt="logo"
                     priority
-                    className="w-15 mt-1.5"
+                    className="mt-1.5 h-12 w-12"
                     src={logo}
                   />
                   <div className="flex flex-col gap-0 font-bold leading-none text-white">
@@ -123,7 +123,7 @@ function Layout({ children }: Props) {
 
               {/* logo bar right */}
               <div className="ml-2 flex w-auto flex-shrink-0 items-center whitespace-nowrap">
-                {/* mobile login button */}
+                {/* mobile login button
                 <div className="flex items-center md:hidden">
                   <div className="max-[290px]:hidden">Sign in ›</div>
                   <Icon
@@ -131,9 +131,9 @@ function Layout({ children }: Props) {
                     strokeWidth={2.5}
                     className="h-6 w-6 max-[240px]:hidden"
                   />
-                </div>
+                </div> */}
 
-                {/* larger screen login button */}
+                {/* larger screen login button
                 <div className="hidden flex-col items-start md:flex ">
                   <span className="text-xs">Hello, sign in</span>
                   <div className="flex items-center">
@@ -144,15 +144,15 @@ function Layout({ children }: Props) {
                       className="ml-1 h-3 w-3 text-gray-300"
                     />
                   </div>
-                </div>
+                </div> */}
                 <Link href="/cart" className="flex items-center">
-                  <div className="ml-4 flex w-auto items-center justify-center">
+                  <div className="flex w-auto items-center justify-center">
                     <Image alt="cart" className="w-10" src={cartIcon} />
                     <div className="text-md absolute -top-0 flex w-[30px] justify-center font-bold text-orange-300 md:top-2">
                       <span>{cartCount > 99 ? '99+' : cartCount}</span>
                     </div>
                   </div>
-                  <span className="relative -bottom-2 right-2 hidden text-sm font-bold lg:flex">
+                  <span className="relative -bottom-2 right-2 hidden text-sm font-bold md:flex">
                     Cart
                   </span>
                 </Link>
@@ -204,7 +204,7 @@ function Layout({ children }: Props) {
               <span className="hidden text-sm md:flex">Back to top</span>
             </a>
 
-            {/* bottom links */}
+            {/* bottom links
             <div className="flex items-center justify-center bg-slate-800 p-4 md:border-b md:border-gray-600">
               <nav className="grid grid-flow-col grid-rows-2 gap-x-24 md:flex md:items-center md:justify-center md:gap-12">
                 <a className="my-1">Your orders</a>
@@ -214,16 +214,16 @@ function Layout({ children }: Props) {
                   Your Cart
                 </Link>
               </nav>
-            </div>
+            </div> */}
 
             {/* bottom region and language selection */}
-            <div className="flex h-44 flex-col items-center justify-around bg-[#0F1111] p-6 text-gray-300 md:h-20 md:flex-row md:justify-center md:gap-20 md:bg-slate-800">
+            <div className="flex h-auto flex-col items-center justify-around gap-5 bg-[#0F1111] p-6 text-gray-300 md:h-20 md:flex-row md:justify-center md:gap-10 md:bg-slate-800">
               <div className="hidden w-auto flex-shrink-0 items-center md:flex">
                 <Link className="ml-4 flex items-center" href="/">
                   <Image
                     alt="logo"
                     priority
-                    className="w-15 mt-1.5 hidden md:flex"
+                    className="mt-1.5 hidden w-10 md:flex"
                     src={logo}
                   />
                   <div className="flex flex-col gap-0">
@@ -244,10 +244,10 @@ function Layout({ children }: Props) {
                 </div>
                 <span>🇺🇸 United States</span>
               </div>
-              <div className="md:hidden">
+              {/* <div className="md:hidden">
                 <span>Already a customer? </span>
                 <a className="font-bold text-white">Sign in</a>
-              </div>
+              </div> */}
               <div className="text-xs md:hidden">{TRADEMARK}</div>
             </div>
 

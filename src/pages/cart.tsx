@@ -7,6 +7,7 @@ import { useQuantity } from '~/utils/useQuantity';
 import { USDollar } from '~/utils/constants';
 import Icon from '~/components/Icon';
 import emptyCart from 'public/emtpy_cart.svg';
+import Head from 'next/head';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
@@ -15,6 +16,9 @@ export default function Cart() {
   if (cartItemKeys.length === 0) {
     return (
       <div className="flex min-h-[500px] w-full flex-col items-center justify-center bg-white sm:min-h-[600px]">
+      <Head>
+        <title>Rainforest Books Shopping Cart</title>
+      </Head>
         <div className="relative aspect-square h-72 sm:h-96">
           <Image
             alt="Cart is empty"
@@ -34,6 +38,9 @@ export default function Cart() {
 
   return (
     <div className="w-full bg-[#EAEDED] sm:p-4">
+      <Head>
+        <title>Rainforest Books Shopping Cart</title>
+      </Head>
       <div className="bg-white px-5 py-3">
         <h1 className="border-b border-[#E7E7E7] text-[28px] font-[400]">
           Shopping Cart

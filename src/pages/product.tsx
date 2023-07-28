@@ -4,6 +4,7 @@ import { api } from '~/utils/api';
 import { parseRouterParam } from '~/utils/helpers';
 import ProductDetails from '~/components/ProductDetails';
 import type { ProductItemResponse, VariationArr } from '~/types';
+import Head from 'next/head';
 
 export default function Product() {
   const router = useRouter();
@@ -67,6 +68,9 @@ export default function Product() {
 
   return !pageLoaded ? null : (
     <div className="flex w-screen flex-grow justify-center">
+      <Head>
+        <title>{product.name}</title>
+      </Head>
       <ProductDetails {...{ product, variationArr, defaultActive }} />
     </div>
   );
