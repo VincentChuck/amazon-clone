@@ -2,8 +2,11 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import categoryMapJson from '../src/utils/data/categoryMap.json';
-import { type CategoryTreeData } from '~/utils/data/dataUtils';
-const categoryMap: CategoryTreeData = categoryMapJson;
+import { type CategoryMap } from '~/utils/data/categoryUtil';
+const categoryMap: CategoryMap = categoryMapJson;
+import booksMapJson from '../src/utils/data/booksMap.json';
+import { type BooksMap } from '~/utils/data/booksUtil';
+const booksMap: BooksMap = booksMapJson;
 
 const prisma = new PrismaClient();
 
@@ -87,19 +90,14 @@ async function seed() {
   const bookFormatOptionsArr = bookFormatOptions.variationOptions;
 
   // Create the products
-  for (let i = 0; i < 500; i++) {
-    const randomBooksCat = faker.helpers.arrayElement(bottomCatIdArr);
-    // const randomBookName = `The ${faker.word.adjective()} ${faker.word.noun()}`;
-    const randomBookName = faker.word
-      .words({ count: { min: 5, max: 10 } })
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+  for (const key in booksMap) {
+    const book = booksMap[key];
+    if (!book) continue;
 
     const product: Omit<Product, 'id'> = {
-      name: randomBookName,
+      name: book.name,
       description: faker.lorem.paragraphs(5),
-      categoryId: randomBooksCat,
+      categoryId: book.categoryId,
       productImage: faker.helpers.arrayElement([
         '/product_images/sapiens.jpg',
         '/product_images/subtle-art.jpg',
@@ -124,7 +122,7 @@ async function seed() {
           product: {
             connect: { id: productId.id },
           },
-          SKU: `${randomBookName.toUpperCase()}-${bookFormat.value}`,
+          SKU: `${book.name.toUpperCase()}-${bookFormat.value}`,
           quantityInStock: Math.floor(Math.random() * 1000),
           price: new Prisma.Decimal(formatPrice(basePrice, bookFormat.value)),
           variationOption: {

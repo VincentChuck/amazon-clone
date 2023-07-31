@@ -10,7 +10,7 @@ export type CategoryObject = {
   descendentIds?: number[];
 };
 
-export type CategoryTreeData = { [key: number]: CategoryObject };
+export type CategoryMap = { [key: number]: CategoryObject };
 
 type CategoryTreeRaw = {
   [key: string]: CategoryTreeRaw | null;
@@ -21,7 +21,7 @@ function flattenCategoryTree(categoryTreeRaw: CategoryTreeRaw) {
   const queue: { parentId?: number; category: CategoryTreeRaw }[] = [
     { category: categoryTreeRaw },
   ];
-  const categoryTree: CategoryTreeData = {};
+  const categoryMap: CategoryMap = {};
 
   while (queue.length) {
     const currQueue = queue.shift() as (typeof queue)[0];
@@ -33,12 +33,12 @@ function flattenCategoryTree(categoryTreeRaw: CategoryTreeRaw) {
       if (parentId) category.parentCategoryId = parentId;
 
       while (parentId) {
-        (categoryTree[parentId] as CategoryObject).descendentIds = [
-          ...(categoryTree[parentId]?.descendentIds ?? []),
+        (categoryMap[parentId] as CategoryObject).descendentIds = [
+          ...(categoryMap[parentId]?.descendentIds ?? []),
           idCounter,
         ];
 
-        parentId = (categoryTree[parentId] as CategoryObject).parentCategoryId;
+        parentId = (categoryMap[parentId] as CategoryObject).parentCategoryId;
       }
 
       const children = currCatRaw[categoryName];
@@ -46,20 +46,20 @@ function flattenCategoryTree(categoryTreeRaw: CategoryTreeRaw) {
         queue.push({ parentId: category.id, category: children });
       }
 
-      categoryTree[category.id] = category;
+      categoryMap[category.id] = category;
     }
   }
 
-  return categoryTree;
+  return categoryMap;
 }
 
-const categoryTree = flattenCategoryTree(categoryTreeRaw);
+const categoryMap = flattenCategoryTree(categoryTreeRaw);
 
-const jsonCategoryTree = JSON.stringify(categoryTree, null, 2);
+const jsonCategoryMap = JSON.stringify(categoryMap, null, 2);
 
 fs.writeFile(
   './src/utils/data/categoryMap.json',
-  jsonCategoryTree,
+  jsonCategoryMap,
   'utf8',
   (err) => {
     if (err) {
@@ -69,3 +69,15 @@ fs.writeFile(
     }
   }
 );
+
+// import categoryMapJson from './categoryMap.json';
+// const categoryMap: CategoryTreeData = categoryMapJson;
+// const bottomCatNames = [...Object.values(categoryMap)]
+//   .filter((cat) => {
+//     return !Object.keys(cat).includes('descendentIds');
+//   })
+//   .map((cat) => {
+//     return cat.categoryName;
+//   });
+//
+// console.log(bottomCatNames);

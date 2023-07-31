@@ -1,7 +1,7 @@
 import { type SyntheticEvent } from 'react';
-import type { CategoryTreeData, CategoryObject } from '~/utils/data/dataUtils';
+import type { CategoryMap, CategoryObject } from '~/utils/data/categoryUtil';
 import categoryMapJson from '~/utils/data/categoryMap.json';
-const categoryMap: CategoryTreeData = categoryMapJson;
+const categoryMap: CategoryMap = categoryMapJson;
 
 export function parseRouterParam(k: unknown): string {
   if (typeof k === 'string') return k;
