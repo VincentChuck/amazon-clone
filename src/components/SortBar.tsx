@@ -9,7 +9,7 @@ type SortBarProps = {
   numberOfResults: number;
   keyword: string;
   sortBy: SortOption;
-  setSortBy: React.Dispatch<React.SetStateAction<SortOption>>;
+  setSortBy(sortOption: SortOption): void;
 };
 
 export default function SortBar({

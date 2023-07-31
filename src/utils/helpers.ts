@@ -2,6 +2,7 @@ import { type SyntheticEvent } from 'react';
 import type { CategoryMap, CategoryObject } from '~/utils/data/categoryUtil';
 import categoryMapJson from '~/utils/data/categoryMap.json';
 const categoryMap: CategoryMap = categoryMapJson;
+import { SORTOPTIONS, type SortOption } from '~/utils/constants';
 
 export function parseRouterParam(k: unknown): string {
   if (typeof k === 'string') return k;
@@ -14,6 +15,12 @@ export function parseCidParam(cid: unknown): number {
   const checkCategory = getCategoryObject(categoryId);
 
   return checkCategory?.id ?? 0;
+}
+
+export function parseSort(sort: unknown): SortOption {
+  const sortBy = parseRouterParam(sort) as SortOption;
+  const sortOption = SORTOPTIONS.includes(sortBy) ? sortBy : SORTOPTIONS[0];
+  return sortOption;
 }
 
 export function scrollTop(event: SyntheticEvent) {

@@ -8,27 +8,48 @@ import ProductsPagination from '~/components/ProductsPagination';
 import SortBar from '~/components/SortBar';
 import type { CategoryTree } from '~/types';
 import { api } from '~/utils/api';
-import {
-  RESULTSPERPAGE,
-  SORTOPTIONS,
-  type SortOption,
-} from '~/utils/constants';
+import { RESULTSPERPAGE, type SortOption } from '~/utils/constants';
 import {
   getCategoryObject,
   parseCidParam,
   parseRouterParam,
+  parseSort,
 } from '~/utils/helpers';
+// import type {
+//   GetServerSidePropsContext,
+//   NextApiRequest,
+//   NextApiResponse
+// } from 'next';
+// import { createServerSideHelpers } from '@trpc/react-query/server';
+// import { createTRPCContext } from '~/server/api/trpc';
+// import { appRouter } from '~/server/api/root';
+// import superjson from 'superjson';
 
 export default function Products() {
   const router = useRouter();
   const [pageLoaded, setPageLoaded] = useState(false);
 
-  const { k, cid, page } = router.query;
+  const { k, cid, page, sort } = router.query;
   const keyword = parseRouterParam(k);
   const categoryId = parseCidParam(cid);
   const pageParam = Number(parseRouterParam(page)) || 1;
+  const sortBy = parseSort(sort);
+  function setSortBy(sortOption: SortOption) {
+    void router.push(
+      {
+        query: {
+          ...(k && { k }),
+          ...(cid && { cid }),
+          ...(page && { page }),
+          ...(sortOption && { sort: sortOption }),
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+    window.scrollTo({ top: 0 });
+  }
   const pageIndex = pageParam - 1;
-  const [sortBy, setSortBy] = useState<SortOption>(SORTOPTIONS[0]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -124,12 +145,12 @@ export default function Products() {
     sortOption?: SortOption,
     categoryIdOption?: number
   ) {
-    if (sortOption) setSortBy(sortOption);
-
     if (typeof categoryIdOption === 'number') {
       const cleanQuery = {
-        ...(keyword && { k: keyword }),
+        ...(k && { k }),
+        ...(page && { page }),
         ...(categoryIdOption && { cid: categoryIdOption }),
+        ...(sortOption && { sort: sortOption }),
       };
       void router.push({ query: cleanQuery }, undefined, {
         shallow: true,
@@ -187,3 +208,19 @@ export default function Products() {
     </div>
   );
 }
+
+// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//   const ssg = createServerSideHelpers({
+//     router: appRouter,
+//     ctx: await createTRPCContext({ req: ctx.req as NextApiRequest, res: ctx.res as NextApiResponse }),
+//     transformer: superjson,
+//   });
+//
+//   await ssg.product.getBatch.prefetch();
+//
+//   return {
+//     props: {
+//       trpcState: ssg.dehydrate(),
+//     },
+//   };
+// };
