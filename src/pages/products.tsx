@@ -126,10 +126,12 @@ export default function Products(
 
   const lastPage = Math.ceil(numberOfResults / RESULTSPERPAGE);
 
+  const title = `Rainforest Books: ${keyword ? keyword : currCategory}`;
+
   return (
     <div className="flex flex-grow flex-col">
       <Head>
-        <title>Rainforest Books: {keyword ? keyword : currCategory}</title>
+        <title>{title}</title>
       </Head>
       <SortBar
         {...{
