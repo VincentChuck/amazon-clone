@@ -13,7 +13,6 @@ type SortBarProps = {
 };
 
 export default function SortBar({
-  // pagination,
   productsOnPageIndex,
   numberOfResults,
   keyword,

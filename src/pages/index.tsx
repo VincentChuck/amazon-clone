@@ -12,7 +12,7 @@ export default function Home() {
     });
   });
 
-  return <div>Nothing to see here yet...</div>;
+  return <div></div>;
 }
 
 // const AuthShowcase: React.FC = () => {

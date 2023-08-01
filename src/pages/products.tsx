@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import MobileFilter from '~/components/MobileFilter';
 import ProductFilter from '~/components/ProductFilter';
 import ProductList from '~/components/ProductList';
@@ -15,25 +14,31 @@ import {
   parseRouterParam,
   parseSort,
 } from '~/utils/helpers';
-// import type {
-//   GetServerSidePropsContext,
-//   NextApiRequest,
-//   NextApiResponse
-// } from 'next';
-// import { createServerSideHelpers } from '@trpc/react-query/server';
-// import { createTRPCContext } from '~/server/api/trpc';
-// import { appRouter } from '~/server/api/root';
-// import superjson from 'superjson';
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+  NextApiRequest,
+  NextApiResponse,
+} from 'next';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { createTRPCContext } from '~/server/api/trpc';
+import { appRouter } from '~/server/api/root';
+import superjson from 'superjson';
 
-export default function Products() {
+export default function Products(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   const router = useRouter();
-  const [pageLoaded, setPageLoaded] = useState(false);
 
-  const { k, cid, page, sort } = router.query;
-  const keyword = parseRouterParam(k);
-  const categoryId = parseCidParam(cid);
-  const pageParam = Number(parseRouterParam(page)) || 1;
-  const sortBy = parseSort(sort);
+  const {
+    query: { k, cid, page },
+    parsedParams: { keyword, categoryId, pageParam, sortBy },
+    currCategory,
+    skip,
+    getBatchObj,
+    getBatchDetailsObj,
+  } = props;
+
   function setSortBy(sortOption: SortOption) {
     void router.push(
       {
@@ -44,69 +49,36 @@ export default function Products() {
           ...(sortOption && { sort: sortOption }),
         },
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
     window.scrollTo({ top: 0 });
   }
-  const pageIndex = pageParam - 1;
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    setPageLoaded(true);
-  }, [router.isReady]);
-
-  const details = api.product.getBatchDetails.useQuery(
-    {
-      ...(keyword && { keyword }),
-      ...(categoryId && { categoryId }),
-    },
-    {
-      enabled: pageLoaded,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
-  );
+  const details = api.product.getBatchDetails.useQuery(getBatchDetailsObj, {
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+  });
 
   let mergedCategoryTrees: CategoryTree[] = [];
   let numberOfResults = 0;
+  let categoryLevel = 1;
 
   if (details.data) {
     mergedCategoryTrees = details.data.mergedCategoryTrees;
     numberOfResults = details.data.numberOfResults;
+    categoryLevel = details.data.categoryLevel ?? 1;
   }
 
-  const currCategoryObject = getCategoryObject(categoryId);
-  let currCategory = '';
-  if (categoryId === 0) {
-    currCategory = 'All Books';
-  } else {
-    currCategory = currCategoryObject?.categoryName ?? '';
-  }
-
-  const categoryLevel = details.data?.categoryLevel;
-
-  const skip = pageIndex * RESULTSPERPAGE;
   const productsOnPageIndex = `${skip + 1}-${Math.min(
     skip + RESULTSPERPAGE,
     numberOfResults
   )}`;
 
   const { data, isLoading, isError, isFetching, isPreviousData } =
-    api.product.getBatch.useQuery(
-      {
-        ...(keyword && { keyword }),
-        ...(categoryId && { categoryId }),
-        resultPerPage: RESULTSPERPAGE,
-        skip,
-        ...(sortBy && { sortBy }),
-      },
-      {
-        enabled: pageLoaded,
-        refetchOnWindowFocus: false,
-        keepPreviousData: true,
-      }
-    );
+    api.product.getBatch.useQuery(getBatchObj, {
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    });
 
   if (isLoading) return <div className="text-center">Loading products 🔄</div>;
   if (isError)
@@ -118,8 +90,7 @@ export default function Products() {
     if (!isPreviousData && hasMore) {
       void router.push(
         { query: { ...router.query, page: pageParam + 1 } },
-        undefined,
-        { shallow: true }
+        undefined
       );
       window.scrollTo({ top: 0 });
     }
@@ -128,16 +99,13 @@ export default function Products() {
   function handlePreviousPage() {
     void router.push(
       { query: { ...router.query, page: pageParam - 1 } },
-      undefined,
-      { shallow: true }
+      undefined
     );
     window.scrollTo({ top: 0 });
   }
 
   function handleJumpPage(page: number) {
-    void router.push({ query: { ...router.query, page } }, undefined, {
-      shallow: true,
-    });
+    void router.push({ query: { ...router.query, page } }, undefined);
     window.scrollTo({ top: 0 });
   }
 
@@ -152,39 +120,39 @@ export default function Products() {
         ...(categoryIdOption && { cid: categoryIdOption }),
         ...(sortOption && { sort: sortOption }),
       };
-      void router.push({ query: cleanQuery }, undefined, {
-        shallow: true,
-      });
+      void router.push({ query: cleanQuery }, undefined);
     }
   }
 
   const lastPage = Math.ceil(numberOfResults / RESULTSPERPAGE);
 
-  return !pageLoaded ? null : (
+  return (
     <div className="flex flex-grow flex-col">
       <Head>
         <title>Rainforest Books: {keyword ? keyword : currCategory}</title>
       </Head>
       <SortBar
-        productsOnPageIndex={productsOnPageIndex}
-        numberOfResults={numberOfResults}
-        keyword={keyword}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
+        {...{
+          productsOnPageIndex,
+          numberOfResults,
+          keyword,
+          sortBy,
+          setSortBy,
+        }}
       />
 
       <MobileFilter
         {...{
           numberOfResults,
           mergedCategoryTrees,
+          keyword,
           categoryId,
           sortBy,
           applyMobileFilter,
-          keyword,
         }}
       />
 
-      <div className="mx-3 flex flex-grow flex-col items-center py-4">
+      <main className="mx-3 flex flex-grow flex-col items-center py-4">
         <div className="flex w-full flex-grow justify-center md:max-w-[1800px]">
           <ProductFilter
             {...{ mergedCategoryTrees, keyword, categoryId, categoryLevel }}
@@ -204,23 +172,67 @@ export default function Products() {
           }}
           page={pageParam}
         />
-      </div>
+      </main>
     </div>
   );
 }
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const ssg = createServerSideHelpers({
-//     router: appRouter,
-//     ctx: await createTRPCContext({ req: ctx.req as NextApiRequest, res: ctx.res as NextApiResponse }),
-//     transformer: superjson,
-//   });
-//
-//   await ssg.product.getBatch.prefetch();
-//
-//   return {
-//     props: {
-//       trpcState: ssg.dehydrate(),
-//     },
-//   };
-// };
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const ssg = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createTRPCContext({
+      req: ctx.req as NextApiRequest,
+      res: ctx.res as NextApiResponse,
+    }),
+    transformer: superjson,
+  });
+
+  const { k, cid, page, sort } = ctx.query;
+
+  const keyword = parseRouterParam(k);
+  const categoryId = parseCidParam(cid);
+  const pageParam = Number(parseRouterParam(page)) || 1;
+  const sortBy = parseSort(sort);
+
+  const parsedParams = { keyword, categoryId, pageParam, sortBy };
+
+  const pageIndex = pageParam - 1;
+  const skip = pageIndex * RESULTSPERPAGE;
+
+  const currCategoryObject = getCategoryObject(categoryId);
+  let currCategory = '';
+  if (categoryId === 0) {
+    currCategory = 'All Books';
+  } else {
+    currCategory = currCategoryObject?.categoryName ?? '';
+  }
+
+  const getBatchObj = {
+    ...(keyword && { keyword }),
+    ...(categoryId && { categoryId }),
+    resultPerPage: RESULTSPERPAGE,
+    skip,
+    ...(sortBy && { sortBy }),
+  };
+
+  await ssg.product.getBatch.prefetch(getBatchObj);
+
+  const getBatchDetailsObj = {
+    ...(keyword && { keyword }),
+    ...(categoryId && { categoryId }),
+  };
+
+  await ssg.product.getBatchDetails.prefetch(getBatchDetailsObj);
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      query: { ...ctx.query },
+      currCategory,
+      skip,
+      parsedParams,
+      getBatchObj,
+      getBatchDetailsObj,
+    },
+  };
+};

@@ -14,9 +14,7 @@ export default function Search() {
     void e.preventDefault();
     const input = inputRef.current?.value || '';
     setSearchTerm(input);
-    void router.push({ query: { ...router.query, k: input } }, undefined, {
-      shallow: true,
-    });
+    void router.push({ query: { k: input } }, undefined);
     inputRef.current?.blur();
   }
 
