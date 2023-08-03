@@ -10,6 +10,15 @@ const config = {
   images: {
     domains: [''],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/products',
+        permanent: true,
+      },
+    ];
+  },
 
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
