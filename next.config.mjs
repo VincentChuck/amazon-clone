@@ -10,12 +10,11 @@ const config = {
   images: {
     domains: [''],
   },
-  async redirects() {
+  async rewrites() {
     return [
       {
         source: '/',
         destination: '/products',
-        permanent: true,
       },
     ];
   },
