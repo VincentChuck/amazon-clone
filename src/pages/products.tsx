@@ -217,14 +217,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ...(sortBy && { sortBy }),
   };
 
-  await ssg.product.getBatch.prefetch(getBatchObj);
-
   const getBatchDetailsObj = {
     ...(keyword && { keyword }),
     ...(categoryId && { categoryId }),
   };
 
-  await ssg.product.getBatchDetails.prefetch(getBatchDetailsObj);
+  await Promise.all([
+    ssg.product.getBatch.prefetch(getBatchObj),
+    ssg.product.getBatchDetails.prefetch(getBatchDetailsObj),
+  ]);
 
   return {
     props: {

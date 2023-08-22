@@ -3,6 +3,10 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import('./src/env.mjs'));
+import Promise from '@next/bundle-analyzer';
+const withBundleAnalyzer = Promise({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -30,4 +34,4 @@ const config = {
     defaultLocale: 'en',
   },
 };
-export default config;
+export default withBundleAnalyzer(config);

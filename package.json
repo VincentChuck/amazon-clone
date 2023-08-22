@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "analyze": "ANALYZE=true next build",
     "dev": "next dev -p 3030",
     "postinstall": "prisma generate",
     "lint": "next lint",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@next/bundle-analyzer": "^13.4.19",
     "@tanstack/react-query-devtools": "^4.32.0",
     "@types/eslint": "^8.44.1",
     "@types/node": "^18.17.1",
