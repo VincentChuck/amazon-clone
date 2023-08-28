@@ -82,6 +82,7 @@ model ProductItem {
   itemImage         String?
   variationOption   VariationOption @relation(fields: [variationOptionId], references: [id])
   variationOptionId String
+  orderItems        OrderItem[]
 }
 
 model VariationOption {
@@ -97,4 +98,24 @@ model Variation {
   variationName     String            @unique
   variationOptions  VariationOption[]
   ProductCategories ProductCategory[]
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  orderItems OrderItem[]
+  isPaid     Boolean     @default(false)
+  name       String      @default("")
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model OrderItem {
+  id            String      @id @default(cuid())
+  quantity      Int
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  order         Order       @relation(fields: [orderId], references: [id])
+  productItemId String
+  orderId       String
 }

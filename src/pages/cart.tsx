@@ -8,17 +8,33 @@ import { USDollar } from '~/utils/constants';
 import Icon from '~/components/Icon';
 import emptyCart from 'public/emtpy_cart.svg';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { api } from '~/utils/api';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
   const cartItemKeys = Object.keys(cartItems);
 
+  const { push } = useRouter();
+
+  const { mutateAsync: createCheckoutSession } =
+    api.stripe.checkout.useMutation();
+
+  async function onCheckout() {
+    console.log('checking out');
+
+    const { checkoutUrl } = await createCheckoutSession(cartItems);
+    if (checkoutUrl) {
+      void push(checkoutUrl);
+    }
+  }
+
   if (cartItemKeys.length === 0) {
     return (
       <div className="flex min-h-[500px] w-full flex-col items-center justify-center bg-white sm:min-h-[600px]">
-      <Head>
-        <title>Rainforest Books Shopping Cart</title>
-      </Head>
+        <Head>
+          <title>Rainforest Books Shopping Cart</title>
+        </Head>
         <div className="relative aspect-square h-72 sm:h-96">
           <Image
             alt="Cart is empty"
@@ -59,6 +75,7 @@ export default function Cart() {
         <div className="mb-4 mt-1 flex justify-end">
           <CartTotal cartSize={cartItemKeys.length} cartTotal={cartTotal} />
         </div>
+        <button onClick={onCheckout}>Checkout</button>
       </div>
     </div>
   );
@@ -75,15 +92,18 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
   return (
     <div className="flex flex-col border-b border-[#E7E7E7] py-3 sm:px-3">
       <div className="flex h-40 sm:h-56">
-        <Link href={productLink} className="relative h-full w-[160px] shrink-0 bg-gray-100 sm:min-w-[200px] sm:max-w-[20%] sm:bg-white">
-            <Image
-              alt={`${item.name} product image`}
-              src={item.image}
-              fill
-              sizes="224px"
-              className="object-contain"
-            />
-          </Link>
+        <Link
+          href={productLink}
+          className="relative h-full w-[160px] shrink-0 bg-gray-100 sm:min-w-[200px] sm:max-w-[20%] sm:bg-white"
+        >
+          <Image
+            alt={`${item.name} product image`}
+            src={item.image}
+            fill
+            sizes="224px"
+            className="object-contain"
+          />
+        </Link>
         <div className="flex flex-col justify-between py-2 pl-2 pr-1">
           <div className="flex flex-col gap-1">
             <Link href={productLink}>

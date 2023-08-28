@@ -109,6 +109,8 @@ function updateItemQuantity(
   };
 }
 
+// TODO: validate if productItem is still in stock
+
 export { addToCart, updateItemQuantity, removeFromCart };
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

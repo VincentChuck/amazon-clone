@@ -16,12 +16,16 @@
  */
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { type Session } from 'next-auth';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getServerAuthSession } from '~/server/auth';
 import { prisma } from '~/server/db';
+import { stripe } from '~/server/stripe/client';
 
 type CreateContextOptions = {
   session: Session | null;
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
 /**
@@ -35,9 +39,13 @@ type CreateContextOptions = {
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  const { req, res } = opts;
   return {
     session: opts.session,
     prisma,
+    stripe,
+    req,
+    res,
   };
 };
 
@@ -55,6 +63,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    req,
+    res,
   });
 };
 
