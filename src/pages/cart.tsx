@@ -21,8 +21,6 @@ export default function Cart() {
     api.stripe.checkout.useMutation();
 
   async function onCheckout() {
-    console.log('checking out');
-
     const { checkoutUrl } = await createCheckoutSession(cartItems);
     if (checkoutUrl) {
       void push(checkoutUrl);
@@ -134,7 +132,7 @@ function CartItemActions({ itemId, item, cartItems }: CartItemProps) {
   const { quantity, plusOne, minusOne } = useQuantity(
     itemId,
     item.count,
-    cartItems
+    cartItems,
   );
   return (
     <div className="flex gap-6 sm:gap-2">
