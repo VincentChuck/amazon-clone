@@ -29,11 +29,11 @@ export default function Cart() {
 
   if (cartItemKeys.length === 0) {
     return (
-      <div className="flex min-h-[500px] w-full flex-col items-center justify-center bg-white sm:min-h-[600px]">
+      <div className="flex min-h-[500px] w-full flex-col items-center justify-center bg-white md:min-h-[600px]">
         <Head>
           <title>Rainforest Books Shopping Cart</title>
         </Head>
-        <div className="relative aspect-square h-72 sm:h-96">
+        <div className="relative aspect-square h-72 md:h-96">
           <Image
             alt="Cart is empty"
             priority
@@ -51,12 +51,19 @@ export default function Cart() {
   }
 
   return (
-    <div className="w-full bg-[#EAEDED] sm:p-4">
+    <div className="flex w-full flex-col bg-[#EAEDED] md:flex-row-reverse md:p-4">
       <Head>
         <title>Rainforest Books Shopping Cart</title>
       </Head>
-      <div className="bg-white px-5 py-3">
-        <h1 className="border-b border-[#E7E7E7] text-[28px] font-[400]">
+
+      <CheckoutCard
+        cartSize={cartItemKeys.length}
+        cartTotal={cartTotal}
+        onCheckout={onCheckout}
+      />
+
+      <div className="bg-white px-2 py-3 md:h-fit md:grow md:px-5">
+        <h1 className="hidden border-b border-[#E7E7E7] text-[28px] font-[400] md:flex">
           Shopping Cart
         </h1>
         {cartItemKeys.map((key) => {
@@ -70,10 +77,9 @@ export default function Cart() {
             />
           );
         })}
-        <div className="mb-4 mt-1 flex justify-end">
+        <div className="mb-4 mt-1 hidden justify-end md:flex">
           <CartTotal cartSize={cartItemKeys.length} cartTotal={cartTotal} />
         </div>
-        <button onClick={onCheckout}>Checkout</button>
       </div>
     </div>
   );
@@ -88,11 +94,11 @@ type CartItemProps = {
 function CartItem({ itemId, item, cartItems }: CartItemProps) {
   const productLink = `/product?pid=${item.productId}`;
   return (
-    <div className="flex flex-col border-b border-[#E7E7E7] py-3 sm:px-3">
-      <div className="flex h-40 sm:h-56">
+    <div className="mb-3 flex flex-col border-[#E7E7E7] bg-[rgba(5,75,89,.03)] px-2 py-3 md:mb-0 md:border-b md:bg-white md:px-3">
+      <div className="flex h-40 md:h-56">
         <Link
           href={productLink}
-          className="relative h-full w-[160px] shrink-0 bg-gray-100 sm:min-w-[200px] sm:max-w-[20%] sm:bg-white"
+          className="relative h-full w-[160px] shrink-0 md:min-w-[200px] md:max-w-[20%]"
         >
           <Image
             alt={`${item.name} product image`}
@@ -105,7 +111,7 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
         <div className="flex flex-col justify-between py-2 pl-2 pr-1">
           <div className="flex flex-col gap-1">
             <Link href={productLink}>
-              <span className="line-clamp-2 sm:text-xl">{item.name}</span>
+              <span className="line-clamp-2 md:text-xl">{item.name}</span>
             </Link>
             <div className="text-lg font-bold">
               {USDollar.format(item.price)}
@@ -115,12 +121,12 @@ function CartItem({ itemId, item, cartItems }: CartItemProps) {
               <span>{item.variation}</span>
             </div>
           </div>
-          <div className="hidden sm:flex">
+          <div className="hidden md:flex">
             <CartItemActions {...{ itemId, item, cartItems }} />
           </div>
         </div>
       </div>
-      <div className="my-2 flex justify-center px-4 sm:hidden">
+      <div className="my-2 flex justify-center px-4 md:hidden">
         <CartItemActions {...{ itemId, item, cartItems }} />
       </div>
     </div>
@@ -132,10 +138,10 @@ function CartItemActions({ itemId, item, cartItems }: CartItemProps) {
   const { quantity, plusOne, minusOne } = useQuantity(
     itemId,
     item.count,
-    cartItems,
+    cartItems
   );
   return (
-    <div className="flex gap-6 sm:gap-2">
+    <div className="flex gap-6 md:gap-2">
       <div className="flex h-[33px] rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
         <button
           onClick={() => {
@@ -191,6 +197,25 @@ function CartTotal({ cartSize, cartTotal }: CartTotalProps) {
         ({cartSize} item{cartSize > 1 ? 's' : ''}):{' '}
       </span>
       <span className="font-bold">{USDollar.format(cartTotal)}</span>
+    </div>
+  );
+}
+
+type CheckoutCardProps = CartTotalProps & {
+  onCheckout: () => Promise<void>;
+};
+
+function CheckoutCard({ cartSize, cartTotal, onCheckout }: CheckoutCardProps) {
+  return (
+    <div className="h-fit w-full bg-white px-5 pt-5 md:ml-4 md:w-[300px] md:pb-5">
+      <CartTotal cartSize={cartSize} cartTotal={cartTotal} />
+      <button
+        onClick={onCheckout}
+        className="border-1 my-5 h-11 w-full rounded-lg border border-[#FCD200] bg-[#FFD814] py-2 text-base md:my-2 md:h-8 md:py-1 md:text-sm"
+      >
+        Proceed to checkout
+      </button>
+      <div className="border-b border-[#E7E7E7] md:hidden"></div>
     </div>
   );
 }
