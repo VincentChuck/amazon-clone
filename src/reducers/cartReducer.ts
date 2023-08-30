@@ -11,7 +11,7 @@ import {
   type CartType,
   type ProductItemResponse,
 } from '~/types';
-// import type { Decimal } from '@prisma/client/runtime';
+import { makeCartItem } from '~/utils/helpers';
 
 const initialState: CartType = getLocalCart();
 
@@ -63,25 +63,14 @@ function addToCart(
   product: ProductResponse,
   cart: CartType
 ) {
-  const cartItemContent = {
-    productId: item.productId,
-    SKU: item.SKU,
-    count,
-    name: `${product.name} (${item.variationOption.value})`,
-    price: item.price,
-    image: item.itemImage || product.productImage,
-    variation: item.variationOption.value,
-    variationOption: item.variationOption.variation.variationName,
-  };
+  let finalCount = count;
 
   const itemInCart = cart[item.id];
   if (itemInCart) {
-    cartItemContent.count = itemInCart.count + count;
+    finalCount += itemInCart.count;
   }
 
-  const cartItem: CartType = {
-    [item.id]: cartItemContent,
-  };
+  const cartItem = makeCartItem(item, finalCount, product);
 
   return function (dispatch: AppDispatch) {
     dispatch(addItem(cartItem));

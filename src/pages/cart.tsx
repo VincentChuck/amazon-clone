@@ -8,23 +8,16 @@ import { USDollar } from '~/utils/constants';
 import Icon from '~/components/Icon';
 import emptyCartSvg from 'public/emtpy_cart.svg';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { api } from '~/utils/api';
+import { useCheckout } from '~/utils/useCheckout';
 
 export default function Cart() {
   const { cartItems, cartTotal } = useCartItems();
   const cartItemKeys = Object.keys(cartItems);
 
-  const { push } = useRouter();
-
-  const { mutateAsync: createCheckoutSession } =
-    api.stripe.checkout.useMutation();
+  const checkoutFunc = useCheckout();
 
   async function onCheckout() {
-    const { checkoutUrl } = await createCheckoutSession(cartItems);
-    if (checkoutUrl) {
-      void push(checkoutUrl);
-    }
+    await checkoutFunc(cartItems);
   }
 
   if (cartItemKeys.length === 0) {

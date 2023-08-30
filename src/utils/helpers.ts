@@ -3,6 +3,7 @@ import type { CategoryMap, CategoryObject } from '~/utils/data/categoryUtil';
 import categoryMapJson from '~/utils/data/categoryMap.json';
 const categoryMap: CategoryMap = categoryMapJson;
 import { SORTOPTIONS, type SortOption } from '~/utils/constants';
+import { CartType, ProductItemResponse, ProductResponse } from '~/types';
 
 export function parseRouterParam(k: unknown): string {
   if (typeof k === 'string') return k;
@@ -71,4 +72,27 @@ export function getDescendentCategoryIds(id: number): number[] | null {
   }
 
   return childCategoriesId;
+}
+
+export function makeCartItem(
+  item: ProductItemResponse,
+  count: number,
+  product: ProductResponse
+) {
+  const cartItemContent = {
+    productId: item.productId,
+    SKU: item.SKU,
+    count,
+    name: `${product.name} (${item.variationOption.value})`,
+    price: item.price,
+    image: item.itemImage || product.productImage,
+    variation: item.variationOption.value,
+    variationOption: item.variationOption.variation.variationName,
+  };
+
+  const cartItem: CartType = {
+    [item.id]: cartItemContent,
+  };
+
+  return cartItem;
 }
