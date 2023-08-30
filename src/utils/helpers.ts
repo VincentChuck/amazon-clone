@@ -3,7 +3,7 @@ import type { CategoryMap, CategoryObject } from '~/utils/data/categoryUtil';
 import categoryMapJson from '~/utils/data/categoryMap.json';
 const categoryMap: CategoryMap = categoryMapJson;
 import { SORTOPTIONS, type SortOption } from '~/utils/constants';
-import { CartType, ProductItemResponse, ProductResponse } from '~/types';
+import type { CartType, ProductItemResponse, ProductResponse } from '~/types';
 
 export function parseRouterParam(k: unknown): string {
   if (typeof k === 'string') return k;

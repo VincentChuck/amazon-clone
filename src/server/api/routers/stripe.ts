@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { env } from '~/env.mjs';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import type { Stripe } from 'stripe';
@@ -5,8 +6,13 @@ import { CartSchema, type CartType } from '~/types';
 
 export const stripeRouter = createTRPCRouter({
   checkout: publicProcedure
-    .input(CartSchema)
-    .mutation(async ({ ctx, input: cart }) => {
+    .input(
+      z.object({
+        cart: CartSchema,
+        isSingleItem: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input: { cart, isSingleItem } }) => {
       const { prisma, stripe, req } = ctx;
 
       const productItemIds = Object.keys(cart);
@@ -71,7 +77,9 @@ export const stripeRouter = createTRPCRouter({
         phone_number_collection: {
           enabled: true,
         },
-        success_url: `${baseUrl}/checkout/success`,
+        success_url: `${baseUrl}/checkout/success${
+          isSingleItem ? '?singleItem=true' : ''
+        }`,
         cancel_url: `${baseUrl}/checkout/error`,
         metadata: {
           orderId: order.id,

@@ -35,13 +35,11 @@ export default async function handler(
       if (err instanceof Error) {
         errorMessage += ': ' + err.message;
       }
-      console.log(errorMessage);
       res.status(400).send(errorMessage);
       return;
     }
 
     const session = event.data.object as Stripe.Checkout.Session;
-    console.log(session.id, 'created');
 
     const address = session?.customer_details?.address;
 

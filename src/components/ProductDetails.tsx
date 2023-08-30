@@ -11,6 +11,8 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '~/reducers/cartReducer';
+import { useCheckout } from '~/utils/useCheckout';
+import { makeCartItem } from '~/utils/helpers';
 
 type Props = {
   product: ProductResponse;
@@ -67,6 +69,13 @@ export default function ProductDetails({
 
   const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
+
+  const checkoutFunc = useCheckout();
+
+  async function onBuyNow() {
+    const cartItem = makeCartItem(active, 1, product);
+    await checkoutFunc(cartItem, true);
+  }
 
   return (
     <div className="grid h-full w-full grid-cols-1 p-3.5 md:max-w-[1500px] md:grid-cols-3 md:py-8 lg:grid-cols-[384px_auto_244px]">
@@ -200,7 +209,10 @@ export default function ProductDetails({
           >
             Add to Cart
           </button>
-          <button className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FF8F00] bg-[#FFA41C] py-2 text-base md:h-8 md:py-1 md:text-sm">
+          <button
+            onClick={onBuyNow}
+            className="border-1 my-2 h-11 w-full rounded-3xl border border-[#FF8F00] bg-[#FFA41C] py-2 text-base md:h-8 md:py-1 md:text-sm"
+          >
             Buy Now
           </button>
         </div>

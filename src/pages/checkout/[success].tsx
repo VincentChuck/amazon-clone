@@ -6,19 +6,27 @@ import Icon from '~/components/Icon';
 import { emptyCart, useAppDispatch } from '~/reducers/cartReducer';
 import { parseRouterParam } from '~/utils/helpers';
 
-export default function Checkout({
-  checkoutSuccessful,
-}: {
+type Props = {
   checkoutSuccessful: boolean;
-}) {
+};
+
+export default function Checkout({ checkoutSuccessful }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const { singleItem } = router.query;
+  const isSingleItem = parseRouterParam(singleItem) === 'true';
+
   useEffect(() => {
-    if (checkoutSuccessful && typeof window !== 'undefined') {
+    if (
+      typeof window !== 'undefined' &&
+      checkoutSuccessful &&
+      router.isReady &&
+      !isSingleItem
+    ) {
       dispatch(emptyCart());
     }
-  }, [checkoutSuccessful, dispatch]);
+  }, [checkoutSuccessful, isSingleItem, router.isReady, dispatch]);
 
   const title = `${
     checkoutSuccessful ? 'Checkout Successful' : 'Checkout Unsuccessful'

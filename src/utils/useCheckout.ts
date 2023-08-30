@@ -8,8 +8,11 @@ export function useCheckout() {
   const { mutateAsync: createCheckoutSession } =
     api.stripe.checkout.useMutation();
 
-  return async function (cartItems: CartType) {
-    const { checkoutUrl } = await createCheckoutSession(cartItems);
+  return async function (cartItems: CartType, isSingleItem: boolean) {
+    const { checkoutUrl } = await createCheckoutSession({
+      cart: cartItems,
+      isSingleItem,
+    });
 
     if (checkoutUrl) {
       void push(checkoutUrl);

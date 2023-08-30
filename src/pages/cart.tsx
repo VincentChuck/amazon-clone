@@ -17,7 +17,7 @@ export default function Cart() {
   const checkoutFunc = useCheckout();
 
   async function onCheckout() {
-    await checkoutFunc(cartItems);
+    await checkoutFunc(cartItems, false);
   }
 
   if (cartItemKeys.length === 0) {
