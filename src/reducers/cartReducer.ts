@@ -32,10 +32,14 @@ const cartSlice = createSlice({
       delete state[itemToRemoveId];
       return state;
     },
+    emptyCartState() {
+      return {};
+    },
   },
 });
 
-export const { setCart, addItem, removeItem } = cartSlice.actions;
+export const { setCart, addItem, removeItem, emptyCartState } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
 
@@ -109,9 +113,16 @@ function updateItemQuantity(
   };
 }
 
+function emptyCart() {
+  return function (dispatch: AppDispatch) {
+    dispatch(emptyCartState());
+    setLocalCart({});
+  };
+}
+
 // TODO: validate if productItem is still in stock
 
-export { addToCart, updateItemQuantity, removeFromCart };
+export { addToCart, updateItemQuantity, removeFromCart, emptyCart };
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

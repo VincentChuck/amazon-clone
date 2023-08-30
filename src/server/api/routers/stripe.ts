@@ -71,8 +71,8 @@ export const stripeRouter = createTRPCRouter({
         phone_number_collection: {
           enabled: true,
         },
-        success_url: `${baseUrl}/cart?checkoutSuccess=true`,
-        cancel_url: `${baseUrl}/cart?checkoutCanceled=true`,
+        success_url: `${baseUrl}/checkout/success`,
+        cancel_url: `${baseUrl}/checkout/error`,
         metadata: {
           orderId: order.id,
         },

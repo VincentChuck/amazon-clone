@@ -6,7 +6,7 @@ import { useCartItems } from '~/utils/useCart';
 import { useQuantity } from '~/utils/useQuantity';
 import { USDollar } from '~/utils/constants';
 import Icon from '~/components/Icon';
-import emptyCart from 'public/emtpy_cart.svg';
+import emptyCartSvg from 'public/emtpy_cart.svg';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { api } from '~/utils/api';
@@ -38,7 +38,7 @@ export default function Cart() {
             alt="Cart is empty"
             priority
             // eslint-disable-next-line
-            src={emptyCart}
+            src={emptyCartSvg}
             fill
             sizes="100vh"
             className="object-contain"
